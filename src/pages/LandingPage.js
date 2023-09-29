@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import style from "../styles/LandingPage.module.css";
-import Form from "../components/Form";
-import Register from "../components/Register";
+import Form from "../components/mentee/Form";
 
 function LandingPage() {
   const [register, setRegister] = useState(false);
@@ -9,19 +8,9 @@ function LandingPage() {
     <div className={style.container}>
       <div className={style.heroImage}>
         <div className={style.heroText}>
-          <h1 className={style.title}>Learnapp</h1>
+          <h1 className={style.title}>LearnIT</h1>
           <div className={style.formLogin}>
-            {register === false ? (
-              <Form
-                register={register}
-                setRegister={() => setRegister()}
-              ></Form>
-            ) : (
-              <Register
-                register={register}
-                setRegister={() => setRegister()}
-              ></Register>
-            )}
+            <Form></Form>
           </div>
         </div>
       </div>

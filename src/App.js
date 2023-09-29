@@ -13,6 +13,7 @@ import Test from "./pages/mentee/Test.js";
 import MentorHomepage from "./pages/mentor/MentorHomepage";
 import CourseStatus from "./pages/mentor/CourseStatus";
 import NewCourse from "./pages/mentor/NewCourse";
+import NewSection from "./pages/mentor/NewSection";
 
 function App() {
   const [user, setUser] = useState(false);
@@ -37,6 +38,7 @@ function App() {
             element={<CourseStatus />}
           ></Route>
           <Route path="/new-course" element={<NewCourse />}></Route>
+          <Route path="/new-section" element={<NewSection />}></Route>
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>

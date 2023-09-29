@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import style from "../styles/mentee/CoursePresentation.module.css";
+import style from "../../styles/mentee/CoursePresentation.module.css";
 import { Link } from "react-router-dom";
 
 function CoursePresentation({ id, title, image, description }) {

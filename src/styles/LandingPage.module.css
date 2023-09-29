@@ -68,30 +68,13 @@ form {
   justify-content: center;
   gap: 1rem;
   align-items: center;
-  margin-top: 2rem;
-}
-
-.link {
-  color: var(--var--white);
-  text-decoration: none;
-  transition: 1s;
-  background-color: transparent;
-  font-size: 1rem;
-  border: none;
-}
-
-.link:hover {
-  text-decoration: underline;
-  color: var(--var--light--pink);
-  font-size: 1.3rem;
-  transition: 1s;
 }
 
 .btnLogin {
   background-color: var(--var--white);
-  width: 5rem;
+  width: 10rem;
   color: var(--var--dark--purple);
-  height: 2.5rem;
+  height: 3.5rem;
   font-size: 1rem;
   border-radius: 0.3rem;
   transition: 1s;

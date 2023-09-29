@@ -23,7 +23,7 @@ input {
   background-color: var(--var--white);
   height: 2rem;
   color: var(--var--dark--purple);
-  padding: 0.3rem;
+  padding: 0.5rem;
   border-radius: 1rem;
 }
 
@@ -68,7 +68,29 @@ input {
   transition: 0.5s;
 }
 
+.btnCreate {
+  width: 10rem;
+  background-color: var(--var--dark--pink);
+  color: var(--var--white);
+  transition: 0.5s;
+}
+
 .btnCancel:hover {
   background-color: rgb(255, 0, 0);
   transition: 0.5s;
+}
+
+.btnCreate:hover {
+  background-color: var(--var--light--pink);
+  color: var(--var--dark--purple);
+  transition: 0.5s;
+}
+
+.sectionBtns {
+  display: flex;
+  gap: 2rem;
+}
+
+.link {
+  text-decoration: none;
 }

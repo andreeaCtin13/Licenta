@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import CoursePresentation from "../../components/CoursePresentation";
+import CoursePresentation from "../../components/mentee/CoursePresentation";
 import style from "../../styles/mentee/UserMarket.module.css";
 import { UserContext } from "../../context/UserContext";
 import { useEffect } from "react";

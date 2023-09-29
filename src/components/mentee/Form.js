@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import style from "../styles/LandingPage.module.css";
+import style from "../../styles/LandingPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
-function Form({ register, setRegister }) {
+function Form() {
   const [lock, setLock] = useState(true);
 
   const modifyLock = () => {
@@ -40,9 +40,6 @@ function Form({ register, setRegister }) {
         </div>
         <div className={style.formButtons}>
           <button className={style.btnLogin}>Login</button>
-          <button onClick={() => setRegister(!register)} className={style.link}>
-            Create Account
-          </button>
         </div>
       </form>
     </>

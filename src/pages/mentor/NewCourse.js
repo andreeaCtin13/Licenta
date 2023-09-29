@@ -3,7 +3,8 @@ import currentUser from "../../data/mentor.json";
 import { UserContext } from "../../context/UserContext";
 import style from "../../styles/mentor/NewCourse.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 function NewCourse() {
   const { user, setUser } = useContext(UserContext);
@@ -22,22 +23,20 @@ function NewCourse() {
           <label htmlFor="">Description</label>
           <input type="text" />
         </div>
-        <div className={style.formRow}>
-          <label htmlFor="">Number of the sections</label>
-          <input type="number" max={100} min={1} />
-        </div>
+
         <div className={style.btnSection}>
           <button className={style.btn}>
             Presentation Picture
             <FontAwesomeIcon icon={faUpload} className={style.icon} />
           </button>
-          <button className={style.btn}>
-            Create Sections
-            <FontAwesomeIcon icon={faArrowRight} className={style.icon} />
-          </button>
         </div>
       </form>
-      <button className={`${style.btn} ${style.btnCancel}`}>CANCEL</button>
+      <div className={style.sectionBtns}>
+        <Link to="/mentor-homepage" className={style.link}>
+          <button className={`${style.btn} ${style.btnCancel}`}>CANCEL</button>
+        </Link>
+        <button className={`${style.btn} ${style.btnCreate}`}>CREATE</button>
+      </div>
     </div>
   );
 }

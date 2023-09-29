@@ -46,3 +46,22 @@
 .btnEditTest {
   margin: 2rem 0;
 }
+
+.btnCreateSection {
+  height: 3rem;
+  width: 15rem;
+  background-color: var(--var--light--pink);
+  color: var(--var--dark--purple);
+  font-size: 1.2rem;
+  margin: 1rem 0;
+  border-radius: 1.3rem;
+  transition: 0.5s;
+  border: none;
+}
+
+.btnCreateSection:hover {
+  cursor: pointer;
+  transition: 0.5s;
+  background-color: var(--var--dark--purple);
+  color: var(--var--white);
+}

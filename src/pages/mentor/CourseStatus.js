@@ -20,6 +20,13 @@ function CourseStatus() {
   return (
     <div className={style.mainContainer}>
       <h1>{currentClass.topic}</h1>
+      <div>
+        <Link to="/new-section">
+          <button className={style.btnCreateSection}>
+            Create a new section
+          </button>
+        </Link>
+      </div>
       <Accordion>
         {currentClass.sectiuni.map((sectiune) => {
           return (
