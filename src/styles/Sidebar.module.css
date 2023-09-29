@@ -1,0 +1,89 @@
+.containerSidebar {
+  background-color: transparent;
+}
+
+.showButton {
+  background-color: var(--var--light--purple);
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 100%;
+  cursor: pointer;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+}
+
+.menuIcon {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.sidebar {
+  background-color: var(--var--light--purple);
+}
+
+.courseLink {
+  text-decoration: none;
+  color: var(--var--white);
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.courseListItem {
+  font-size: large;
+  margin-top: 2rem;
+}
+
+.listOfCourses {
+  margin-top: 4rem;
+  list-style-type: none;
+}
+
+.iconListItem {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.logo {
+  height: 10rem;
+  width: 10rem;
+}
+
+.logoAppContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+}
+
+.buttonsLogout {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin: 2rem;
+}
+
+.buttonsLogout button {
+  width: 7rem;
+  height: 3rem;
+  background-color: var(--var--light--pink);
+  color: var(--var--dark--purple);
+}
+
+.modal {
+  background-color: var(--var--light--purple) !important;
+}
+
+.logoutButton {
+  background-color: transparent;
+  border: none;
+  color: var(--var--white);
+  display: flex;
+  gap: 1rem;
+  font-size: large;
+
+  align-items: center;
+}

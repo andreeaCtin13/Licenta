@@ -1,0 +1,48 @@
+.mainContainer {
+  margin: 4rem;
+}
+
+.assigment {
+  background-color: var(--var--white);
+  color: var(--var--dark--purple);
+  display: flex;
+  padding: 1rem 1rem;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.assigment h4 {
+  margin: 0rem 0rem;
+}
+
+.link {
+  color: var(--var--white);
+}
+
+.iconBtn {
+  margin-left: 1rem;
+  background-color: transparent;
+  border: none;
+}
+
+.iconBtn:hover {
+  cursor: pointer;
+}
+
+.icon {
+  height: 1rem;
+  width: 1rem;
+}
+
+.purpleIcon {
+  color: var(--var--dark--purple);
+}
+
+.requirementRow {
+  display: flex;
+  align-items: center;
+}
+
+.btnEditTest {
+  margin: 2rem 0;
+}

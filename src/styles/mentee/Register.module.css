@@ -1,0 +1,95 @@
+.formRow {
+  display: flex;
+  flex-direction: column;
+  width: 15rem;
+  align-items: flex-start;
+  margin: 0.5rem;
+}
+
+.formRow input {
+  margin-top: 0.2rem;
+  height: 1.5rem;
+  font-size: 1rem;
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+  background-color: var(--var--white);
+  color: var(--var--dark--purple);
+  width: 15rem;
+  transition: 1s;
+}
+
+.formRow input:focus {
+  height: 1.7rem;
+  transition: 1s;
+}
+
+.formButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+}
+
+.createAccBtn {
+  background-color: var(--var--white);
+  width: 9rem;
+  height: 3rem;
+  border-radius: 0.3rem;
+  transition: 1s;
+}
+
+.createAccBtn:hover {
+  background-color: var(--var--light--pink);
+  height: 3rem;
+  width: 12rem;
+  transition: 1s;
+  font-size: 1.2rem;
+}
+
+.link {
+  text-decoration: none;
+  color: var(--var--dark--purple);
+}
+
+.btnBack {
+  border: none;
+  background-color: transparent;
+  font-size: 1.2rem;
+  transition: 1s;
+}
+
+.btnBack:hover {
+  font-size: 1.8rem;
+  transition: 1s;
+}
+
+.passwordRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.iconPassword {
+  color: var(--var--dark--purple);
+  margin-left: -2rem;
+}
+
+.iconExit {
+  color: var(--var--light--pink);
+}
+
+.formRowCheck {
+  display: flex;
+  width: 15rem;
+  align-items: center;
+  gap: 0.5rem;
+  height: 3rem;
+  margin: 0.5rem;
+}
+
+.formRowCheck input {
+  height: 1rem;
+  width: 1rem;
+}

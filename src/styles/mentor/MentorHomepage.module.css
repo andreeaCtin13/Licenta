@@ -1,0 +1,55 @@
+.mainContainer {
+  margin: 4rem;
+}
+
+.cursuriArea {
+  background-color: var(--var--dark--purple);
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+}
+
+.imageCourse {
+  height: 10rem;
+  width: 20rem;
+}
+
+.courseCard {
+  background-color: var(--var--white);
+  color: var(--var--dark--purple);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 1rem;
+}
+
+.btnCreateZone {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btnCreate {
+  display: flex;
+  align-items: center;
+  height: 3rem;
+  padding: 1rem;
+  background-color: var(--var--light--purple);
+  color: var(--var--white);
+  border-radius: 1rem;
+  border: none;
+  transition: 0.5s;
+}
+
+.btnCreate:hover {
+  cursor: pointer;
+  background-color: var(--var--light--pink);
+  color: var(--var--dark--purple);
+  transition: 0.5s;
+}
+
+.link {
+  color: var(--var--dark--purple);
+}

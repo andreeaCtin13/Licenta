@@ -1,0 +1,12 @@
+.coursesArea {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(3, 1fr);
+  place-items: center;
+  gap: 1rem;
+  grid-row: span;
+}
+
+.mainContainer {
+  margin: 5rem 2rem;
+}

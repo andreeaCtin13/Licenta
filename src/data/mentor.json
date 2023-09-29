@@ -1,0 +1,869 @@
+{
+  "username": "Toma Cristian",
+  "classes": [
+    {
+      "topic": "Javra de 5 stele",
+      "imagine": "https://blog.eduonix.com/wp-content/uploads/2015/02/java_11.png",
+      "description": "cel mai misto curs posibil cum sa nu te inrolezi la el bruh??",
+      "sectiuni": [
+        {
+          "titlu": "Mamama ce o bat pe asta",
+          "descriere": "cea mai tare sectiune esti nebun la cap???",
+          "imagineSectiune": "https://blog.eduonix.com/wp-content/uploads/2015/02/java_11.png",
+
+          "resurse": {
+            "linkVideo": "https://youtu.be/x4nfgfBx7a0?si=EqqieBeHQrmi1b93",
+            "pdfList": [
+              {
+                "titlu": "PDF1"
+              },
+              {
+                "titlu": "PDF2"
+              },
+              {
+                "titlu": "PDF3"
+              },
+              {
+                "titlu": "PDF4"
+              }
+            ],
+            "AssigmentsList": [
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              },
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              },
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              }
+            ],
+            "test": {
+              "testTitle": "Testul nanana",
+              "cerinte": [
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                },
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                },
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "titlu": "Mamama ce o bat pe asta",
+          "descriere": "cea mai tare sectiune esti nebun la cap???",
+          "imagineSectiune": "https://blog.eduonix.com/wp-content/uploads/2015/02/java_11.png",
+          "resurse": {
+            "linkVideo": "https://youtu.be/x4nfgfBx7a0?si=EqqieBeHQrmi1b93",
+            "pdfList": [
+              {
+                "titlu": "PDF1"
+              },
+              {
+                "titlu": "PDF2"
+              },
+              {
+                "titlu": "PDF3"
+              },
+              {
+                "titlu": "PDF4"
+              }
+            ],
+            "AssigmentsList": [
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              },
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              },
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              }
+            ],
+            "test": {
+              "testTitle": "Testul nanana",
+              "cerinte": [
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                },
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                },
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Javra de 5 stele",
+      "imagine": "https://blog.eduonix.com/wp-content/uploads/2015/02/java_11.png",
+      "description": "cel mai misto curs posibil cum sa nu te inrolezi la el bruh??",
+      "sectiuni": [
+        {
+          "titlu": "Mamama ce o bat pe asta",
+          "descriere": "cea mai tare sectiune esti nebun la cap???",
+          "imagineSectiune": "https://blog.eduonix.com/wp-content/uploads/2015/02/java_11.png",
+
+          "resurse": {
+            "linkVideo": "https://youtu.be/x4nfgfBx7a0?si=EqqieBeHQrmi1b93",
+            "pdfList": [
+              {
+                "titlu": "PDF1"
+              },
+              {
+                "titlu": "PDF2"
+              },
+              {
+                "titlu": "PDF3"
+              },
+              {
+                "titlu": "PDF4"
+              }
+            ],
+            "AssigmentsList": [
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              },
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              },
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              }
+            ],
+            "test": {
+              "testTitle": "Testul nanana",
+              "cerinte": [
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                },
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                },
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "titlu": "Mamama ce o bat pe asta",
+          "descriere": "cea mai tare sectiune esti nebun la cap???",
+          "imagineSectiune": "https://blog.eduonix.com/wp-content/uploads/2015/02/java_11.png",
+          "resurse": {
+            "linkVideo": "https://youtu.be/x4nfgfBx7a0?si=EqqieBeHQrmi1b93",
+            "pdfList": [
+              {
+                "titlu": "PDF1"
+              },
+              {
+                "titlu": "PDF2"
+              },
+              {
+                "titlu": "PDF3"
+              },
+              {
+                "titlu": "PDF4"
+              }
+            ],
+            "AssigmentsList": [
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              },
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              },
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              }
+            ],
+            "test": {
+              "testTitle": "Testul nanana",
+              "cerinte": [
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                },
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                },
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Javra de 5 stele",
+      "imagine": "https://blog.eduonix.com/wp-content/uploads/2015/02/java_11.png",
+      "description": "cel mai misto curs posibil cum sa nu te inrolezi la el bruh??",
+      "sectiuni": [
+        {
+          "titlu": "Mamama ce o bat pe asta",
+          "descriere": "cea mai tare sectiune esti nebun la cap???",
+          "imagineSectiune": "https://blog.eduonix.com/wp-content/uploads/2015/02/java_11.png",
+
+          "resurse": {
+            "linkVideo": "https://youtu.be/x4nfgfBx7a0?si=EqqieBeHQrmi1b93",
+            "pdfList": [
+              {
+                "titlu": "PDF1"
+              },
+              {
+                "titlu": "PDF2"
+              },
+              {
+                "titlu": "PDF3"
+              },
+              {
+                "titlu": "PDF4"
+              }
+            ],
+            "AssigmentsList": [
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              },
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              },
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              }
+            ],
+            "test": {
+              "testTitle": "Testul nanana",
+              "cerinte": [
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                },
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                },
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "titlu": "Mamama ce o bat pe asta",
+          "descriere": "cea mai tare sectiune esti nebun la cap???",
+          "imagineSectiune": "https://blog.eduonix.com/wp-content/uploads/2015/02/java_11.png",
+          "resurse": {
+            "linkVideo": "https://youtu.be/x4nfgfBx7a0?si=EqqieBeHQrmi1b93",
+            "pdfList": [
+              {
+                "titlu": "PDF1"
+              },
+              {
+                "titlu": "PDF2"
+              },
+              {
+                "titlu": "PDF3"
+              },
+              {
+                "titlu": "PDF4"
+              }
+            ],
+            "AssigmentsList": [
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              },
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              },
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              }
+            ],
+            "test": {
+              "testTitle": "Testul nanana",
+              "cerinte": [
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                },
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                },
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "topic": "Javra de 5 stele",
+      "imagine": "https://blog.eduonix.com/wp-content/uploads/2015/02/java_11.png",
+      "description": "cel mai misto curs posibil cum sa nu te inrolezi la el bruh??",
+      "sectiuni": [
+        {
+          "titlu": "Mamama ce o bat pe asta",
+          "descriere": "cea mai tare sectiune esti nebun la cap???",
+          "imagineSectiune": "https://blog.eduonix.com/wp-content/uploads/2015/02/java_11.png",
+
+          "resurse": {
+            "linkVideo": "https://youtu.be/x4nfgfBx7a0?si=EqqieBeHQrmi1b93",
+            "pdfList": [
+              {
+                "titlu": "PDF1"
+              },
+              {
+                "titlu": "PDF2"
+              },
+              {
+                "titlu": "PDF3"
+              },
+              {
+                "titlu": "PDF4"
+              }
+            ],
+            "AssigmentsList": [
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              },
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              },
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              }
+            ],
+            "test": {
+              "testTitle": "Testul nanana",
+              "cerinte": [
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                },
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                },
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "titlu": "Mamama ce o bat pe asta",
+          "descriere": "cea mai tare sectiune esti nebun la cap???",
+          "imagineSectiune": "https://blog.eduonix.com/wp-content/uploads/2015/02/java_11.png",
+          "resurse": {
+            "linkVideo": "https://youtu.be/x4nfgfBx7a0?si=EqqieBeHQrmi1b93",
+            "pdfList": [
+              {
+                "titlu": "PDF1"
+              },
+              {
+                "titlu": "PDF2"
+              },
+              {
+                "titlu": "PDF3"
+              },
+              {
+                "titlu": "PDF4"
+              }
+            ],
+            "AssigmentsList": [
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              },
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              },
+              {
+                "titlu": "cel mai cool assigment",
+                "cerinta": "ceva cerinta i guess"
+              }
+            ],
+            "test": {
+              "testTitle": "Testul nanana",
+              "cerinte": [
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                },
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                },
+                {
+                  "intrebare": "zi ma cum te cheamaa?",
+                  "variante": [
+                    {
+                      "text": "var A",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var B",
+                      "scor": 10
+                    },
+                    {
+                      "text": "var C",
+                      "scor": 0
+                    },
+                    {
+                      "text": "var d",
+                      "scor": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

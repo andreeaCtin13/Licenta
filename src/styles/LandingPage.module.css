@@ -1,0 +1,118 @@
+.heroImage {
+  width: 100%;
+  height: 100vh;
+  background-image: url("../assets/landing-page-image.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.heroText {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  color: var(--var--white);
+}
+
+.title {
+  font-size: 7rem;
+  text-shadow: 5px 5px 5px var(--var--black);
+  position: fixed;
+  margin-top: -8rem;
+}
+
+form {
+  background-color: var(--var--dark--purple);
+  color: var(--var--white);
+  padding: 2rem;
+  width: 20rem;
+  border-radius: 1rem;
+  box-shadow: 5px 5px 5px var(--var--black);
+}
+
+.formRow {
+  display: flex;
+  flex-direction: column;
+  width: 15rem;
+  align-items: flex-start;
+  margin: 0.5rem;
+}
+
+.formRow input {
+  margin-top: 0.2rem;
+  height: 1.5rem;
+  font-size: 1rem;
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+  background-color: var(--var--white);
+  color: var(--var--dark--purple);
+  width: 15rem;
+  transition: 1s;
+}
+
+.formRow input:focus {
+  height: 1.7rem;
+  transition: 1s;
+}
+
+.formButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.link {
+  color: var(--var--white);
+  text-decoration: none;
+  transition: 1s;
+  background-color: transparent;
+  font-size: 1rem;
+  border: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+  color: var(--var--light--pink);
+  font-size: 1.3rem;
+  transition: 1s;
+}
+
+.btnLogin {
+  background-color: var(--var--white);
+  width: 5rem;
+  color: var(--var--dark--purple);
+  height: 2.5rem;
+  font-size: 1rem;
+  border-radius: 0.3rem;
+  transition: 1s;
+}
+
+.btnLogin:hover {
+  background-color: var(--var--light--pink);
+  height: 2.3rem;
+  font-size: 1.3rem;
+  width: 6rem;
+  transition: 1s;
+}
+
+.passwordRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.icon {
+  color: var(--var--dark--purple);
+  margin-left: -2rem;
+}
