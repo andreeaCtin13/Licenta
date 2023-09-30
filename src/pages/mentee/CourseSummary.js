@@ -325,7 +325,7 @@ function CourseSummary() {
       <h1>{title}</h1>
       <div className={style.flexContainer}>
         <div className={style.leftContainer}>
-          <img src={image} alt="" />
+          <img src={image} alt="" className={style.courseImage} />
         </div>
         <div className={style.rightContainer}>
           <h2>Why to enroll to this course?</h2>

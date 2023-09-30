@@ -20,7 +20,7 @@
 }
 
 .sidebar {
-  background-color: var(--var--light--purple);
+  background-color: var(--var--dark--purple) !important;
 }
 
 .courseLink {
@@ -28,6 +28,7 @@
   color: var(--var--white);
   display: flex;
   gap: 1rem;
+  font-size: 1.2rem;
   align-items: center;
 }
 
@@ -86,4 +87,14 @@
   font-size: large;
 
   align-items: center;
+}
+
+@media screen and (max-width: 900px) {
+  .sidebar {
+    width: 100% !important;
+  }
+  .courseLink,
+  .logoutButton {
+    font-size: 1.5rem;
+  }
 }

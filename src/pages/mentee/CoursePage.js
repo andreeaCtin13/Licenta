@@ -31,9 +31,10 @@ function CoursePage() {
       </div>
       <h2>Video Resources</h2>
       <div className={style.containerVideo}>
-        <div>
+        <div className={style.video}>
           <ReactPlayer
             url={courseChosen.sections[currentSectionIndex].video.url}
+            width={500}
             controls
           />
         </div>

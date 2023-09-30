@@ -1,6 +1,9 @@
 // Sidebar.js
 import React, { useContext, useState } from "react";
 import { Sidebar } from "primereact/sidebar";
+import "primereact/resources/themes/saga-blue/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
 import style from "../styles/Sidebar.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -110,6 +113,9 @@ function CustomSidebar() {
   const handleLogout = () => {
     setLogoutModal(true);
   };
+  const closeSidebar = () => {
+    setVisible(false);
+  };
 
   return (
     <div className={style.containerSidebar}>
@@ -129,14 +135,22 @@ function CustomSidebar() {
         <ul className={style.listOfCourses}>
           <li className={style.courseListItem}>
             {" "}
-            <Link to="/profile" className={style.courseLink}>
+            <Link
+              to="/profile"
+              className={style.courseLink}
+              onClick={closeSidebar}
+            >
               <FontAwesomeIcon icon={faUser} className={style.iconListItem} />
               Profile
             </Link>
           </li>
           <li className={style.courseListItem}>
             {" "}
-            <Link to="/topics" className={style.courseLink}>
+            <Link
+              to="/topics"
+              className={style.courseLink}
+              onClick={closeSidebar}
+            >
               <FontAwesomeIcon icon={faShop} className={style.iconListItem} />
               Courses Market
             </Link>
@@ -146,7 +160,11 @@ function CustomSidebar() {
             return (
               <li className={style.courseListItem}>
                 {" "}
-                <Link className={style.courseLink} to={"/course/" + index}>
+                <Link
+                  className={style.courseLink}
+                  to={"/course/" + index}
+                  onClick={closeSidebar}
+                >
                   <FontAwesomeIcon
                     icon={faGraduationCap}
                     className={style.iconListItem}

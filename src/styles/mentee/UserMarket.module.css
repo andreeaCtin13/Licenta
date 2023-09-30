@@ -10,3 +10,14 @@
 .mainContainer {
   margin: 5rem 2rem;
 }
+@media screen and (max-width: 900px) {
+  h1 {
+    margin-left: 1.5rem;
+  }
+  .coursesArea {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .mainContainer {
+    margin: 5rem 0rem;
+  }
+}

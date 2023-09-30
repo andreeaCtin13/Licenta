@@ -7,11 +7,13 @@ function NewSection() {
   return (
     <div className={style.mainContainer}>
       <h1>Hi, create a new section!</h1>
-      <FormNewSection></FormNewSection>
-      <FormNewTest></FormNewTest>
-      <div>
-        <button>Back</button>
-        <button>Create</button>
+      <div className={style.formsContainer}>
+        <FormNewSection></FormNewSection>
+        <FormNewTest></FormNewTest>
+      </div>
+      <div className={style.btnSection}>
+        <button className={`${style.btn} ${style.btnCancel}`}>Back</button>
+        <button className={`${style.btn} ${style.btnCreate}`}>Create</button>
       </div>
     </div>
   );

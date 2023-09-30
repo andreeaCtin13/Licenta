@@ -59,3 +59,15 @@
 .accordionDescription {
   background-color: aqua;
 }
+
+@media screen and (max-width: 900px) {
+  .flexContainer {
+    flex-direction: column;
+  }
+  .courseImage {
+    width: 100%;
+  }
+  .mainContainer {
+    margin: 5rem 2rem;
+  }
+}

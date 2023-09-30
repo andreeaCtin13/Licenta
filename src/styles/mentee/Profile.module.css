@@ -52,3 +52,18 @@
 .link {
   color: var(--var--white);
 }
+
+@media screen and (max-width: 950px) {
+  .profileCard {
+    width: 90%;
+    margin: 3rem 0;
+  }
+
+  .userCoursesListArea {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .userCoursesCard {
+    margin: 1rem 0;
+  }
+}

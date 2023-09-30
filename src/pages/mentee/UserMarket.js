@@ -197,7 +197,7 @@ function UserMarket() {
 
   return (
     <div className={style.mainContainer}>
-      <h1>Couses</h1>
+      <h1>Courses</h1>
       <div className={style.coursesArea}>
         {courses.map((c) => {
           return (

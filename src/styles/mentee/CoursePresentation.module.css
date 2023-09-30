@@ -27,3 +27,6 @@
   color: var(--var--white);
   padding: 1.3rem;
 }
+
+@media screen and (max-width: 900px) {
+}

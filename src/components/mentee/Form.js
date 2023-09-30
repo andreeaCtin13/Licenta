@@ -11,7 +11,7 @@ function Form() {
 
   return (
     <>
-      <form action="">
+      <form action="" className={style.form}>
         <div className={style.formRow}>
           <label for="username">Username</label>
           <input type="text" id="username" />

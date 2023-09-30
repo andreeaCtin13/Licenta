@@ -154,3 +154,29 @@
   align-items: center;
   justify-content: center;
 }
+
+@media screen and (max-width: 900px) {
+  .containerVideo {
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .video {
+    width: 90%;
+    order: 2;
+  }
+
+  .videoPlaylistContainer {
+    order: 1;
+    max-height: 20rem;
+  }
+
+  .mainContainer {
+    margin: 5rem 1rem;
+  }
+  .assigmentRow div {
+    width: 1rem;
+  }
+}
