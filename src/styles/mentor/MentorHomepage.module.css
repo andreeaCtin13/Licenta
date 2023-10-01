@@ -53,3 +53,23 @@
 .link {
   color: var(--var--dark--purple);
 }
+
+@media screen and (max-width: 900px) {
+  .cursuriArea {
+    grid-template-columns: repeat(1, 1fr);
+    place-items: center;
+  }
+
+  .courseCard {
+    width: 15rem;
+  }
+
+  .mainContainer {
+    margin: 4rem 1rem;
+  }
+
+  .imageCourse {
+    height: 7rem;
+    width: 15rem;
+  }
+}

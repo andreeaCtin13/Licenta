@@ -8,6 +8,11 @@
   text-shadow: 1px 3px 8px var(--var--dark--purple);
 }
 
+.description {
+  text-align: justify;
+  width: 100%;
+}
+
 .mentor {
   font-size: 1.3rem;
   color: var(--var--light--pink);
@@ -175,8 +180,25 @@
 
   .mainContainer {
     margin: 5rem 1rem;
+    width: 100%;
   }
   .assigmentRow div {
     width: 1rem;
+  }
+
+  .containerPDFS {
+    width: 30rem;
+  }
+
+  .containerAssigments {
+    width: 30rem;
+  }
+
+  .introductionSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 }

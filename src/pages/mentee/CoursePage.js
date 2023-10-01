@@ -19,22 +19,24 @@ function CoursePage() {
 
   return (
     <div className={style.mainContainer}>
-      <h1> {courseChosen.name_of_class}</h1>
-      <div className={style.mentor}>
-        Mentored by {courseChosen.name_of_mentor}
-      </div>
-      <div>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur,
-        nobis? Consequuntur neque, iusto, distinctio numquam dolorem magnam non
-        obcaecati eveniet nemo nulla eum sequi. Repellat adipisci vel reiciendis
-        excepturi nostrum.
+      <div className={style.introductionSection}>
+        <h1> {courseChosen.name_of_class}</h1>
+        <div className={style.mentor}>
+          Mentored by {courseChosen.name_of_mentor}
+        </div>
+        <div className={style.description}>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur,
+          nobis? Consequuntur neque, iusto, distinctio numquam dolorem magnam
+          non obcaecati eveniet nemo nulla eum sequi. Repellat adipisci vel
+          reiciendis excepturi nostrum.
+        </div>
       </div>
       <h2>Video Resources</h2>
       <div className={style.containerVideo}>
         <div className={style.video}>
           <ReactPlayer
             url={courseChosen.sections[currentSectionIndex].video.url}
-            width={500}
+            width={450}
             controls
           />
         </div>
