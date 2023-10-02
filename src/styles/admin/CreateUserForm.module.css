@@ -1,0 +1,68 @@
+.form {
+  background-color: var(--var--dark--purple);
+  color: var(--var--white);
+  padding: 2rem;
+  width: 20rem;
+  border-radius: 1rem;
+  box-shadow: 5px 5px 5px var(--var--black);
+}
+
+.formRow {
+  display: flex;
+  flex-direction: column;
+  width: 15rem;
+  align-items: flex-start;
+  margin: 0.5rem;
+}
+
+.formRow input {
+  margin-top: 0.2rem;
+  height: 1.5rem;
+  font-size: 1rem;
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+  background-color: var(--var--white);
+  color: var(--var--dark--purple);
+  width: 15rem;
+  transition: 1s;
+}
+
+.formRow input:focus {
+  height: 1.7rem;
+  transition: 1s;
+}
+
+.formButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+}
+
+.btnCreateAccount {
+  background-color: var(--var--white);
+  width: 10rem;
+  color: var(--var--dark--purple);
+  height: 3.5rem;
+  font-size: 1rem;
+  border-radius: 0.3rem;
+  border: none;
+  transition: 1s;
+}
+
+.btnCreateAccount:hover {
+  background-color: var(--var--light--pink);
+}
+
+.passwordRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.icon {
+  color: var(--var--dark--purple);
+  margin-left: -2rem;
+}

@@ -14,6 +14,8 @@ import MentorHomepage from "./pages/mentor/MentorHomepage";
 import CourseStatus from "./pages/mentor/CourseStatus";
 import NewCourse from "./pages/mentor/NewCourse";
 import NewSection from "./pages/mentor/NewSection";
+import AdminHomepage from "./pages/admin/AdminHomepage";
+import CreateUserForm from "./components/admin/CreateUserForm";
 
 function App() {
   const [user, setUser] = useState(false);
@@ -39,6 +41,8 @@ function App() {
           ></Route>
           <Route path="/new-course" element={<NewCourse />}></Route>
           <Route path="/new-section" element={<NewSection />}></Route>
+          <Route path="/admin" element={<AdminHomepage />}></Route>
+          <Route path="/admin-form" element={<CreateUserForm />}></Route>
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
