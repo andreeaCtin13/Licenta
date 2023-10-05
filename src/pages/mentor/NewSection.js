@@ -2,6 +2,7 @@ import React from "react";
 import style from "../../styles/mentor/NewSection.module.css";
 import FormNewSection from "../../components/mentor/FormNewSection";
 import FormNewTest from "../../components/mentor/FormNewTest";
+import Button from "../../components/Button";
 
 function NewSection() {
   return (
@@ -12,8 +13,14 @@ function NewSection() {
         <FormNewTest></FormNewTest>
       </div>
       <div className={style.btnSection}>
-        <button className={`${style.btn} ${style.btnCancel}`}>Back</button>
-        <button className={`${style.btn} ${style.btnCreate}`}>Create</button>
+        <Button
+          className={`${style.btn} ${style.btnCancel}`}
+          content={"Back"}
+        ></Button>
+        <Button
+          className={`${style.btn} ${style.btnCreate}`}
+          content={"Create"}
+        ></Button>
       </div>
     </div>
   );

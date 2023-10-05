@@ -79,14 +79,20 @@
 }
 
 .logoutButton {
-  background-color: transparent;
+  background-color: var(--var--light--purple);
   border: none;
   color: var(--var--white);
   display: flex;
   gap: 1rem;
   font-size: large;
-
+  transition: 0.5s;
   align-items: center;
+}
+
+.logoutButton:hover {
+  transition: 0.5s;
+  background-color: var(--var--light--pink);
+  color: var(--var--dark--purple);
 }
 
 @media screen and (max-width: 900px) {

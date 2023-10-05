@@ -5,6 +5,7 @@ import style from "../../styles/mentor/NewCourse.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import Button from "../../components/Button";
 
 function NewCourse() {
   const { user, setUser } = useContext(UserContext);
@@ -25,17 +26,29 @@ function NewCourse() {
         </div>
 
         <div className={style.btnSection}>
-          <button className={style.btn}>
-            Presentation Picture
-            <FontAwesomeIcon icon={faUpload} className={style.icon} />
-          </button>
+          <Button
+            className={style.btn}
+            content={
+              <>
+                {" "}
+                Presentation Picture
+                <FontAwesomeIcon icon={faUpload} className={style.icon} />
+              </>
+            }
+          ></Button>
         </div>
       </form>
       <div className={style.sectionBtns}>
         <Link to="/mentor-homepage" className={style.link}>
-          <button className={`${style.btn} ${style.btnCancel}`}>CANCEL</button>
+          <Button
+            className={`${style.btn} ${style.btnCancel}`}
+            content="CANCEL"
+          ></Button>
         </Link>
-        <button className={`${style.btn} ${style.btnCreate}`}>CREATE</button>
+        <Button
+          content={"CREATE"}
+          className={`${style.btn} ${style.btnCreate}`}
+        ></Button>
       </div>
     </div>
   );

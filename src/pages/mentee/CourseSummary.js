@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import { Link } from "react-router-dom";
 import currentUser from "../../data/user.json";
+import Button from "../../components/Button";
 
 function CourseSummary() {
   const { idCourse } = useParams();
@@ -330,7 +331,7 @@ function CourseSummary() {
         <div className={style.rightContainer}>
           <h2>Why to enroll to this course?</h2>
           <div className={style.rightContainerDesc}>{description}</div>
-          <button
+          <Button
             className={`${style.btn} ${
               requestStatus == "enroll"
                 ? style.enrollBtn
@@ -339,9 +340,8 @@ function CourseSummary() {
                 : style.unEnrollBtn
             }`}
             onClick={handleEnroll}
-          >
-            {requestStatus}
-          </button>
+            content={requestStatus}
+          ></Button>
         </div>
       </div>
       <div className={style.accordion}>

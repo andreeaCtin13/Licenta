@@ -1,0 +1,12 @@
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  width: 10rem;
+  padding: 1rem;
+  border: none;
+  border-radius: 2rem;
+  color: black;
+  box-shadow: 5px 5px 5px var(--var--black);
+}

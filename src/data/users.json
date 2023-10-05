@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Andreea Constantin",
+    "mail": "andreeactin13@gmail.com",
+    "password": "nkjenwfihHNIqhihewhqi3e28",
+    "status": "Mentor"
+  },
+  {
+    "name": "Elena Caravan",
+    "mail": "elenacaravan56@gmail.com",
+    "password": "nkjenwfihHNIqhihewhqi3e28",
+    "status": "Mentor"
+  },
+  {
+    "name": "Valeriu Carasel",
+    "mail": "valeriucarasel11@gmail.com",
+    "password": "nkjenwfihHNIqhihewhqi3e28",
+    "status": "Mentee"
+  },
+  {
+    "name": "Flavius Cojocaru",
+    "mail": "flaviuscj7@gmail.com",
+    "password": "nkjenwfihHNIqhihewhqi3e28",
+    "status": "Mentee"
+  },
+  {
+    "name": "Roco cel Viteaz",
+    "mail": "roco@gmail.com",
+    "password": "nkjenwfihHNIqhihewhqi3e28",
+    "status": "Mentor"
+  },
+  {
+    "name": "Antonia Scafaru",
+    "mail": "antonia57@gmail.com",
+    "password": "nkjenwfihHNIqhihewhqi3e28",
+    "status": "Mentee"
+  },
+  {
+    "name": "Mircea Ciausescu",
+    "mail": "mirceaciausecu8@gmail.com",
+    "password": "nkjenwfihHNIqhihewhqi3e28",
+    "status": "Mentor"
+  },
+  {
+    "name": "Daniel Constantin",
+    "mail": "danictin13@gmail.com",
+    "password": "nkjenwfihHNIqhihewhqi3e28",
+    "status": "Mentee"
+  }
+]

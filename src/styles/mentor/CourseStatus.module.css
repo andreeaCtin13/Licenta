@@ -45,6 +45,14 @@
 
 .btnEditTest {
   margin: 2rem 0;
+  transition: 0.5s;
+  color: var(--var--white);
+  background-color: var(--var--dark--pink);
+}
+
+.btnEditTest:hover {
+  transition: 0.5s;
+  background-color: var(--var--light--pink);
 }
 
 .btnCreateSection {

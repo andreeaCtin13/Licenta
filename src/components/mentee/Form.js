@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import style from "../../styles/LandingPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
+import Button from "../Button";
 function Form() {
   const [lock, setLock] = useState(true);
 
@@ -39,7 +40,7 @@ function Form() {
           )}
         </div>
         <div className={style.formButtons}>
-          <button className={style.btnLogin}>Login</button>
+          <Button content="Login" className={style.btnLogin}></Button>
         </div>
       </form>
     </>

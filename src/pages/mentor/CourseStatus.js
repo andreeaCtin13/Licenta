@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { Accordion, AccordionTab } from "primereact/accordion";
+import Button from "../../components/Button";
 
 function CourseStatus() {
   const { user, setUser } = useContext(UserContext);
@@ -22,9 +23,10 @@ function CourseStatus() {
       <h1>{currentClass.topic}</h1>
       <div>
         <Link to="/new-section">
-          <button className={style.btnCreateSection}>
-            Create a new section
-          </button>
+          <Button
+            className={style.btnCreateSection}
+            content="Create a new section"
+          ></Button>
         </Link>
       </div>
       <Accordion>
@@ -93,13 +95,16 @@ function CourseStatus() {
                     })}
                   </div>
                 </div>
-                <button className={style.btnEditTest}>
-                  {sectiune.resurse.test !== undefined ? (
-                    <div>Edit test</div>
-                  ) : (
-                    <div>Create a test</div>
-                  )}
-                </button>
+                <Button
+                  content={
+                    sectiune.resurse.test !== undefined ? (
+                      <>Edit test</>
+                    ) : (
+                      <>Create a test</>
+                    )
+                  }
+                  className={style.btnEditTest}
+                ></Button>
               </div>
             </AccordionTab>
           );

@@ -3,6 +3,7 @@ import style from "../../styles/mentor/MentorHomepage.module.css";
 import currentUser from "../../data/mentor.json";
 import { UserContext } from "../../context/UserContext";
 import { Link } from "react-router-dom";
+import Button from "../../components/Button";
 
 function MentorHomepage() {
   const { user, setUser } = useContext(UserContext);
@@ -13,7 +14,10 @@ function MentorHomepage() {
     <div className={style.mainContainer}>
       <div className={style.btnCreateZone}>
         <Link to="/new-course">
-          <button className={style.btnCreate}>Create a new course</button>
+          <Button
+            className={style.btnCreate}
+            content="Create a new course"
+          ></Button>
         </Link>
       </div>
       <h1>Hi, {user.username}</h1>

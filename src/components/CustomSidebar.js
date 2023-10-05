@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import Logo from "../assets/logo.png";
 import { UserContext } from "../context/UserContext";
 import { Dialog } from "primereact/dialog";
+import Button from "./Button";
 
 function CustomSidebar() {
   const [visible, setVisible] = useState(false);
@@ -175,13 +176,19 @@ function CustomSidebar() {
             );
           })}
           <li className={style.courseListItem}>
-            <button onClick={handleLogout} className={style.logoutButton}>
-              <FontAwesomeIcon
-                icon={faArrowRightFromBracket}
-                className={style.iconListItem}
-              />
-              Logout
-            </button>
+            <Button
+              onClick={handleLogout}
+              className={style.logoutButton}
+              content={
+                <>
+                  <FontAwesomeIcon
+                    icon={faArrowRightFromBracket}
+                    className={style.iconListItem}
+                  />
+                  Logout
+                </>
+              }
+            ></Button>
           </li>
         </ul>
       </Sidebar>
@@ -194,16 +201,15 @@ function CustomSidebar() {
         Are you sure you want to logout?
         <div className={style.buttonsLogout}>
           <Link to="/">
-            <button
+            <Button
               onClick={() => {
                 setUser(false);
                 setLogoutModal(false);
               }}
-            >
-              Yes
-            </button>
+              content={"Yes"}
+            ></Button>
           </Link>
-          <button onClick={() => setLogoutModal(false)}>No</button>
+          <Button onClick={() => setLogoutModal(false)} content={"No"}></Button>
         </div>
       </Dialog>
     </div>

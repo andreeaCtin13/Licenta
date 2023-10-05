@@ -6,6 +6,7 @@ import style from "../../styles/mentee/Course.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnglesDown } from "@fortawesome/free-solid-svg-icons";
 import user from "../../data/user.json";
+import Button from "../../components/Button";
 
 function CoursePage() {
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
@@ -82,7 +83,10 @@ function CoursePage() {
                 <h3>{x.titlu}</h3>
                 <div className={style.assigmentRow}>
                   <div>{x.cerinta}</div>
-                  <button className={style.assigmentBtn}>Upload</button>
+                  <Button
+                    className={style.assigmentBtn}
+                    content="Upload"
+                  ></Button>
                 </div>
               </div>
             );
@@ -92,14 +96,12 @@ function CoursePage() {
 
       <div className={style.containerTest}>
         <h2>VERIFICATION TEST</h2>
-        <button className={style.testBtn}>
-          <Link
-            className={style.testBtnLink}
-            to={`/test/${Number(idCourse)}/${currentSectionIndex}`}
-          >
-            Start
-          </Link>
-        </button>
+        <Link
+          className={style.testBtnLink}
+          to={`/test/${Number(idCourse)}/${currentSectionIndex}`}
+        >
+          <Button content={"Start"} className={style.testBtn}></Button>
+        </Link>
       </div>
     </div>
   );

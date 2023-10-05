@@ -5,7 +5,6 @@ import LandingPage from "./pages/LandingPage";
 import Profile from "./pages/mentee/Profile";
 import Sidebar from "./components/CustomSidebar";
 import { UserContext } from "./context/UserContext";
-import "font-awesome/css/font-awesome.min.css";
 import CoursePage from "./pages/mentee/CoursePage";
 import UserMarket from "./pages/mentee/UserMarket";
 import CourseSummary from "./pages/mentee/CourseSummary";
@@ -15,7 +14,6 @@ import CourseStatus from "./pages/mentor/CourseStatus";
 import NewCourse from "./pages/mentor/NewCourse";
 import NewSection from "./pages/mentor/NewSection";
 import AdminHomepage from "./pages/admin/AdminHomepage";
-import CreateUserForm from "./components/admin/CreateUserForm";
 
 function App() {
   const [user, setUser] = useState(false);
@@ -42,7 +40,6 @@ function App() {
           <Route path="/new-course" element={<NewCourse />}></Route>
           <Route path="/new-section" element={<NewSection />}></Route>
           <Route path="/admin" element={<AdminHomepage />}></Route>
-          <Route path="/admin-form" element={<CreateUserForm />}></Route>
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
