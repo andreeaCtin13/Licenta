@@ -21,6 +21,7 @@ function AdminHomepage() {
   }, []);
 
   const emptyUser = {
+    name: null,
     mail: null,
     password: "",
     status: "Mentee",
@@ -186,10 +187,11 @@ function AdminHomepage() {
     </React.Fragment>
   );
 
-  const onInputChange = (e, mail) => {
+  const onInputChange = (e, field) => {
     const newVal = (e.target && e.target.value) || "";
     let _user = { ...rowUser };
-    _user.mail = newVal;
+    if (field === "mail") _user.mail = newVal;
+    else _user.name = newVal;
     setRowUser(_user);
   };
 
@@ -254,6 +256,12 @@ function AdminHomepage() {
           header={header}
         >
           <Column
+            field="name"
+            header="Name"
+            sortable
+            style={{ minWidth: "12rem" }}
+          ></Column>
+          <Column
             field="mail"
             header="Mail"
             sortable
@@ -299,6 +307,22 @@ function AdminHomepage() {
         footer={userDialogFooter}
         onHide={hideDialog}
       >
+        <div className="field">
+          <label htmlFor="name" className="font-bold">
+            Name
+          </label>
+          <InputText
+            id="name"
+            value={rowUser.name}
+            onChange={(e) => onInputChange(e, "name")}
+            required
+            autoFocus
+            className={classNames({ "p-invalid": submitted && !rowUser.name })}
+          />
+          {submitted && !rowUser.name && (
+            <small className="p-error">Name is required.</small>
+          )}
+        </div>
         <div className="field">
           <label htmlFor="mail" className="font-bold">
             Mail

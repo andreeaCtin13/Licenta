@@ -53,6 +53,42 @@
   color: var(--var--white);
 }
 
+.btnChangePassword {
+  margin-top: 2rem;
+  background-color: var(--var--dark--purple);
+  color: var(--var--white);
+  transition: 0.5s;
+}
+
+.btnChangePassword:hover {
+  transition: 0.5s;
+  color: var(--var--dark--purple);
+  background-color: var(--var--light--pink);
+}
+
+.formRow {
+  display: flex;
+  flex-direction: column;
+}
+
+.btnZone {
+  display: flex;
+  justify-content: space-around;
+}
+
+.btnModal {
+  width: 10rem;
+  color: white;
+}
+
+.btnCancel {
+  background-color: rgb(134, 2, 2);
+}
+
+.btnChange {
+  background-color: var(--var--dark--pink);
+}
+
 @media screen and (max-width: 950px) {
   .profileCard {
     width: 90%;
