@@ -2,7 +2,6 @@
   margin: 2rem 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .formRow {
@@ -13,24 +12,4 @@
 input {
   border: none;
   margin-top: 0.3rem;
-}
-
-.questionSection {
-  margin: 1rem 0;
-  border-radius: 2rem;
-  padding: 3rem;
-}
-
-.questionSection:nth-child(odd) {
-  background-color: var(--var--dark--pink);
-}
-
-.questionSection:nth-child(even) {
-  background-color: var(--var--dark--purple);
-}
-
-@media screen and (max-width: 900px) {
-  .questionSection {
-    padding: 1rem;
-  }
 }

@@ -1,0 +1,36 @@
+.formRow {
+  display: flex;
+  flex-direction: column;
+}
+
+.questionSection {
+  margin: 1rem 0;
+  border-radius: 2rem;
+  padding: 3rem;
+}
+
+input {
+  border: none;
+  margin-top: 0.3rem;
+  width: 20rem;
+}
+
+.questionSection {
+  margin: 1rem 0;
+  border-radius: 2rem;
+  padding: 3rem;
+}
+
+.questionSection:nth-child(odd) {
+  background-color: var(--var--dark--pink);
+}
+
+.questionSection:nth-child(even) {
+  background-color: var(--var--dark--purple);
+}
+
+@media screen and (max-width: 900px) {
+  .questionSection {
+    padding: 1rem;
+  }
+}
