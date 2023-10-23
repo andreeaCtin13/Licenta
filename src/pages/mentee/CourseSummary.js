@@ -26,19 +26,19 @@ function CourseSummary() {
       description: "cel mai bomba curs de agatat",
       sectiuni: [
         {
-          id: 1,
+          id: 31,
           titluSectiune: "Cum sa abordez in club?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 2,
+          id: 30,
           titluSectiune: "Cum sa abordez in Mamaia?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 3,
+          id: 29,
           titluSectiune: "Cum sa abordez in Zanzibar?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
@@ -55,19 +55,19 @@ function CourseSummary() {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
       sectiuni: [
         {
-          id: 1,
+          id: 28,
           titluSectiune: "Cum sa abordez in club?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 2,
+          id: 27,
           titluSectiune: "Cum sa abordez in Mamaia?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 3,
+          id: 26,
           titluSectiune: "Cum sa abordez in Zanzibar?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
@@ -84,19 +84,19 @@ function CourseSummary() {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
       sectiuni: [
         {
-          id: 1,
+          id: 25,
           titluSectiune: "Cum sa abordez in club?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 2,
+          id: 24,
           titluSectiune: "Cum sa abordez in Mamaia?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 3,
+          id: 23,
           titluSectiune: "Cum sa abordez in Zanzibar?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
@@ -113,19 +113,19 @@ function CourseSummary() {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
       sectiuni: [
         {
-          id: 1,
+          id: 22,
           titluSectiune: "Cum sa abordez in club?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 2,
+          id: 21,
           titluSectiune: "Cum sa abordez in Mamaia?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 3,
+          id: 20,
           titluSectiune: "Cum sa abordez in Zanzibar?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
@@ -134,7 +134,7 @@ function CourseSummary() {
       status: "pending",
     },
     {
-      id: 3,
+      id: 5,
       title: "Curse de agatat cu Elena Cravan",
       image:
         "https://banimarunti.ro/wp-content/uploads/2022/08/Faiar-Silviu.jpg",
@@ -142,19 +142,19 @@ function CourseSummary() {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
       sectiuni: [
         {
-          id: 1,
+          id: 17,
           titluSectiune: "Cum sa abordez in club?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 2,
+          id: 18,
           titluSectiune: "Cum sa abordez in Mamaia?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 3,
+          id: 19,
           titluSectiune: "Cum sa abordez in Zanzibar?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
@@ -163,7 +163,7 @@ function CourseSummary() {
       status: "enrolled",
     },
     {
-      id: 4,
+      id: 6,
       title: "Curse de agatat cu Antonia Scafaru",
       image:
         "https://banimarunti.ro/wp-content/uploads/2022/08/Faiar-Silviu.jpg",
@@ -171,19 +171,19 @@ function CourseSummary() {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
       sectiuni: [
         {
-          id: 1,
+          id: 14,
           titluSectiune: "Cum sa abordez in club?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 2,
+          id: 15,
           titluSectiune: "Cum sa abordez in Mamaia?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 3,
+          id: 16,
           titluSectiune: "Cum sa abordez in Zanzibar?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
@@ -192,7 +192,7 @@ function CourseSummary() {
       status: "enrolled",
     },
     {
-      id: 3,
+      id: 7,
       title: "Curse de agatat cu Elena Cravan",
       image:
         "https://banimarunti.ro/wp-content/uploads/2022/08/Faiar-Silviu.jpg",
@@ -200,19 +200,19 @@ function CourseSummary() {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
       sectiuni: [
         {
-          id: 1,
+          id: 10,
           titluSectiune: "Cum sa abordez in club?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 2,
+          id: 12,
           titluSectiune: "Cum sa abordez in Mamaia?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 3,
+          id: 11,
           titluSectiune: "Cum sa abordez in Zanzibar?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
@@ -221,7 +221,7 @@ function CourseSummary() {
       status: "enrolled",
     },
     {
-      id: 4,
+      id: 8,
       title: "Curse de agatat cu Antonia Scafaru",
       image:
         "https://banimarunti.ro/wp-content/uploads/2022/08/Faiar-Silviu.jpg",
@@ -229,19 +229,19 @@ function CourseSummary() {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
       sectiuni: [
         {
-          id: 1,
+          id: 7,
           titluSectiune: "Cum sa abordez in club?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 2,
+          id: 8,
           titluSectiune: "Cum sa abordez in Mamaia?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 3,
+          id: 9,
           titluSectiune: "Cum sa abordez in Zanzibar?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
@@ -250,7 +250,7 @@ function CourseSummary() {
       status: "enrolled",
     },
     {
-      id: 3,
+      id: 9,
       title:
         "Curse de agatat cu Elena Caaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaravan",
       image:
@@ -259,19 +259,19 @@ function CourseSummary() {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
       sectiuni: [
         {
-          id: 1,
+          id: 4,
           titluSectiune: "Cum sa abordez in club?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 2,
+          id: 5,
           titluSectiune: "Cum sa abordez in Mamaia?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 3,
+          id: 6,
           titluSectiune: "Cum sa abordez in Zanzibar?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
@@ -280,7 +280,7 @@ function CourseSummary() {
       status: "enrolled",
     },
     {
-      id: 4,
+      id: 10,
       title: "Curse de agatat cu Antonia Scafaru",
       image:
         "https://banimarunti.ro/wp-content/uploads/2022/08/Faiar-Silviu.jpg",
@@ -288,7 +288,7 @@ function CourseSummary() {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
       sectiuni: [
         {
-          id: 1,
+          id: 3,
           titluSectiune: "Cum sa abordez in club?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
@@ -300,7 +300,7 @@ function CourseSummary() {
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
         },
         {
-          id: 3,
+          id: 1,
           titluSectiune: "Cum sa abordez in Zanzibar?",
           descriere:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Faucibus pulvinar elementum integer enim neque volutpat ac. A scelerisque purus semper eget duis. Tristique et egestas quis ipsum. Mus mauris vitae ultricies leo integer malesuada. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Magna etiam tempor orci eu. Feugiat in fermentum posuere urna nec. Convallis tellus id interdum velit laoreet id donec ultrices tincidunt. Enim nec dui nunc mattis enim ut. Fusce ut placerat orci nulla pellentesque. Adipiscing elit pellentesque habitant morbi tristique senectus et. Metus dictum at tempor commodo ullamcorper a lacus vestibulum. Aliquet risus feugiat in ante metus.",
@@ -346,9 +346,10 @@ function CourseSummary() {
       </div>
       <div className={style.accordion}>
         <Accordion activeIndex={0}>
-          {sectiuni.map((s) => {
+          {sectiuni.map((s, index) => {
             return (
               <AccordionTab
+                key={index}
                 header={s.titluSectiune}
                 className={style.accordionRow}
               >

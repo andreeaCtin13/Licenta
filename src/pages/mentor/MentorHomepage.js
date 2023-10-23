@@ -28,7 +28,7 @@ function MentorHomepage() {
             user.classes.length > 0 ? (
               user.classes.map((c, index) => {
                 return (
-                  <div id={index} className={style.courseCard}>
+                  <div id={index} key={index} className={style.courseCard}>
                     <img
                       src={c.imagine}
                       alt="plang"

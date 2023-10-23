@@ -8,7 +8,7 @@ function FormNewTest() {
   const { newSection, setNewSection } = useContext(SectionContext);
 
   const questions = Array.from({ length: noOfQuestion }, (_, index) => {
-    return <QuestionInput index={index}></QuestionInput>;
+    return <QuestionInput key={index} index={index}></QuestionInput>;
   });
 
   return (

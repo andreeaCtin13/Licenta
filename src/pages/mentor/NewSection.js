@@ -8,6 +8,7 @@ import { SectionContext } from "../../context/SectionContext";
 function NewSection() {
   const [newSection, setNewSection] = useState({
     assigments: [],
+    questions: [],
   });
 
   return (

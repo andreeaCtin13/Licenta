@@ -21,8 +21,8 @@ function AdminHomepage() {
   }, []);
 
   const emptyUser = {
-    name: null,
-    mail: null,
+    name: "",
+    mail: "",
     password: "",
     status: "Mentee",
   };

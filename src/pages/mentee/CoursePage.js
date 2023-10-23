@@ -44,6 +44,7 @@ function CoursePage() {
         <div className={style.videoPlaylistContainer}>
           {courseChosen.sections.map((section, index) => (
             <div
+              key={index}
               className={`${style.videoPlaylistRow} ${
                 index === currentSectionIndex ? style.selectedVideo : ""
               }`}

@@ -57,7 +57,7 @@ function Profile() {
                 <div className={style.userCoursesListArea}>
                   {user.classes.map((x, index) => {
                     return (
-                      <div className={style.userCoursesCard}>
+                      <div key={index} className={style.userCoursesCard}>
                         <h3>
                           <Link to={`/course/${index}`} className={style.link}>
                             {x.name_of_class}

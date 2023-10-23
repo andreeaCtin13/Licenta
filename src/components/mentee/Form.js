@@ -14,11 +14,11 @@ function Form() {
     <>
       <form action="" className={style.form}>
         <div className={style.formRow}>
-          <label for="username">Username</label>
+          <label htmlFor="username">Username</label>
           <input type="text" id="username" />
         </div>
         <div className={style.formRow}>
-          <label for="password">Password</label>
+          <label htmlFor="password">Password</label>
           {lock ? (
             <div className={style.passwordRow}>
               <input type="password" id="password" />

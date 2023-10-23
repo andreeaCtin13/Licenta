@@ -159,7 +159,7 @@ function CustomSidebar() {
 
           {coursesList.map((x, index) => {
             return (
-              <li className={style.courseListItem}>
+              <li key={index} className={style.courseListItem}>
                 {" "}
                 <Link
                   className={style.courseLink}
