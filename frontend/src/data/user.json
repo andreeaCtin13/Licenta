@@ -1,0 +1,299 @@
+{
+  "classes": [
+    {
+      "name_of_class": "Fizica",
+      "name_of_mentor": "Andreea",
+      "sections": [
+        {
+          "video": {
+            "url": "https://www.youtube.com/watch?v=kJ-6Qy05u_Q",
+            "title": "Titlu prima sectiune"
+          },
+          "PDFList": [
+            {
+              "title": "PDF_TITLE1"
+            },
+            {
+              "title": "PDF_TITLE2"
+            },
+            {
+              "title": "PDF_TITLE3"
+            },
+            {
+              "title": "PDF_TITLE4"
+            }
+          ],
+          "AssigmentsList": [
+            {
+              "titlu": "Assigment 1 Title",
+              "cerinta": "Lorem ipsummmmmmmmmmm cerinta assigment 1"
+            },
+            {
+              "titlu": "Assigment 2 Title",
+              "cerinta": "Lorem ipsummmmmmmmmmm cerinta assigment 2"
+            },
+            {
+              "titlu": "Assigment 3 Title",
+              "cerinta": "Lorem ipsummmmmmmmmmm cerinta assigment 3"
+            }
+          ],
+          "test": {
+            "testTitle": "Testul nanana",
+            "cerinte": [
+              {
+                "intrebare": "Intrebarea 1?",
+                "variante": [
+                  {
+                    "text": "var A",
+                    "scor": 0
+                  },
+                  {
+                    "text": "var B",
+                    "scor": 10
+                  },
+                  {
+                    "text": "var C",
+                    "scor": 0
+                  },
+                  {
+                    "text": "var d",
+                    "scor": 0
+                  }
+                ]
+              },
+              {
+                "intrebare": "Intrebarea 2?",
+                "variante": [
+                  {
+                    "text": "var A",
+                    "scor": 0
+                  },
+                  {
+                    "text": "var B",
+                    "scor": 10
+                  },
+                  {
+                    "text": "var C",
+                    "scor": 0
+                  },
+                  {
+                    "text": "var d",
+                    "scor": 0
+                  }
+                ]
+              },
+              {
+                "intrebare": "Intrebarea 3?",
+                "variante": [
+                  {
+                    "text": "var A",
+                    "scor": 0
+                  },
+                  {
+                    "text": "var B",
+                    "scor": 10
+                  },
+                  {
+                    "text": "var C",
+                    "scor": 0
+                  },
+                  {
+                    "text": "var d",
+                    "scor": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "video": {
+            "url": "https://youtu.be/vY8xep1CsUc?si=vAA2313pVeiGDbri",
+            "title": "Titlu a doua sectiune"
+          },
+          "PDFList": [
+            {
+              "title": "Testez"
+            },
+            {
+              "title": "Mama sa ma ia"
+            },
+            {
+              "title": "Panarama sa ma ia"
+            },
+            {
+              "title": "Plm sa ma ia"
+            }
+          ],
+          "AssigmentsList": [
+            {
+              "titlu": "assigment zlavoguss",
+              "cerinta": "Lorem ipsummmmmmmmm"
+            },
+            {
+              "titlu": "assigment testez",
+              "cerinta": "Lorem ipsummmmmmmmmmmmm"
+            },
+            {
+              "titlu": "assigment testez",
+              "cerinta": "Lorem ipsummmmmmmmmm"
+            }
+          ],
+          "test": {
+            "testTitle": "Testul nanana",
+            "cerinte": [
+              {
+                "intrebare": "zi ma cum te cheamaa?",
+                "variante": [
+                  {
+                    "text": "var A",
+                    "scor": 0
+                  },
+                  {
+                    "text": "var B",
+                    "scor": 10
+                  },
+                  {
+                    "text": "var C",
+                    "scor": 0
+                  },
+                  {
+                    "text": "var d",
+                    "scor": 0
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name_of_class": "Cuantica",
+      "name_of_mentor": "Valerius",
+      "sections": [
+        {
+          "video": {
+            "url": "https://youtu.be/l9fBlES6GDw?si=gXT3A4Ilq_yBab6F",
+            "title": "Really Rux"
+          },
+          "PDFList": [
+            {
+              "title": "Testez"
+            },
+            {
+              "title": "Mama sa ma ia"
+            },
+            {
+              "title": "Panarama sa ma ia"
+            },
+            {
+              "title": "Plm sa ma ia"
+            }
+          ],
+          "AssigmentsList": [
+            {
+              "titlu": "assigment yolo",
+              "cerinta": "Lorem ipsummmmmmmmmmmmmm"
+            },
+            {
+              "titlu": "assigment testez",
+              "cerinta": "Lorem ipsummmmmmmmm"
+            },
+            {
+              "titlu": "assigment testez",
+              "cerinta": "Lorem ipsummmmmmmmmm"
+            }
+          ],
+          "test": {
+            "testTitle": "Testul nanana",
+            "cerinte": [
+              {
+                "intrebare": "zi ma cum te cheamaa?",
+                "variante": [
+                  {
+                    "text": "var A",
+                    "scor": 0
+                  },
+                  {
+                    "text": "var B",
+                    "scor": 10
+                  },
+                  {
+                    "text": "var C",
+                    "scor": 0
+                  },
+                  {
+                    "text": "var d",
+                    "scor": 0
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "video": {
+            "url": "https://youtu.be/VVWpMuYHLzI?si=9JcQc1STETvYkgkf",
+            "title": "Faiar"
+          },
+          "PDFList": [
+            {
+              "title": "Testez"
+            },
+            {
+              "title": "Mama sa ma ia"
+            },
+            {
+              "title": "Panarama sa ma ia"
+            },
+            {
+              "title": "Plm sa ma ia"
+            }
+          ],
+          "AssigmentsList": [
+            {
+              "titlu": "assigment yolo",
+              "cerinta": "Lorem ipsummmmmmmmmmmmm"
+            },
+            {
+              "titlu": "assigment testez",
+              "cerinta": "Lorem ipsummmmmmmmm"
+            },
+            {
+              "titlu": "assigment testez",
+              "cerinta": "Lorem ipsummmmmmm"
+            }
+          ],
+          "test": {
+            "testTitle": "Testul nanana",
+            "cerinte": [
+              {
+                "intrebare": "zi ma cum te cheamaa?",
+                "variante": [
+                  {
+                    "text": "var A",
+                    "scor": 0
+                  },
+                  {
+                    "text": "var B",
+                    "scor": 10
+                  },
+                  {
+                    "text": "var C",
+                    "scor": 0
+                  },
+                  {
+                    "text": "var d",
+                    "scor": 0
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "username": "Toma Cristian"
+}
