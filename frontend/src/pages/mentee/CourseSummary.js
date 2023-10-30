@@ -4,7 +4,6 @@ import style from "../../styles/mentee/CourseSummary.module.css";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
-import { Link } from "react-router-dom";
 import currentUser from "../../data/user.json";
 import Button from "../../components/Button";
 
