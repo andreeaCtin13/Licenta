@@ -3,10 +3,10 @@ module.exports = (sequelize, DataTypes) => {
     "resurse",
     {
       id_resursa: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        autoincrement: true,
+        autoIncrement: true,
       },
       tip_resursa: {
         type: DataTypes.ENUM("video_link", "pdf_path"),
@@ -25,6 +25,15 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           len: [3, 50],
+        },
+      },
+      id_sectiune: {
+        type: DataTypes.INTEGER,
+        unique: false,
+        allowNull: false,
+        references: {
+          model: "sectiuni",
+          key: "id_sectiune",
         },
       },
     },

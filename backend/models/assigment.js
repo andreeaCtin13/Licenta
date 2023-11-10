@@ -3,10 +3,10 @@ module.exports = (sequelize, DataTypes) => {
     "assigments",
     {
       id_assigment: {
-        type: DataTypes.NUMBER,
-        primarykey: true,
+        type: DataTypes.INTEGER,
+        primaryKey: true,
         allowNull: false,
-        autoincrement: true,
+        autoIncrement: true,
       },
       titlu: {
         type: DataTypes.STRING,
@@ -25,6 +25,15 @@ module.exports = (sequelize, DataTypes) => {
       data_finalizare: {
         type: DataTypes.DATE,
         allowNull: true,
+      },
+      id_sectiune: {
+        type: DataTypes.INTEGER,
+        unique: false,
+        allowNull: false,
+        references: {
+          model: "sectiuni",
+          key: "id_sectiune",
+        },
       },
     },
     {

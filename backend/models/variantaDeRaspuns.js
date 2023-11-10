@@ -3,10 +3,10 @@ module.exports = (sequelize, DataTypes) => {
     "varianteDeRaspuns",
     {
       id_varianta: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        autoincrement: true,
+        autoIncrement: true,
       },
       text_varianta: {
         type: DataTypes.STRING,
@@ -16,8 +16,17 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       punctaj: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         defaultValue: 0,
+      },
+      id_intrebare: {
+        type: DataTypes.INTEGER,
+        unique: false,
+        allowNull: false,
+        references: {
+          model: "intrebari",
+          key: "id_intrebare",
+        },
       },
     },
     { tableName: "variante_de_raspuns" }

@@ -1,12 +1,14 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
-    "cereriCursuri",
+    "istoricuriPunctaje",
     {
-      id_cerere: {
+      id_istoric: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        allowNull: true,
         autoIncrement: true,
+      },
+      data_sustinere: {
+        type: DataTypes.DATE,
       },
       id_user: {
         type: DataTypes.INTEGER,
@@ -17,18 +19,18 @@ module.exports = (sequelize, DataTypes) => {
           key: "id_user",
         },
       },
-      id_curs: {
+      id_test: {
         type: DataTypes.INTEGER,
         unique: false,
         allowNull: false,
         references: {
-          model: "cursuri",
-          key: "id_curs",
+          model: "teste",
+          key: "id_test",
         },
       },
     },
     {
-      tableName: "cereri_cursuri",
+      tableName: "istoricuri_punctaje",
     }
   );
 };

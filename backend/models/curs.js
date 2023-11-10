@@ -1,12 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
-  let retur = sequelize.define(
+  return sequelize.define(
     "cursuri",
     {
       id_curs: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        autoincrement: true,
+        autoIncrement: true,
       },
       denumire: {
         type: DataTypes.STRING,
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       nr_sectiuni: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         validate: {
           defaultValue: 0,
           min: 0,
@@ -31,6 +31,15 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.STRING,
           validate: {
             len: [3, 100],
+          },
+        },
+        id_user: {
+          type: DataTypes.INTEGER,
+          unique: false,
+          allowNull: false,
+          references: {
+            model: "users",
+            key: "id_user",
           },
         },
       },
@@ -49,5 +58,4 @@ module.exports = (sequelize, DataTypes) => {
   //     WHERE condition;;
   //   END;
   // `);
-  return retur;
 };

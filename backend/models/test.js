@@ -3,16 +3,25 @@ module.exports = (sequelize, DataTypes) => {
     "teste",
     {
       id_test: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        autoincrement: true,
+        autoIncrement: true,
       },
       punctaj_minim_promovare: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
           min: 0,
           max: 100,
+        },
+      },
+      id_sectiune: {
+        type: DataTypes.INTEGER,
+        unique: false,
+        allowNull: false,
+        references: {
+          model: "sectiuni",
+          key: "id_sectiune",
         },
       },
     },

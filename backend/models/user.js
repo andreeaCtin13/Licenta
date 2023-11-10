@@ -3,14 +3,12 @@ module.exports = (sequelize, DataTypes) => {
     "users",
     {
       id_user: {
-        type: DataTypes.STRING,
-        autoincrement: true,
-        allowNull: false,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
       },
       mail: {
         type: DataTypes.STRING,
-        primaryKey: true,
         allowNull: false,
         validate: {
           isEmail: true,
@@ -25,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       status: {
-        type: DataTypes.ENUM("admin", "mentee", "mentor"),
+        type: DataTypes.ENUM,
+        values: ["mentor", "mentee", "admin"],
         defaultValue: "mentee",
         allowNull: false,
       },
