@@ -28,7 +28,7 @@
   margin-top: -8rem;
 }
 
-.form {
+.formStyle {
   background-color: var(--var--dark--purple);
   color: var(--var--white);
   padding: 2rem;
@@ -115,7 +115,6 @@
     width: 15rem;
   }
   .form {
-    /* width: 15rem; */
     background-color: var(--var--dark--pink);
   }
 }

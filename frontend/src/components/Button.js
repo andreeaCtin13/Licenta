@@ -3,7 +3,7 @@ import style from "../styles/General.module.css";
 
 function Button({ content, className, onClick }) {
   return (
-    <button className={`${style.btn} ${className}`} onClick={onClick}>
+    <button onClick={onClick} className={`${style.btn} ${className}`}>
       {content}
     </button>
   );

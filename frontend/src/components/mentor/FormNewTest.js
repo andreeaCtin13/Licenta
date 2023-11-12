@@ -1,31 +1,32 @@
 import React, { useContext, useState } from "react";
-import style from "../../styles/mentor/FormNewTest.module.css";
-import QuestionInput from "./QuestionInput";
 import { SectionContext } from "../../context/SectionContext";
+import QuestionInput from "./QuestionInput";
+import style from "../../styles/mentor/FormNewTest.module.css";
 
 function FormNewTest() {
-  const [noOfQuestion, setNoOfQuestion] = useState(1);
   const { newSection, setNewSection } = useContext(SectionContext);
+  const [noOfQuestions, setNoOfQuestions] = useState(1);
 
-  const questions = Array.from({ length: noOfQuestion }, (_, index) => {
+  const questions = Array.from({ length: noOfQuestions }, (_, index) => {
     return <QuestionInput key={index} index={index}></QuestionInput>;
   });
 
   return (
     <div className={style.mainContainer}>
-      <h2>Create a test</h2>
-      <form action="">
+      <h2>Create a test for the new section</h2>
+      <form>
         <div className={style.formRow}>
-          <label htmlFor="">Number of question</label>
+          <label htmlFor="noQuestions">Number of questions</label>
           <input
+            id="noQuestions"
             type="number"
             min={1}
-            max={100}
+            max={80}
             onChange={(e) => {
-              setNoOfQuestion(e.target.value);
+              setNoOfQuestions(e.target.value);
               setNewSection({
                 ...newSection,
-                no_of_questions: e.target.value,
+                no_of_questions: Number(e.target.value),
               });
             }}
           />

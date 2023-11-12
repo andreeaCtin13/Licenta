@@ -1,10 +1,4 @@
-// Sidebar.js
 import React, { useContext, useState } from "react";
-import { Sidebar } from "primereact/sidebar";
-import "primereact/resources/themes/saga-blue/theme.css";
-import "primereact/resources/primereact.min.css";
-import "primeicons/primeicons.css";
-import style from "../styles/Sidebar.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
@@ -14,14 +8,20 @@ import {
   faShop,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import Logo from "../assets/logo.png";
+import { Sidebar } from "primereact/sidebar";
 import { UserContext } from "../context/UserContext";
 import { Dialog } from "primereact/dialog";
+
 import Button from "./Button";
+import "primereact/resources/themes/saga-blue/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
+import Logo from "../assets/logo.png";
+import style from "../styles/Sidebar.module.css";
 
 function CustomSidebar() {
-  const [visible, setVisible] = useState(false);
-  const [logoutModal, setLogoutModal] = useState(false);
+  const [logoutDialog, setLogoutDialog] = useState(false);
+  const [visibleSidebar, setVisibleSidebar] = useState(false);
   const { user, setUser } = useContext(UserContext);
 
   const coursesList = [
@@ -112,65 +112,65 @@ function CustomSidebar() {
   ];
 
   const handleLogout = () => {
-    setLogoutModal(true);
+    setLogoutDialog(true);
   };
-  const closeSidebar = () => {
-    setVisible(false);
+  const closeSidebarEvent = () => {
+    setVisibleSidebar(false);
   };
 
   return (
     <div className={style.containerSidebar}>
-      <button onClick={() => setVisible(true)} className={style.showButton}>
+      <button
+        onClick={() => setVisibleSidebar(true)}
+        className={style.showButton}
+      >
         <FontAwesomeIcon icon={faBars} className={style.menuIcon} />
       </button>
       <Sidebar
-        visible={visible}
-        onHide={() => setVisible(false)}
-        position="left"
+        visible={visibleSidebar}
         className={style.sidebar}
+        position="left"
+        onHide={() => setVisibleSidebar(false)}
       >
         <div className={style.logoAppContainer}>
-          <img src={Logo} alt="" className={style.logo} />
-          <h1>LearnApp</h1>
+          <img src={Logo} alt="logo_learnIT" className={style.logo} />
+          <h1>LearnIT</h1>
         </div>
         <ul className={style.listOfCourses}>
           <li className={style.courseListItem}>
-            {" "}
             <Link
               to="/profile"
               className={style.courseLink}
-              onClick={closeSidebar}
+              onClick={closeSidebarEvent}
             >
-              <FontAwesomeIcon icon={faUser} className={style.iconListItem} />
+              <FontAwesomeIcon className={style.iconListItem} icon={faUser} />
               Profile
             </Link>
           </li>
           <li className={style.courseListItem}>
-            {" "}
             <Link
               to="/topics"
+              onClick={closeSidebarEvent}
               className={style.courseLink}
-              onClick={closeSidebar}
             >
               <FontAwesomeIcon icon={faShop} className={style.iconListItem} />
               Courses Market
             </Link>
           </li>
 
-          {coursesList.map((x, index) => {
+          {coursesList.map((course, indx) => {
             return (
-              <li key={index} className={style.courseListItem}>
-                {" "}
+              <li key={indx} className={style.courseListItem}>
                 <Link
                   className={style.courseLink}
-                  to={"/course/" + index}
-                  onClick={closeSidebar}
+                  to={"/course/" + indx}
+                  onClick={closeSidebarEvent}
                 >
                   <FontAwesomeIcon
-                    icon={faGraduationCap}
                     className={style.iconListItem}
+                    icon={faGraduationCap}
                   />
-                  {x.title}
+                  {course.title}
                 </Link>
               </li>
             );
@@ -194,8 +194,8 @@ function CustomSidebar() {
       </Sidebar>
 
       <Dialog
-        visible={logoutModal}
-        onHide={() => setLogoutModal(false)}
+        visible={logoutDialog}
+        onHide={() => setLogoutDialog(false)}
         className={style.modal}
       >
         Are you sure you want to logout?
@@ -204,12 +204,15 @@ function CustomSidebar() {
             <Button
               onClick={() => {
                 setUser(false);
-                setLogoutModal(false);
+                setLogoutDialog(false);
               }}
               content={"Yes"}
             ></Button>
           </Link>
-          <Button onClick={() => setLogoutModal(false)} content={"No"}></Button>
+          <Button
+            onClick={() => setLogoutDialog(false)}
+            content={"No"}
+          ></Button>
         </div>
       </Dialog>
     </div>

@@ -1,34 +1,25 @@
 import React, { useContext, useState } from "react";
-import style from "../../styles/mentor/QuestionInput.module.css";
 import { SectionContext } from "../../context/SectionContext";
+import style from "../../styles/mentor/QuestionInput.module.css";
 
 function QuestionInput({ index }) {
+  const indx = index;
   const { newSection, setNewSection } = useContext(SectionContext);
-  const [question, setQuestion] = useState({
+  const [newQuestion, setNewQuestion] = useState({
     wrongAnswers: [],
   });
-  const updateQuestion = () => {
-    let updatedQuestions = [...newSection.questions];
-    updatedQuestions.splice(index, index + 1, question);
-
-    setNewSection(() => ({
-      ...newSection,
-      questions: updatedQuestions,
-    }));
-  };
-
-  const renderWrongAnswerInputs = () => {
+  const renderWrongAnswersInputs = () => {
     const wrongAnswerInputs = [];
-    for (let j = 0; j < 3; j++) {
+    for (let jindx = 0; jindx < 3; jindx++) {
       wrongAnswerInputs.push(
-        <div key={j} className={style.formRow}>
+        <div key={jindx} className={style.formRow}>
           <label>Wrong Answer</label>
           <input
             type="text"
             onChange={(e) => {
-              let wrongAns = [...question.wrongAnswers];
-              wrongAns[j] = e.target.value;
-              setQuestion({ ...question, wrongAnswers: wrongAns });
+              let newWrongAnswer = [...newQuestion.wrongAnswers];
+              newWrongAnswer[jindx] = e.target.value;
+              setNewQuestion({ ...newQuestion, wrongAnswers: newWrongAnswer });
               updateQuestion();
             }}
           />
@@ -38,15 +29,24 @@ function QuestionInput({ index }) {
     return wrongAnswerInputs;
   };
 
+  const updateQuestion = () => {
+    let updatedQuestions = [...newSection.questions];
+    updatedQuestions.splice(indx, indx + 1, newQuestion);
+    setNewSection(() => ({
+      ...newSection,
+      questions: updatedQuestions,
+    }));
+  };
+
   return (
     <div className={style.questionSection}>
-      <div key={index} className={style.formRow}>
-        <label>Question {index + 1} </label>
+      <div key={indx} className={style.formRow}>
+        <label>Question {indx + 1} </label>
         <input
           type="text"
           required
           onChange={(e) => {
-            setQuestion({ ...question, requirement: e.target.value });
+            setNewQuestion({ ...newQuestion, requirement: e.target.value });
             updateQuestion();
           }}
         />
@@ -56,12 +56,12 @@ function QuestionInput({ index }) {
         <input
           type="text"
           onChange={(e) => {
-            setQuestion({ ...question, correctAnswer: e.target.value });
+            setNewQuestion({ ...newQuestion, correctAnswer: e.target.value });
             updateQuestion();
           }}
         />
       </div>
-      {renderWrongAnswerInputs()}
+      {renderWrongAnswersInputs()}
     </div>
   );
 }

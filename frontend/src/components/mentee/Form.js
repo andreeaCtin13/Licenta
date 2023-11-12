@@ -1,31 +1,31 @@
 import React, { useState } from "react";
-import style from "../../styles/LandingPage.module.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
 import Button from "../Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import style from "../../styles/LandingPage.module.css";
 function Form() {
-  const [lock, setLock] = useState(true);
+  const [locked, setLocked] = useState(true);
 
-  const modifyLock = () => {
-    setLock(!lock);
+  const changeLock = () => {
+    setLocked(!locked);
   };
 
   return (
     <>
-      <form action="" className={style.form}>
+      <form className={style.formStyle}>
         <div className={style.formRow}>
-          <label htmlFor="username">Username</label>
-          <input type="text" id="username" />
+          <label htmlFor="mail">Mail</label>
+          <input type="text" id="mail" />
         </div>
         <div className={style.formRow}>
           <label htmlFor="password">Password</label>
-          {lock ? (
+          {locked ? (
             <div className={style.passwordRow}>
               <input type="password" id="password" />
               <FontAwesomeIcon
-                icon={faEyeSlash}
-                onClick={modifyLock}
+                onClick={changeLock}
                 className={style.icon}
+                icon={faEyeSlash}
               />
             </div>
           ) : (
@@ -33,14 +33,14 @@ function Form() {
               <input type="text" id="password" />
               <FontAwesomeIcon
                 icon={faEye}
-                onClick={modifyLock}
+                onClick={changeLock}
                 className={style.icon}
               />
             </div>
           )}
         </div>
         <div className={style.formButtons}>
-          <Button content="Login" className={style.btnLogin}></Button>
+          <Button className={style.btnLogin} content="Login"></Button>
         </div>
       </form>
     </>
