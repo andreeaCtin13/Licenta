@@ -4,6 +4,7 @@ import Form from "../components/mentee/Form";
 
 function LandingPage() {
   const [register, setRegister] = useState(false);
+
   return (
     <div className={style.container}>
       <div className={style.heroImage}>
