@@ -1,5 +1,6 @@
 const usersModel = require("../models").users;
 const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 const controller = {
   getAllUsers: (req, res) => {
@@ -27,24 +28,36 @@ const controller = {
   login: async (req, res) => {
     const mail = req.body.mail;
     const password = req.body.password;
-    const user = await usersModel.findOne({ where: { email: req.body.email } });
 
+    const user = await usersModel.findOne({ where: { mail: mail } });
     if (user) {
-      const is_pass_valid = await bcrypt.compare(
-        req.body.password,
-        user.password
-      );
-      if (is_pass_valid) {
-        token = jwt.sign(
-          { email: user.email, first_name: user.first_name },
-          process.env.SECRET
-        );
-        res.status(200).json({ token: token });
+      const password_valid = await bcrypt.compare(password, user.password);
+      if (password_valid) {
+        console.log(user);
+        res.status(200).json(user);
       } else {
         res.status(400).json({ error: "Password Incorrect" });
       }
     } else {
       res.status(404).json({ error: "User does not exist" });
+    }
+  },
+
+  register: async (req, res) => {
+    const mail = req.body.mail;
+    const password = req.body.password;
+    const status = req.body.status;
+    try {
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      const user = await usersModel.create({
+        mail,
+        password: hashedPassword,
+        status,
+      });
+      res.status(200).send(user);
+    } catch (error) {
+      console.error("Registration failed:", error.message);
+      throw error;
     }
   },
 };

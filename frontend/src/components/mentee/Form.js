@@ -9,12 +9,14 @@ function Form() {
   // const { user, setUser } = useContext(UserContext);
   const [locked, setLocked] = useState(true);
   const user = {
-    user: "asta e un test",
+    mail: "andreea@gmail.com",
+    password: "andreea",
   };
 
   const sendData = async (e) => {
     e.preventDefault();
     try {
+      console.log("aici");
       await Axios.get("http://localhost:8080/useri/login", user)
         .then((response) => {
           console.log(response);

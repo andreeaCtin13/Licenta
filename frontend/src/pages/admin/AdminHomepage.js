@@ -12,6 +12,7 @@ import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
 import { RadioButton } from "primereact/radiobutton";
 import { InputText } from "primereact/inputtext";
+import { Axios } from "axios";
 
 function AdminHomepage() {
   const { user, setUser } = useContext(UserContext);
@@ -19,6 +20,25 @@ function AdminHomepage() {
   useEffect(() => {
     setUser(currentUser);
   }, []);
+  const userCreated = {
+    mail: "dani@gmail.com",
+    password: "dani",
+    status: "mentee",
+  };
+  const sendData = async (e) => {
+    e.preventDefault();
+    try {
+      await Axios.post("http://localhost:8080/useri/register", userCreated)
+        .then(() => {
+          console.log("a mers");
+        })
+        .catch((err) => {
+          console.log("ups, you have an error, look:", err);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const emptyUser = {
     name: "",
@@ -235,6 +255,7 @@ function AdminHomepage() {
   return (
     <div className={style.mainContainer}>
       <h1>Hi, Admin!!!</h1>
+      <button onClick={sendData}>caca</button>
       <Toast ref={toast} />
       <div className="card">
         <Toolbar
