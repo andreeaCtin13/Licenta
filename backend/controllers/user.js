@@ -1,6 +1,11 @@
 const usersModel = require("../models").users;
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+const generateAccessToken = (user) => {
+  return jwt.sign({ user }, process.env.SECRET_KEY, { expiresIn: "2h" });
+};
 
 const controller = {
   getAllUsers: (req, res) => {
@@ -33,8 +38,8 @@ const controller = {
     if (user) {
       const password_valid = await bcrypt.compare(password, user.password);
       if (password_valid) {
-        console.log(user);
-        res.status(200).json(user);
+        const jwtToken = generateAccessToken(user);
+        res.status(200).json({ user, jwtToken });
       } else {
         res.status(400).json({ error: "Password Incorrect" });
       }
@@ -47,17 +52,24 @@ const controller = {
     const mail = req.body.mail;
     const password = req.body.password;
     const status = req.body.status;
+
     try {
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
-      const user = await usersModel.create({
-        mail,
-        password: hashedPassword,
-        status,
-      });
-      res.status(200).send(user);
-    } catch (error) {
-      console.error("Registration failed:", error.message);
-      throw error;
+      let user = usersModel.findOne({ where: { mail: mail } });
+      if (user) {
+        console.log("ajung aici");
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        const user = await usersModel.create({
+          mail,
+          password: hashedPassword,
+          status,
+        });
+        const jwtToken = generateAccessToken(user);
+        res.status(200).send({ user, jwtToken });
+      } else {
+        res.status(409).send({ message: "user deja existent" });
+      }
+    } catch (e) {
+      console.log(e);
     }
   },
 };

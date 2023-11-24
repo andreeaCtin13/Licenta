@@ -16,7 +16,6 @@ function Form() {
   const sendData = async (e) => {
     e.preventDefault();
     try {
-      console.log("aici");
       await Axios.get("http://localhost:8080/useri/login", user)
         .then((response) => {
           console.log(response);

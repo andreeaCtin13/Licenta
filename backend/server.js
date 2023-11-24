@@ -1,10 +1,13 @@
 const express = require("express");
-const port = 8080;
-const router = require("./routes");
+require("dotenv").config();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const port = process.env.PORT || 8081;
+const router = require("./routes");
+const auth = require("./middlewares/index").auth;
 const app = express();
+
 app.use(express.json());
 
 app.use(
@@ -18,7 +21,9 @@ app.use(
 
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.get("/jwt-secret", auth, (req, res) => {
+  res.status(200).send({ message: "ESTI AUTORIZAT" });
+});
 app.use("/", router);
 app.use("/", (req, res) => {
   res.status(200).send({ message: "Backend-ul e pornit" });
