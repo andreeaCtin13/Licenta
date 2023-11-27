@@ -33,18 +33,20 @@ const controller = {
   login: async (req, res) => {
     const mail = req.body.mail;
     const password = req.body.password;
+    console.log(req.body);
 
     const user = await usersModel.findOne({ where: { mail: mail } });
     if (user) {
       const password_valid = await bcrypt.compare(password, user.password);
+      console.log(password_valid);
       if (password_valid) {
         const jwtToken = generateAccessToken(user);
-        res.status(200).json({ user, jwtToken });
+        res.status(200).send({ user, jwtToken });
       } else {
-        res.status(400).json({ error: "Password Incorrect" });
+        res.status(400).send({ error: "Password Incorrect" });
       }
     } else {
-      res.status(404).json({ error: "User does not exist" });
+      res.status(404).send({ error: "User does not exist" });
     }
   },
 
@@ -56,7 +58,6 @@ const controller = {
     try {
       let user = usersModel.findOne({ where: { mail: mail } });
       if (user) {
-        console.log("ajung aici");
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const user = await usersModel.create({
           mail,

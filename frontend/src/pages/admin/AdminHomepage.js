@@ -12,7 +12,7 @@ import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
 import { RadioButton } from "primereact/radiobutton";
 import { InputText } from "primereact/inputtext";
-import { Axios } from "axios";
+import axios from "axios";
 
 function AdminHomepage() {
   const { user, setUser } = useContext(UserContext);
@@ -21,14 +21,15 @@ function AdminHomepage() {
     setUser(currentUser);
   }, []);
   const userCreated = {
-    mail: "dani@gmail.com",
-    password: "dani",
+    mail: "dan@gmail.com",
+    password: "dan",
     status: "mentee",
   };
   const sendData = async (e) => {
     e.preventDefault();
     try {
-      await Axios.post("http://localhost:8080/useri/register", userCreated)
+      await axios
+        .post("http://localhost:8080/useri/register", userCreated)
         .then(() => {
           console.log("a mers");
         })
@@ -187,7 +188,14 @@ function AdminHomepage() {
   const userDialogFooter = (
     <React.Fragment>
       <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
-      <Button label="Save" icon="pi pi-check" onClick={saveUser} />
+      <Button
+        label="Save"
+        icon="pi pi-check"
+        onClick={(e) => {
+          sendData(e);
+          saveUser();
+        }}
+      />
     </React.Fragment>
   );
   const deleteUserDialogFooter = (
@@ -387,7 +395,7 @@ function AdminHomepage() {
         </div>
       </Dialog>
       <button
-        onClick={() => {
+        onClick={(e) => {
           usersRows.map((x) => {
             console.log(x.mail + " are parola" + x.password);
           });
