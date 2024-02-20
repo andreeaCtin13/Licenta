@@ -15,9 +15,10 @@ module.exports = (sequelize, DataTypes) => {
           len: [3, 255],
         },
       },
-      punctaj: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
+      este_corecta: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
       },
       id_intrebare: {
         type: DataTypes.INTEGER,
@@ -26,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         references: {
           model: "intrebari",
           key: "id_intrebare",
+          onDelete: "cascade",
         },
       },
     },

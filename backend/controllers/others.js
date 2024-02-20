@@ -1,16 +1,31 @@
 const connection = require("../models").connection;
+const { DB_Init } = require("../models");
 
 const controller = {
-  resetDb: (req, res) => {
-    connection
+  resetDb: async (req, res) => {
+    DB_Init();
+    await connection
       .sync({
         force: true,
       })
       .then(() => {
-        res.status(200).send({ message: "Baza de date a fost resetata" });
+        connection
+          .sync({ force: true })
+          .then(() => {
+            res.status(200).send({ message: "Baza de date a fost resetata" });
+          })
+          .catch((err) => {
+            console.log(err);
+            return res
+              .status(500)
+              .send({ message: "Eroare la resetarea bazei de date", err: err });
+          });
       })
-      .catch(() => {
-        res.status(500).send({ message: "Eroare la resetarea bazei de date" });
+      .catch((err) => {
+        console.log(err);
+        return res
+          .status(500)
+          .send({ message: "Eroare la resetarea bazei de date" });
       });
   },
 };

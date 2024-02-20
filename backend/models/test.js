@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
           max: 100,
         },
       },
+      numar_intrebari: {
+        type: DataTypes.INTEGER,
+        unique: false,
+        allowNull: false,
+      },
       id_sectiune: {
         type: DataTypes.INTEGER,
         unique: false,
@@ -22,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         references: {
           model: "sectiuni",
           key: "id_sectiune",
+          onDelete: "cascade",
         },
       },
     },

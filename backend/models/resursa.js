@@ -13,16 +13,16 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: "pdf_path",
         allowNull: false,
       },
-      link_resourse: {
+      link_resursa: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         validate: {
           len: [3, 255],
         },
       },
       titlu_resursa: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         validate: {
           len: [3, 50],
         },
@@ -34,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
         references: {
           model: "sectiuni",
           key: "id_sectiune",
+          onDelete: "cascade",
         },
       },
     },

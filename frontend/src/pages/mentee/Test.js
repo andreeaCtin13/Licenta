@@ -42,6 +42,7 @@ function Test() {
           return (
             <div key={qIndex} className={style.questionContainer}>
               <div>{quest.intrebare}</div>
+
               <ul className={style.unlist}>
                 {quest.variante.map((opt, optIndex) => {
                   const qId = `question_${qIndex}`;

@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
-    "assigments",
+    "cerinte",
     {
-      id_assigment: {
+      id_cerinta: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
@@ -22,10 +22,6 @@ module.exports = (sequelize, DataTypes) => {
           len: [3, 255],
         },
       },
-      data_finalizare: {
-        type: DataTypes.DATE,
-        allowNull: true,
-      },
       id_sectiune: {
         type: DataTypes.INTEGER,
         unique: false,
@@ -33,11 +29,12 @@ module.exports = (sequelize, DataTypes) => {
         references: {
           model: "sectiuni",
           key: "id_sectiune",
+          onDelete: "cascade",
         },
       },
     },
     {
-      tableName: "assigments",
+      tableName: "cerinte",
     }
   );
 };

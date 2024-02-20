@@ -9,14 +9,22 @@ module.exports = (sequelize, DataTypes) => {
       },
       data_sustinere: {
         type: DataTypes.DATE,
+        allowNull: false,
+        unique: false,
       },
-      id_user: {
+      punctaj_obtinut: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        unique: false,
+      },
+      id_utilizator: {
         type: DataTypes.INTEGER,
         unique: false,
         allowNull: false,
         references: {
-          model: "users",
-          key: "id_user",
+          model: "utilizatori",
+          key: "id_utilizator",
+          onDelete: "cascade",
         },
       },
       id_test: {
@@ -26,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
         references: {
           model: "teste",
           key: "id_test",
+          onDelete: "cascade",
         },
       },
     },

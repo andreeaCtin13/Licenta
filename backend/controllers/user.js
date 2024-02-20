@@ -9,7 +9,6 @@ const generateAccessToken = (user) => {
 
 const controller = {
   getAllUsers: (req, res) => {
-    // let user = req.user;
     res.status(200).send("totu ok la user");
   },
   receiveData: (req, res) => {
@@ -29,24 +28,24 @@ const controller = {
       res.send({ loggedIn: false });
     }
   },
-
   login: async (req, res) => {
     const mail = req.body.mail;
     const password = req.body.password;
     console.log(req.body);
 
     const user = await usersModel.findOne({ where: { mail: mail } });
+    console.log(user);
     if (user) {
       const password_valid = await bcrypt.compare(password, user.password);
       console.log(password_valid);
       if (password_valid) {
         const jwtToken = generateAccessToken(user);
-        res.status(200).send({ user, jwtToken });
+        return res.status(200).send({ user, jwtToken });
       } else {
-        res.status(400).send({ error: "Password Incorrect" });
+        return res.status(400).send({ error: "Password Incorrect" });
       }
     } else {
-      res.status(404).send({ error: "User does not exist" });
+      return res.status(404).send({ error: "User does not exist" });
     }
   },
 
@@ -54,6 +53,7 @@ const controller = {
     const mail = req.body.mail;
     const password = req.body.password;
     const status = req.body.status;
+    const nume = req.body.nume;
 
     try {
       let user = usersModel.findOne({ where: { mail: mail } });
@@ -63,6 +63,7 @@ const controller = {
           mail,
           password: hashedPassword,
           status,
+          nume,
         });
         const jwtToken = generateAccessToken(user);
         res.status(200).send({ user, jwtToken });

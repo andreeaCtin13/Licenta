@@ -1,11 +1,15 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
-    "users",
+    "utilizatori",
     {
-      id_user: {
+      id_utilizator: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
+      },
+      nume: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       mail: {
         type: DataTypes.STRING,
@@ -24,16 +28,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.ENUM,
-        values: ["mentor", "mentee", "admin"],
-        defaultValue: "mentee",
+        values: ["mentor", "junior", "admin"],
+        defaultValue: "junior",
         allowNull: false,
       },
-      picture: {
-        type: DataTypes.STRING,
-        //TO DO: SA PERMITI IN FRONTEND SA NU SE ADAUGE POZA NEAPARAT LA CANDIDAT + POZA DEFAULT CU USER IN CAZ DE NU SE PUNE POZA INITIAL
-        allowNull: true,
-      },
     },
-    { tableName: "users" }
+    { tableName: "utilizatori" }
   );
 };

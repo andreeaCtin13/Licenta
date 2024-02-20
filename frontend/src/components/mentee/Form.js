@@ -11,8 +11,8 @@ function Form() {
   // const { user, setUser } = useContext(UserContext);
   const [locked, setLocked] = useState(true);
   const user = {
-    mail: "andreea@gmail.com",
-    password: "andreea",
+    mail: "daniel@gmail.com",
+    password: "daniel",
   };
 
   const sendData = async (e) => {
@@ -23,7 +23,6 @@ function Form() {
         console.log(response);
       })
       .catch((error) => {
-        // Handle error
         console.error("Error:", error.message);
         if (error.response) {
           console.error("Status:", error.response.status);

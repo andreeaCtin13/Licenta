@@ -1,12 +1,30 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
-    "cereriCursuri",
+    "istoric_cerinte",
     {
-      id_cerere: {
+      id_cerinta_istoric: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        allowNull: true,
+        allowNull: false,
         autoIncrement: true,
+      },
+      data_finalizare: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      rezolvare: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          len: [3, 255],
+        },
+      },
+      feedback: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          len: [3, 855],
+        },
       },
       id_utilizator: {
         type: DataTypes.INTEGER,
@@ -18,25 +36,19 @@ module.exports = (sequelize, DataTypes) => {
           onDelete: "cascade",
         },
       },
-      id_curs: {
+      id_cerinta: {
         type: DataTypes.INTEGER,
         unique: false,
         allowNull: false,
         references: {
-          model: "cursuri",
-          key: "id_curs",
+          model: "cerinte",
+          key: "id_cerinta",
           onDelete: "cascade",
         },
       },
-      status: {
-        type: DataTypes.ENUM,
-        values: ["pending", "accepted", "declined"],
-        defaultValue: "pending",
-        allowNull: false,
-      },
     },
     {
-      tableName: "cereri_cursuri",
+      tableName: "istoric_cerinte",
     }
   );
 };

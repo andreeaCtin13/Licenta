@@ -31,6 +31,25 @@ module.exports = (sequelize, DataTypes) => {
           key: "id_curs",
         },
       },
+      id_resursa: {
+        type: DataTypes.INTEGER,
+        unique: false,
+        allowNull: false,
+        references: {
+          model: "resurse",
+          key: "id_resursa",
+        },
+      },
+      id_test: {
+        type: DataTypes.INTEGER,
+        unique: false,
+        allowNull: false,
+        references: {
+          model: "teste",
+          key: "id_test",
+          onDelete: "cascade",
+        },
+      },
     },
     {
       tableName: "sectiuni",

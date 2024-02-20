@@ -27,20 +27,21 @@ module.exports = (sequelize, DataTypes) => {
           min: 0,
           max: 100,
         },
-        imagine_reprezentativa: {
-          type: DataTypes.STRING,
-          validate: {
-            len: [3, 100],
-          },
+      },
+      imagine_reprezentativa: {
+        type: DataTypes.STRING,
+        validate: {
+          len: [3, 100],
         },
-        id_user: {
-          type: DataTypes.INTEGER,
-          unique: false,
-          allowNull: false,
-          references: {
-            model: "users",
-            key: "id_user",
-          },
+      },
+      id_utilizator: {
+        type: DataTypes.INTEGER,
+        unique: false,
+        allowNull: false,
+        references: {
+          model: "utilizatori",
+          key: "id_utilizator",
+          onDelete: "cascade",
         },
       },
     },
@@ -48,14 +49,4 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "cursuri",
     }
   );
-  //   retur.query(`
-  //   CREATE TRIGGER count_sections
-  //   BEFORE INSERT ON sectiuni
-  //   FOR EACH ROW
-  //   BEGIN
-  //     update cursuri set nrSectiuni = COUNT( select * form sectiuni where idCurs=idCurs)
-  //     FROM
-  //     WHERE condition;;
-  //   END;
-  // `);
 };
