@@ -8,25 +8,28 @@ const generateAccessToken = (user) => {
 };
 
 const controller = {
-  getAllUsers: (req, res) => {
-    res.status(200).send("totu ok la user");
-  },
-  receiveData: (req, res) => {
-    let user = req.body;
-    let { mail, password } = user;
+  getAllUsers: async (req, res) => {
+    const filter = req.query;
+    if (!filter.take) filter.take = 10;
 
-    if (!mail || !password) {
-      res.status(400).send({ message: "Trebuie specificat mail-ul" });
-    }
+    if (!filter.skip) filter.skip = 1;
 
-    if (req.session.user) {
-      res.send({
-        loggedIn: true,
-        user: req.session.user,
+    let whereClause = {};
+    if (filter.nume) whereClause.nume = { [LikeOp]: `%${filter.nume}%` };
+
+    await usersModel
+      .findAndCountAll({
+        where: { ...whereClause },
+        limit: parseInt(filter.take),
+        offset: parseInt(filter.skip - 1) * parseInt(filter.take),
+      })
+      .then((rezultat) => {
+        return res.status(200).send({ requests: rezultat });
+      })
+      .catch((err) => {
+        console.log(err);
+        return res.status(500).send({ message: "server error", err: err });
       });
-    } else {
-      res.send({ loggedIn: false });
-    }
   },
   login: async (req, res) => {
     const mail = req.body.mail;
@@ -48,7 +51,6 @@ const controller = {
       return res.status(404).send({ error: "User does not exist" });
     }
   },
-
   register: async (req, res) => {
     const mail = req.body.mail;
     const password = req.body.password;
@@ -66,13 +68,60 @@ const controller = {
           nume,
         });
         const jwtToken = generateAccessToken(user);
-        res.status(200).send({ user, jwtToken });
+
+        return res.status(200).send({ user, jwtToken });
       } else {
-        res.status(409).send({ message: "user deja existent" });
+        return res.status(409).send({ message: "user deja existent" });
       }
     } catch (e) {
       console.log(e);
     }
+  },
+  deleteUser: async (req, res) => {
+    let id = req.body.id_utilizator;
+    await usersModel
+      .destroy({
+        where: { id_utilizator: id },
+      })
+      .then(() => {
+        return res.status(200).send({ message: "a fost sters" });
+      })
+      .catch((err) => {
+        return res.status(500).send({ error: err });
+      });
+  },
+  actualizareUser: async (req, res) => {
+    const id_utilizator = req.body.id_utilizator;
+    const mail = req.body.mail;
+    const password = req.body.password;
+    const status = req.body.status;
+    const nume = req.body.nume;
+
+    await usersModel
+      .update(
+        {
+          mail,
+          nume,
+          status,
+          password,
+        },
+        {
+          where: {
+            id_utilizator: id_utilizator,
+          },
+        }
+      )
+      .then((rez) => {
+        return res
+          .status(200)
+          .send({ message: "A fost actualizat utilizatorul" });
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          message: "A aparut o eroare la actualizarea utilizatorului",
+          err: err,
+        });
+      });
   },
 };
 
