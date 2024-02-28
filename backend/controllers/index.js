@@ -9,10 +9,12 @@ const sectiuni = require("./sectiune");
 const teste = require("./test");
 const useri = require("./user");
 const varianteDeRaspuns = require("./variantaDeRaspuns");
+const istoricCerinte = require("./istoricAssigments");
 const controllers = {
   cursuri,
   intrebari,
   istoricuriPunctaje,
+  istoricCerinte,
   resurse,
   sectiuni,
   teste,

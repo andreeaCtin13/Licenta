@@ -6,16 +6,37 @@ import currentUser from "../../data/user.json";
 import { Link } from "react-router-dom";
 import Button from "../../components/Button";
 import { Dialog } from "primereact/dialog";
+import axios from "axios";
 
 function Profile() {
   const { user, setUser } = useContext(UserContext);
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState("center");
+  const [newPass, setNewPass] = useState("");
   const show = (position) => {
     setPosition(position);
     setVisible(true);
   };
+  console.log(user);
 
+  const updatePassword = async () => {
+    if (newPass !== "") {
+      console.log("new pass", newPass);
+      await axios
+        .put("http://localhost:8080/useri/actualizare", {
+          id_utilizator: user.id_utilizator,
+          password: newPass,
+        })
+        .then((rez) => {
+          console.log("ce am modificat:", rez);
+          console.log("totul ok");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    setVisible(false);
+  };
   const footerContent = (
     <div className={style.btnZone}>
       <Button
@@ -25,21 +46,20 @@ function Profile() {
       />
       <Button
         content="Change"
-        onClick={() => setVisible(false)}
+        onClick={() => {
+          updatePassword();
+        }}
         className={`${style.btnModal} ${style.btnChange}`}
       />
     </div>
   );
-  useEffect(() => {
-    setUser(currentUser);
-  }, []);
 
   return (
     <div className={style.profileMain}>
       <div className={style.profileCard}>
         <img src={ProfilePic} alt="ernjg" className={style.profilePic} />
-        <h1>{user ? user.username : "no user"}</h1>
-        <div>No of classes enrolled: {user ? user.classes.length : 0}</div>
+        <h1>{user ? user.nume : "no user"}</h1>
+        {/* <div>No of classes enrolled: {user ? user.classes.length : 0}</div> */}
         <div>
           <Button
             content="Change Password"
@@ -47,7 +67,7 @@ function Profile() {
             onClick={() => show("top-right")}
           ></Button>
         </div>
-
+        {/* 
         <div className={style.userCoursesArea}>
           {user ? (
             user.classes.length > 0 ? (
@@ -75,23 +95,26 @@ function Profile() {
           ) : (
             <div></div>
           )}
-
-          <Dialog
-            header="Change the password"
-            visible={visible}
-            position={position}
-            style={{ width: "30rem" }}
-            onHide={() => setVisible(false)}
-            footer={footerContent}
-            draggable={false}
-            resizable={false}
-          >
-            <div className={style.formRow}>
-              <label htmlFor="">New Password</label>
-              <input type="text" required />
-            </div>
-          </Dialog>
-        </div>
+        </div>*/}
+        <Dialog
+          header="Change the password"
+          visible={visible}
+          position={position}
+          style={{ width: "30rem" }}
+          onHide={() => setVisible(false)}
+          footer={footerContent}
+          draggable={false}
+          resizable={false}
+        >
+          <div className={style.formRow}>
+            <label htmlFor="">New Password</label>
+            <input
+              type="text"
+              required
+              onChange={(e) => setNewPass(e.target.value)}
+            />
+          </div>
+        </Dialog>
       </div>
     </div>
   );

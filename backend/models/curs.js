@@ -23,8 +23,6 @@ module.exports = (sequelize, DataTypes) => {
       nr_sectiuni: {
         type: DataTypes.INTEGER,
         validate: {
-          defaultValue: 0,
-          min: 0,
           max: 100,
         },
       },

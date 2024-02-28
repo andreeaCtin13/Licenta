@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import style from "../../styles/admin/AdminHomepage.module.css";
-import currentUser from "../../data/mentor.json";
 import { UserContext } from "../../context/UserContext";
 import { Dialog } from "primereact/dialog";
-import users from "../../data/users.json";
 import { classNames } from "primereact/utils";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -12,57 +10,63 @@ import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
 import { RadioButton } from "primereact/radiobutton";
 import { InputText } from "primereact/inputtext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronRight,
+  faChevronLeft,
+} from "@fortawesome/free-solid-svg-icons";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
 function AdminHomepage() {
+  const [usersRows, setUsersRows] = useState(null);
+  const [userDialog, setUserDialog] = useState(false);
+  const [deleteUserDialog, setDeleteUserDialog] = useState(false);
+  const [totalRec, setTotalRec] = useState(1);
+  const [rowUser, setRowUser] = useState({
+    nume: "",
+    mail: "",
+    password: "",
+  });
+  const [submitted, setSubmitted] = useState(false);
+  const [globalFilter, setGlobalFilter] = useState(null);
+  const toast = useRef(null);
+  const dt = useRef(null);
+  const [page, setPage] = useState(1);
   const { user, setUser } = useContext(UserContext);
-
-  useEffect(() => {
-    setUser(currentUser);
-  }, []);
-  const userCreated = {
-    mail: "dan@gmail.com",
-    password: "dan",
-    status: "mentee",
-  };
   const sendData = async (e) => {
     e.preventDefault();
     try {
       await axios
-        .post("http://localhost:8080/useri/register", userCreated)
+        .post("http://localhost:8080/useri/register", rowUser)
         .then(() => {
-          console.log("a mers");
+          toast.current.show({
+            severity: "succes",
+            summary: "Succesful",
+            detail: "User Created",
+            life: 3000,
+          });
         })
         .catch((err) => {
-          console.log("ups, you have an error, look:", err);
+          toast.current.show({
+            severity: "fail",
+            summary: "Failed",
+            detail: err.response.data.message,
+            life: 3000,
+          });
         });
     } catch (err) {
       console.log(err);
     }
   };
 
-  const emptyUser = {
-    name: "",
-    mail: "",
-    password: "",
-    status: "Mentee",
-  };
-
-  const [usersRows, setUsersRows] = useState(null);
-  const [userDialog, setUserDialog] = useState(false);
-  const [deleteUserDialog, setDeleteUserDialog] = useState(false);
-  const [rowUser, setRowUser] = useState(emptyUser);
-  const [submitted, setSubmitted] = useState(false);
-  const [globalFilter, setGlobalFilter] = useState(null);
-  const toast = useRef(null);
-  const dt = useRef(null);
-
-  useEffect(() => {
-    setUsersRows(users);
-  }, []);
-
   const openNew = () => {
-    setRowUser(emptyUser);
+    setRowUser({
+      mail: "",
+      nume: "",
+      password: "",
+      status: "junior",
+    });
     setSubmitted(false);
     setUserDialog(true);
   };
@@ -78,21 +82,8 @@ function AdminHomepage() {
 
   const onStatusChange = (e) => {
     let _user = { ...rowUser };
-
     _user["status"] = e.value;
     setRowUser(_user);
-  };
-
-  const createMail = () => {
-    let id = "";
-    let chars =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    for (let i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-
-    return id;
   };
 
   const generatePassword = () => {
@@ -125,16 +116,15 @@ function AdminHomepage() {
         __row_user.password = generatePassword();
 
         __users.push(__row_user);
-        toast.current.show({
-          severity: "succes",
-          summary: "Succesful",
-          detail: "User Created",
-          life: 3000,
-        });
       }
-      setUsersRows(__users);
+      setRowUser(__users);
       setUserDialog(false);
-      setRowUser(emptyUser);
+      setRowUser({
+        mail: "",
+        nume: "",
+        password: "",
+        status: "junior",
+      });
     }
   };
 
@@ -161,19 +151,30 @@ function AdminHomepage() {
     );
   };
 
-  const deleteUser = () => {
-    let _users = usersRows.filter((val) => val.mail !== rowUser.mail);
-    setUsersRows(_users);
-    setDeleteUserDialog(false);
-    setRowUser(emptyUser);
-    toast.current.show({
-      severity: "success",
-      summary: "Successful",
-      detail: "User Deleted",
-      life: 3000,
-    });
+  const deleteUser = async () => {
+    console.log(rowUser);
+    await axios
+      .delete("http://localhost:8080/useri/stergere", {
+        data: { ...rowUser },
+      })
+      .then(() => {
+        let _users = usersRows.filter((val) => val.mail !== rowUser.mail);
+        setUsersRows(_users);
+        setDeleteUserDialog(false);
+        setRowUser({
+          mail: "",
+          nume: "",
+          password: "",
+          status: "junior",
+        });
+        toast.current.show({
+          severity: "success",
+          summary: "Successful",
+          detail: "User Deleted",
+          life: 3000,
+        });
+      });
   };
-
   const findIndexByMail = (mail) => {
     let index = -1;
     for (let i = 0; i < usersRows.length; i++) {
@@ -184,7 +185,6 @@ function AdminHomepage() {
     }
     return index;
   };
-
   const userDialogFooter = (
     <React.Fragment>
       <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
@@ -192,8 +192,15 @@ function AdminHomepage() {
         label="Save"
         icon="pi pi-check"
         onClick={(e) => {
-          sendData(e);
-          saveUser();
+          if (
+            rowUser.hasOwnProperty("nume") &&
+            rowUser.hasOwnProperty("mail") &&
+            rowUser.hasOwnProperty("password") &&
+            rowUser.hasOwnProperty("status")
+          ) {
+            sendData(e);
+            saveUser();
+          }
         }}
       />
     </React.Fragment>
@@ -201,13 +208,13 @@ function AdminHomepage() {
   const deleteUserDialogFooter = (
     <React.Fragment>
       <Button
-        label="No"
+        label="Nu"
         icon="pi pi-times"
         outlined
         onClick={hideDeleteUserDialog}
       />
       <Button
-        label="Yes"
+        label="Da"
         icon="pi pi-check"
         severity="danger"
         onClick={deleteUser}
@@ -219,8 +226,21 @@ function AdminHomepage() {
     const newVal = (e.target && e.target.value) || "";
     let _user = { ...rowUser };
     if (field === "mail") _user.mail = newVal;
-    else _user.name = newVal;
+    else if (field === "password") _user.password = newVal;
+    else _user.nume = newVal;
     setRowUser(_user);
+  };
+
+  const onPageChange = (e, type_event) => {
+    if (type_event === "next") {
+      if (page != totalRec / 8) {
+        setPage(page + 1);
+      }
+    } else {
+      if (page != 1) {
+        setPage(page - 1);
+      }
+    }
   };
 
   const header = (
@@ -259,11 +279,51 @@ function AdminHomepage() {
       />
     );
   };
+  console.log(usersRows);
+  const loadData = async () => {
+    const students_query = "filter?";
+    await axios
+      .get(
+        `http://localhost:8080/useri/selectAll/${students_query}&take=10&skip=${page}`
+      )
+      .then((response) => {
+        let students = response.data.requests.rows;
+        let req = [];
+        for (let i = 0; i < students.length; i++) {
+          let stud = { ...students[i].studentRequests };
+          let { nume, mail, id_utilizator, status } = students[i];
+          req.push({
+            status,
+            nume,
+            mail,
+            id_utilizator,
+            ...stud,
+          });
+          if (response.data.requests.count <= 8) {
+            setTotalRec(1);
+          } else {
+            if (response.data.requests.count % 8 != 0) {
+              console.log(Math.round(response.data.requests.count / 8) + 1);
+
+              setTotalRec(Math.round(response.data.requests.count / 8) + 1);
+            } else {
+              setTotalRec(Math.round(response.data.requests.count / 8));
+            }
+          }
+        }
+        setUsersRows(req);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  useEffect(() => {
+    loadData();
+  }, [page]);
 
   return (
     <div className={style.mainContainer}>
       <h1>Hi, Admin!!!</h1>
-      <button onClick={sendData}>caca</button>
       <Toast ref={toast} />
       <div className="card">
         <Toolbar
@@ -276,24 +336,18 @@ function AdminHomepage() {
           ref={dt}
           value={usersRows}
           dataKey="mail"
-          paginator
           rows={10}
-          rowsPerPageOptions={[5, 10, 25]}
-          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
           globalFilter={globalFilter}
           header={header}
         >
           <Column
-            field="name"
-            header="Name"
-            sortable
+            field="nume"
+            header="Nume"
             style={{ minWidth: "12rem" }}
           ></Column>
           <Column
             field="mail"
             header="Mail"
-            sortable
             style={{ minWidth: "12rem" }}
           ></Column>
           <Column field="status" header="Mentorship Status"></Column>
@@ -303,6 +357,23 @@ function AdminHomepage() {
             style={{ minWidth: "12rem" }}
           ></Column>
         </DataTable>
+        <div className={style.paginationZone}>
+          <button
+            className={style.btnPagination}
+            onClick={(e) => onPageChange(e, "prev")}
+          >
+            <FontAwesomeIcon icon={faChevronLeft} />
+          </button>
+          <span>
+            Page {page} from {totalRec}
+          </span>
+          <button
+            className={style.btnPagination}
+            onClick={(e) => onPageChange(e, "next")}
+          >
+            <FontAwesomeIcon icon={faChevronRight} />
+          </button>
+        </div>
       </div>
       <Dialog
         visible={deleteUserDialog}
@@ -337,18 +408,18 @@ function AdminHomepage() {
         onHide={hideDialog}
       >
         <div className="field">
-          <label htmlFor="name" className="font-bold">
-            Name
+          <label htmlFor="nume" className="font-bold">
+            Nume
           </label>
           <InputText
-            id="name"
-            value={rowUser.name}
-            onChange={(e) => onInputChange(e, "name")}
+            id="nume"
+            value={rowUser.nume}
+            onChange={(e) => onInputChange(e, "nume")}
             required
             autoFocus
-            className={classNames({ "p-invalid": submitted && !rowUser.name })}
+            className={classNames({ "p-invalid": submitted && !rowUser.nume })}
           />
-          {submitted && !rowUser.name && (
+          {submitted && !rowUser.nume && (
             <small className="p-error">Name is required.</small>
           )}
         </div>
@@ -369,15 +440,33 @@ function AdminHomepage() {
           )}
         </div>
         <div className="field">
+          <label htmlFor="password" className="font-bold">
+            Password
+          </label>
+          <InputText
+            id="password"
+            value={rowUser.password}
+            onChange={(e) => onInputChange(e, "password")}
+            required
+            autoFocus
+            className={classNames({
+              "p-invalid": submitted && !rowUser.password,
+            })}
+          />
+          {submitted && !rowUser.password && (
+            <small className="p-error">Password is required.</small>
+          )}
+        </div>
+        <div className="field">
           <label className="mb-3 font-bold">Status</label>
           <div className="formgrid grid">
             <div className="field-radiobutton col-6">
               <RadioButton
                 inputId="status1"
                 name="status"
-                value="Mentor"
+                value="mentor"
                 onChange={onStatusChange}
-                checked={rowUser.status === "Mentor"}
+                checked={rowUser.status === "mentor"}
               />
               <label htmlFor="category1">Mentor</label>
             </div>
@@ -385,24 +474,15 @@ function AdminHomepage() {
               <RadioButton
                 inputId="status2"
                 name="status"
-                value="Mentee"
+                value="junior"
                 onChange={onStatusChange}
-                checked={rowUser.status === "Mentee"}
+                checked={rowUser.status === "junior"}
               />
-              <label htmlFor="category2">Mentee</label>
+              <label htmlFor="category2">Junior</label>
             </div>
           </div>
         </div>
       </Dialog>
-      <button
-        onClick={(e) => {
-          usersRows.map((x) => {
-            console.log(x.mail + " are parola" + x.password);
-          });
-        }}
-      >
-        testam parole noi
-      </button>
     </div>
   );
 }

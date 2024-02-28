@@ -1,29 +1,45 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Button from "../Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import style from "../../styles/LandingPage.module.css";
 // import api from "../../api";
 import axios from "axios";
-// import { UserContext } from "../../context/UserContext";
+import { useNavigate } from "react-router";
+import { UserContext } from "../../context/UserContext";
+import { Toast } from "primereact/toast";
 
 function Form() {
-  // const { user, setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const [locked, setLocked] = useState(true);
-  const user = {
-    mail: "daniel@gmail.com",
-    password: "daniel",
-  };
+  const navigate = useNavigate();
+  const toast = useRef(null);
+
+  const [info, setInfo] = useState({
+    mail: "",
+    password: "",
+  });
 
   const sendData = async (e) => {
     e.preventDefault();
+    console.log(info);
     await axios
-      .post("http://localhost:8080/useri/login", user)
+      .post("http://localhost:8080/useri/login", info)
       .then((response) => {
-        console.log(response);
+        setUser(response.data.user);
+        if (response.data.user.status === "junior") navigate("/profile");
+        else if (response.data.user.status === "mentor") navigate("/profile");
+        else navigate("/admin");
       })
       .catch((error) => {
         console.error("Error:", error.message);
+        toast.current.show({
+          severity: "fail",
+          summary: "Failed",
+          detail: "Wrong password",
+          life: 3000,
+        });
+        console.log("");
         if (error.response) {
           console.error("Status:", error.response.status);
           console.error("Data:", error.response.data);
@@ -41,16 +57,25 @@ function Form() {
 
   return (
     <>
+      <Toast ref={toast} />
       <form className={style.formStyle}>
         <div className={style.formRow}>
           <label htmlFor="mail">Mail</label>
-          <input type="text" id="mail" />
+          <input
+            type="text"
+            id="mail"
+            onChange={(e) => setInfo({ ...info, mail: e.target.value })}
+          />
         </div>
         <div className={style.formRow}>
           <label htmlFor="password">Password</label>
           {locked ? (
             <div className={style.passwordRow}>
-              <input type="password" id="password" />
+              <input
+                type="password"
+                id="password"
+                onChange={(e) => setInfo({ ...info, password: e.target.value })}
+              />
               <FontAwesomeIcon
                 onClick={changeLock}
                 className={style.icon}
@@ -59,7 +84,11 @@ function Form() {
             </div>
           ) : (
             <div className={style.passwordRow}>
-              <input type="text" id="password" />
+              <input
+                type="text"
+                id="password"
+                onChange={(e) => setInfo({ ...info, password: e.target.value })}
+              />
               <FontAwesomeIcon
                 icon={faEye}
                 onClick={changeLock}

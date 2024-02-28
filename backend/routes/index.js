@@ -13,7 +13,7 @@ const useriRoute = require("./user");
 const varianteDeRaspunsRoute = require("./variantaDeRaspuns");
 
 router.use("/", otherRoute);
-router.use("/assigments", assigmentsRoute);
+router.use("/cerinte", assigmentsRoute);
 router.use("/cereriCurs", cereriCursRoute);
 router.use("/curs", cursuriRoute);
 router.use("/intrebare", intrebariRoute);

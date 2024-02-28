@@ -3,6 +3,7 @@ const router = express.Router();
 
 const sectiuniController = require("../controllers").sectiuni;
 
-router.get("/", sectiuniController.getAllSectiuni);
+router.get("/selectAll/:id_curs", sectiuniController.getAllSectiuni);
+router.post("/adaugare", sectiuniController.insertSectiune);
 
 module.exports = router;

@@ -9,6 +9,7 @@ const generateAccessToken = (user) => {
 
 const controller = {
   getAllUsers: async (req, res) => {
+    console.log("ajunge unde trebuie");
     const filter = req.query;
     if (!filter.take) filter.take = 10;
 
@@ -32,56 +33,61 @@ const controller = {
       });
   },
   login: async (req, res) => {
+    console.log(req.body);
     const mail = req.body.mail;
     const password = req.body.password;
-    console.log(req.body);
-
     const user = await usersModel.findOne({ where: { mail: mail } });
-    console.log(user);
     if (user) {
       const password_valid = await bcrypt.compare(password, user.password);
-      console.log(password_valid);
       if (password_valid) {
         const jwtToken = generateAccessToken(user);
-        return res.status(200).send({ user, jwtToken });
+        return res.status(200).json({ user, jwtToken });
       } else {
-        return res.status(400).send({ error: "Password Incorrect" });
+        return res.status(400).json({ error: "Password Incorrect" });
       }
     } else {
-      return res.status(404).send({ error: "User does not exist" });
+      return res.status(404).json({ error: "User does not exist" });
     }
   },
+
   register: async (req, res) => {
     const mail = req.body.mail;
     const password = req.body.password;
-    const status = req.body.status;
     const nume = req.body.nume;
+    const status = req.body.status;
 
     try {
       let user = usersModel.findOne({ where: { mail: mail } });
       if (user) {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const user = await usersModel.create({
-          mail,
-          password: hashedPassword,
-          status,
           nume,
+          mail,
+          status,
+          password: hashedPassword,
         });
         const jwtToken = generateAccessToken(user);
-
-        return res.status(200).send({ user, jwtToken });
+        console.log(user);
+        return res.status(200).json({ user, jwtToken });
       } else {
-        return res.status(409).send({ message: "user deja existent" });
+        return res.status(409).json({ message: "user deja existent" });
       }
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      if (err.name === "SequelizeValidationError") {
+        return res.status(400).json({ message: "Invalid email" });
+      }
+      if (err.name === "SequelizeUniqueConstraintError") {
+        return res.status(400).json({ message: "Email already used" });
+      }
+      return res.status(500).json({ message: "server error", err: err });
     }
   },
   deleteUser: async (req, res) => {
-    let id = req.body.id_utilizator;
+    let mail = req.body.mail;
+    console.log(mail);
     await usersModel
       .destroy({
-        where: { id_utilizator: id },
+        where: { mail: mail },
       })
       .then(() => {
         return res.status(200).send({ message: "a fost sters" });
@@ -92,18 +98,20 @@ const controller = {
   },
   actualizareUser: async (req, res) => {
     const id_utilizator = req.body.id_utilizator;
-    const mail = req.body.mail;
-    const password = req.body.password;
-    const status = req.body.status;
-    const nume = req.body.nume;
+    let new_user = {};
+    if (req.body.hasOwnProperty("password")) {
+      console.log("password received: ", req.body.password);
+      const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+      console.log("INTRU AICI S HASHED PASSWORD UL ESTE:", hashedPassword);
+      new_user = { ...req.body, password: hashedPassword };
+    } else {
+      new_user = { ...req.body };
+    }
 
     await usersModel
       .update(
         {
-          mail,
-          nume,
-          status,
-          password,
+          ...new_user,
         },
         {
           where: {

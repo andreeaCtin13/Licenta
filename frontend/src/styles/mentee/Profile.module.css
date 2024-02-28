@@ -56,14 +56,19 @@
 .btnChangePassword {
   margin-top: 2rem;
   background-color: var(--var--dark--purple);
-  color: var(--var--white);
-  transition: 0.5s;
+  padding: 1rem;
+  border-radius: 2rem;
+  border: none;
+  transition: 0.8s;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .btnChangePassword:hover {
-  transition: 0.5s;
+  transition: 0.8s;
   color: var(--var--dark--purple);
   background-color: var(--var--light--pink);
+  cursor: pointer;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .formRow {
@@ -79,14 +84,23 @@
 .btnModal {
   width: 10rem;
   color: white;
+  border-radius: 3rem;
+  padding: 1rem;
+  border: none;
+  min-width: 7rem;
 }
 
-.btnCancel {
-  background-color: rgb(134, 2, 2);
+.btnModal:hover {
+  cursor: pointer;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .btnChange {
   background-color: var(--var--dark--pink);
+}
+
+.btnCancel {
+  background-color: rgb(134, 2, 2);
 }
 
 @media screen and (max-width: 950px) {
