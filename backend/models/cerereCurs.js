@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define(
+  const CereriCurs = sequelize.define(
     "cereriCursuri",
     {
       id_cerere: {
@@ -39,4 +39,6 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "cereri_cursuri",
     }
   );
+
+  return CereriCurs;
 };

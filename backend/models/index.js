@@ -28,6 +28,17 @@ const istoricAssigments = istoricAssigmentsModel(db, Sequelize);
 const resurse = resurseModel(db, Sequelize);
 const varianteDeRaspuns = varianteDeRaspunsModel(db, Sequelize);
 const assigment = assigmentsModel(db, Sequelize);
+
+cursuri.hasMany(cereriCurs, {
+  foreignKey: "id_curs",
+  as: "cereriCursuri",
+});
+
+intrebari.hasMany(varianteDeRaspuns, {
+  foreignKey: "id_intrebare",
+  as: "varianteDeRaspuns",
+});
+
 function Create_DB() {
   let conn;
 
@@ -49,9 +60,11 @@ function Create_DB() {
       console.warn(err.stack);
     });
 }
+
 function DB_Init() {
   Create_DB();
 }
+
 module.exports = {
   cereriCurs,
   cursuri,

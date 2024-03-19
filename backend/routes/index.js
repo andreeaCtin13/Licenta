@@ -11,7 +11,7 @@ const sectiuniRoute = require("./sectiune");
 const testeRoute = require("./test");
 const useriRoute = require("./user");
 const varianteDeRaspunsRoute = require("./variantaDeRaspuns");
-
+const istoricAssigments = require("./istoricAssigments");
 router.use("/", otherRoute);
 router.use("/cerinte", assigmentsRoute);
 router.use("/cereriCurs", cereriCursRoute);
@@ -23,5 +23,6 @@ router.use("/sectiuni", sectiuniRoute);
 router.use("/teste", testeRoute);
 router.use("/useri", useriRoute);
 router.use("/varianteDeRaspuns", varianteDeRaspunsRoute);
+router.use("/istoricCerinte", istoricAssigments);
 
 module.exports = router;

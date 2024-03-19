@@ -1,5 +1,7 @@
 const cursuriModel = require("../models").cursuri;
 const usersModel = require("../models").users;
+const resurseModel = require("../models").resurse;
+const cerinteModel = require("../models").cerinteModel;
 
 const controller = {
   getAllCursuri: async (req, res) => {
@@ -68,7 +70,9 @@ const controller = {
   },
   getCursById: async (req, res) => {
     const id_curs = req.params.id_curs;
-    let curs = await cursuriModel.findByPk(id_curs);
+    let curs = await cursuriModel.findByPk(id_curs, {
+      include: [{ model: resurseModel }, { model: cerinteModel }],
+    });
     if (!curs) {
       return res
         .status(400)

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
@@ -18,98 +18,39 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import Logo from "../assets/logo.png";
 import style from "../styles/Sidebar.module.css";
+import axios from "axios";
 
 function CustomSidebar() {
   const [logoutDialog, setLogoutDialog] = useState(false);
   const [visibleSidebar, setVisibleSidebar] = useState(false);
   const { user, setUser } = useContext(UserContext);
+  const [coursesList, setCoursesList] = useState([]);
 
-  const coursesList = [
-    {
-      videos: [
-        {
-          url: "https://youtu.be/shOZcaQyS_k?si=NQ__zREsW1rwSarg",
-          title: "jbkdresvf",
-        },
-        {
-          url: "https://youtu.be/hmj2cd3qLdw?si=3J8ERH_H_zQ9kHIb",
-          title: "rfef",
-        },
-        {
-          url: "https://youtu.be/hmj2cd3qLdw?si=3J8ERH_H_zQ9kHIb",
-          title: "rfef",
-        },
-        {
-          url: "https://youtu.be/hmj2cd3qLdw?si=3J8ERH_H_zQ9kHIb",
-          title: "rfef",
-        },
-        {
-          url: "https://youtu.be/hmj2cd3qLdw?si=3J8ERH_H_zQ9kHIb",
-          title: "rfef",
-        },
-        {
-          url: "https://youtu.be/hmj2cd3qLdw?si=3J8ERH_H_zQ9kHIb",
-          title: "rfef",
-        },
-        {
-          url: "https://youtu.be/hmj2cd3qLdw?si=3J8ERH_H_zQ9kHIb",
-          title: "rfef",
-        },
-        {
-          url: "https://youtu.be/hmj2cd3qLdw?si=3J8ERH_H_zQ9kHIb",
-          title: "rfef",
-        },
-        {
-          url: "https://youtu.be/hmj2cd3qLdw?si=3J8ERH_H_zQ9kHIb",
-          title: "rfef",
-        },
-      ],
-      pdfs: "vedem noi",
-      title: "Curs de agatat cu Silviu Faiar",
-    },
-    {
-      videos: [
-        {
-          url: "https://youtu.be/shOZcaQyS_k?si=NQ__zREsW1rwSarg",
-          title: "jbkdresvf",
-        },
-        {
-          url: "https://youtu.be/hmj2cd3qLdw?si=3J8ERH_H_zQ9kHIb",
-          title: "rfef",
-        },
-        {
-          url: "https://youtu.be/hmj2cd3qLdw?si=3J8ERH_H_zQ9kHIb",
-          title: "rfef",
-        },
-        {
-          url: "https://youtu.be/hmj2cd3qLdw?si=3J8ERH_H_zQ9kHIb",
-          title: "rfef",
-        },
-        {
-          url: "https://youtu.be/hmj2cd3qLdw?si=3J8ERH_H_zQ9kHIb",
-          title: "rfef",
-        },
-        {
-          url: "https://youtu.be/hmj2cd3qLdw?si=3J8ERH_H_zQ9kHIb",
-          title: "rfef",
-        },
-        {
-          url: "https://youtu.be/hmj2cd3qLdw?si=3J8ERH_H_zQ9kHIb",
-          title: "rfef",
-        },
-        {
-          url: "https://youtu.be/hmj2cd3qLdw?si=3J8ERH_H_zQ9kHIb",
-          title: "rfef",
-        },
-        {
-          url: "https://youtu.be/hmj2cd3qLdw?si=3J8ERH_H_zQ9kHIb",
-          title: "rfef",
-        },
-      ],
-      pdfs: "vedem noi",
-      title: "Mister React",
-    },
-  ];
+  const callData = async () => {
+    await axios
+      .get(
+        `http://localhost:8080/cereriCurs/getAllCursuriOfAUser/${user.id_utilizator}`
+      )
+      .then(async (rez) => {
+        const cereri_accepted = rez.data.rezultat;
+        for (let i = 0; i < cereri_accepted.length; i++) {
+          await axios
+            .get(
+              `http://localhost:8080/curs/getById/${cereri_accepted[i].id_curs}`
+            )
+            .then((rez) => {
+              setCoursesList([...coursesList, rez.data.curs]);
+            });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    callData();
+  }, []);
 
   const handleLogout = () => {
     setLogoutDialog(true);
@@ -160,17 +101,17 @@ function CustomSidebar() {
 
           {coursesList.map((course, indx) => {
             return (
-              <li key={indx} className={style.courseListItem}>
+              <li key={course.id_curs} className={style.courseListItem}>
                 <Link
                   className={style.courseLink}
-                  to={"/course/" + indx}
+                  to={"/course/" + course.id_curs}
                   onClick={closeSidebarEvent}
                 >
                   <FontAwesomeIcon
                     className={style.iconListItem}
                     icon={faGraduationCap}
                   />
-                  {course.title}
+                  {course.denumire}
                 </Link>
               </li>
             );
