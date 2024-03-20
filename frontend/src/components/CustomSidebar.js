@@ -27,6 +27,7 @@ function CustomSidebar() {
   const [coursesList, setCoursesList] = useState([]);
 
   const callData = async () => {
+    console.log("ID USER: ", user.id_utilizator);
     await axios
       .get(
         `http://localhost:8080/cereriCurs/getAllCursuriOfAUser/${user.id_utilizator}`

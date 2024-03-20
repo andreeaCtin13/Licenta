@@ -2,8 +2,21 @@ const assigmentModel = require("../models").assigment;
 const sectiuniModel = require("../models").sectiuni;
 
 const controller = {
-  getAllAssigments: (req, res) => {
-    res.status(200).send({ message: "totu ok la assigments uri" });
+  getAllAssigments: async (req, res) => {
+    const { id_sectiune } = req.params;
+    console.log(id_sectiune);
+    await assigmentModel
+      .findAll({
+        where: {
+          id_sectiune: id_sectiune,
+        },
+      })
+      .then((rez) => {
+        return res.status(200).json({ message: "success", cerinte: rez });
+      })
+      .catch((err) => {
+        return res.status(500).json({ message: "server error", err: err });
+      });
   },
   insertAssigment: async (req, res) => {
     const { titlu, cerinta, id_sectiune } = req.body;

@@ -131,6 +131,16 @@ const controller = {
         });
       });
   },
+
+  getUserNameById: async (req, res) => {
+    const { id_user } = req.params;
+    const user = await usersModel.findByPk(id_user);
+    if (!user) {
+      return res.status(404).json({ message: "user id is not valid" });
+    } else {
+      return res.status(200).json({ nume: user.nume, mail: user.mail });
+    }
+  },
 };
 
 module.exports = controller;

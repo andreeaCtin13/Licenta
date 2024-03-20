@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import user from "../../data/user.json";
 import style from "../../styles/mentee/Test.module.css";
-
+import axios from "axios";
 function Test() {
-  const { idCourse, idTest } = useParams();
-  const test = user.classes[idCourse].sections[idTest].test;
+  const { idTest, idSectiune } = useParams();
+  const [intrebari, setIntrebari] = useState([]);
   const [totalGrade, setTotalGrade] = useState(0);
 
   const [selectedOptions, setSelectedOptions] = useState([]);
+  console.log(idTest);
 
   const handleOptionChange = (qId, optId, optScor) => {
     const updatedOptions = [...selectedOptions];
@@ -34,17 +34,33 @@ function Test() {
     setTotalGrade(grade);
   };
 
+  const setTestFunction = async () => {
+    await axios(
+      `http://localhost:8080/intrebare/getAllIntrebariByTestId/${idTest}`
+    )
+      .then((rez) => {
+        setIntrebari(rez.data.intrebari);
+        console.log(rez);
+      })
+      .catch((err) => {});
+  };
+
+  useEffect(() => {
+    setTestFunction();
+  }, []);
+
+  console.log(intrebari);
   return (
     <div className={style.testContainer}>
-      <h1>{test.testTitle}</h1>
+      {/* <h1>{test.testTitle}</h1> */}
       <div>
-        {test.cerinte.map((quest, qIndex) => {
+        {intrebari.map((quest, qIndex) => {
           return (
             <div key={qIndex} className={style.questionContainer}>
-              <div>{quest.intrebare}</div>
+              <div>{quest.text_intrebare}</div>
 
               <ul className={style.unlist}>
-                {quest.variante.map((opt, optIndex) => {
+                {quest.varianteDeRaspuns.map((opt, optIndex) => {
                   const qId = `question_${qIndex}`;
                   const optId = `option_${optIndex}`;
                   const optScor = opt.scor;
@@ -59,7 +75,7 @@ function Test() {
                         )}
                         onChange={() => handleOptionChange(qId, optId, optScor)}
                       />
-                      <div>{opt.text}</div>
+                      <div>{opt.text_varianta}</div>
                     </li>
                   );
                 })}
@@ -67,7 +83,7 @@ function Test() {
             </div>
           );
         })}
-        <Link to={`/course/${idCourse}`}>
+        <Link to={`/course/${idSectiune}`}>
           <button className={style.submitBtn} onClick={setGrade}>
             Submit
           </button>

@@ -41,6 +41,7 @@ const controller = {
 
   getCursuriOfAUser: async (req, res) => {
     const id_utilizator = req.params.id;
+    console.log("ajung aici ", id_utilizator);
     const user = await cereriCursModel.findByPk(id_utilizator);
     if (!user) {
       return res

@@ -9,5 +9,6 @@ router.post("/register", useriController.register);
 router.delete("/stergere", useriController.deleteUser);
 router.put("/actualizare", useriController.actualizareUser);
 router.get("/selectAll/filter", useriController.getAllUsers);
+router.get("/getUserNameById/:id_user", useriController.getUserNameById);
 
 module.exports = router;
