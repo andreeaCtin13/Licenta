@@ -34,13 +34,14 @@ function CustomSidebar() {
       )
       .then(async (rez) => {
         const cereri_accepted = rez.data.rezultat;
+        console.log("cereri", cereri_accepted);
         for (let i = 0; i < cereri_accepted.length; i++) {
           await axios
             .get(
               `http://localhost:8080/curs/getById/${cereri_accepted[i].id_curs}`
             )
             .then((rez) => {
-              setCoursesList([...coursesList, rez.data.curs]);
+              setCoursesList([rez.data.curs]);
             });
         }
       })
@@ -48,10 +49,6 @@ function CustomSidebar() {
         console.log(err);
       });
   };
-
-  useEffect(() => {
-    callData();
-  }, []);
 
   const handleLogout = () => {
     setLogoutDialog(true);
@@ -63,7 +60,10 @@ function CustomSidebar() {
   return (
     <div className={style.containerSidebar}>
       <button
-        onClick={() => setVisibleSidebar(true)}
+        onClick={() => {
+          setVisibleSidebar(true);
+          callData();
+        }}
         className={style.showButton}
       >
         <FontAwesomeIcon icon={faBars} className={style.menuIcon} />

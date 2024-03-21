@@ -160,6 +160,22 @@
   justify-content: center;
 }
 
+input[type="file"] {
+  background-color: var(--var--light--purple);
+  color: var(--var--light--purple);
+  margin: 0;
+  padding: 0.2rem;
+
+  border: none;
+  width: 6rem;
+}
+
+input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @media screen and (max-width: 900px) {
   .containerVideo {
     flex-direction: column;
