@@ -16,7 +16,7 @@ function CoursePage() {
   const { user, setUser } = useContext(UserContext);
   const [cerinte, setCerinte] = useState([]);
   const [resurse, setResurse] = useState([]);
-  const [file, setFile] = useState([]);
+  const [files, setFiles] = useState([]);
   const toast = useRef(null);
 
   const playVideo = (index) => {
@@ -78,13 +78,15 @@ function CoursePage() {
 
   const handleFileChange = (e, index) => {
     const selectedFile = e.target.files[0];
-    let updatedFiles = [...file];
+    let updatedFiles = [...files];
     updatedFiles[index] = selectedFile;
-    setFile(updatedFiles);
+    setFiles(updatedFiles);
   };
-  let formData = new FormData();
+
   const uploadAssigment = async (id, index) => {
-    if (!file[index]) {
+    console.log("INDEX:", index);
+    console.log(files[index]);
+    if (!files[index]) {
       toast.current.show({
         severity: "error",
         summary: "Failed",
@@ -94,10 +96,8 @@ function CoursePage() {
       return;
     }
 
-    console.log("File to upload:", file[index]);
-
-    formData.append("file", file[index]);
-    console.log("FormData before upload:", formData);
+    let formData = new FormData();
+    formData.append("file", files[index]); // Modificarea aici: schimbat 'file' în 'files'
 
     try {
       await axios.post(
@@ -180,7 +180,9 @@ function CoursePage() {
                 <div
                   key={index}
                   className={`${style.videoPlaylistRow} ${
-                    index === currentSectionIndex ? style.selectedVideo : ""
+                    section.id_sectiune === currentSectionIndex
+                      ? style.selectedVideo
+                      : ""
                   }`}
                   onClick={() => playVideo(section.id_sectiune)}
                 >

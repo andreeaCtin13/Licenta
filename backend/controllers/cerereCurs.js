@@ -19,7 +19,6 @@ const controller = {
         },
       });
 
-      console.log(findOne);
       if (findOne == null) {
         await cereriCursModel
           .create({ id_utilizator, id_curs })
@@ -37,6 +36,27 @@ const controller = {
     } else {
       return res.status(400).json({ message: "nu ai frunizat date corecte" });
     }
+  },
+
+  verifyIfRequestExists: async (req, res) => {
+    const { id_curs, id_utilizator } = req.body;
+    await cereriCursModel
+      .findAll({
+        where: {
+          id_curs: id_curs,
+          id_utilizator: id_utilizator,
+        },
+      })
+      .then((rez) => {
+        if (rez.length == 0) {
+          return res.status(400).json({ message: "nope" });
+        } else {
+          return res.status(200).json({ message: "exists" });
+        }
+      })
+      .catch((err) => {
+        return res.status(200).json({ message: "nope" });
+      });
   },
 
   getCursuriOfAUser: async (req, res) => {
@@ -70,18 +90,18 @@ const controller = {
 
   updateCerereCurs: async (req, res) => {
     const id_cerere = req.params.id;
+    const status = req.body.status;
 
     const cerere = await cereriCursModel.findByPk(id_cerere);
     if (!cerere) {
       return res.status(400).json({ message: "Cererea nu există" });
     } else {
       try {
-        await cerere.update({ status: "accepted" }); // Assuming you want to update the status to "accepted"
+        await cerere.update({ status: status }); // Assuming you want to update the status to "accepted"
         return res
           .status(200)
           .json({ message: "Cererea a fost actualizată cu succes" });
       } catch (err) {
-        console.log(err);
         return res
           .status(500)
           .json({ message: "Eroare internă a serverului", err: err });

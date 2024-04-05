@@ -10,11 +10,33 @@ import { Toast } from "primereact/toast";
 
 function CourseSummary() {
   const { idCourse } = useParams();
-  const [requestStatus, setRequestStatus] = useState("Enroll");
+  const [requestStatus, setRequestStatus] = useState("unenrolled");
+  const [requestId, setRequestId] = useState();
   const { user, setUser } = useContext(UserContext);
   const toast = useRef(null);
 
   const [curs, setCurs] = useState({});
+
+  const verifyRequestExists = async () => {
+    await axios
+      .get(
+        `http://localhost:8080/cereriCurs/getAllCursuriOfAUser/${user.id_utilizator}`
+      )
+      .then((rez) => {
+        const request = rez.data.rezultat.filter(
+          (x) => x.id_curs === Number(idCourse)
+        );
+        if (request.length === 0) {
+          setRequestStatus("unenrolled");
+        } else {
+          setRequestStatus(request.status);
+          setRequestId(request.id_cerere);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const takeCourse = async () => {
     await axios
@@ -44,14 +66,61 @@ function CourseSummary() {
 
   useEffect(() => {
     takeCourse();
+    verifyRequestExists();
   }, []);
-  //TO DO: CAND AI BAZA DE DATE TREBUIE SA FACI FUNCTIA ASINCRONA PANA AJUNGI SA AI RASPUNSUL DE LA MENTOR, DACA E PRIMIT SAU NU IN CADRUL CURSULUI
-  const handleEnroll = () => {
-    setRequestStatus("pending");
+  const handleEnroll = async () => {
+    if (requestStatus === "unenrolled" || requestStatus === "declined") {
+      await axios
+        .get("http://localhost:8080/cereriCurs/exists", {
+          id_utilizator: user.id_utilizator,
+          id_curs: idCourse,
+        })
+        .then(async (rez) => {
+          if (rez.data.message === "nope") {
+            await axios
+              .post("http://localhost:8080/cereriCurs/insert", {
+                id_utilizator: user.id_utilizator,
+                id_curs: Number(idCourse),
+                status: "pending",
+              })
+              .then((rez) => {
+                console.log(rez);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          } else {
+            console.log("intra aici", requestId);
+            await axios
+              .put(`http://localhost:8080/cereriCurs/update/${requestId}`, {
+                status: "pending",
+              })
+              .then((rez) => {
+                console.log(rez);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
-    setTimeout(() => {
-      setRequestStatus(requestStatus === "enroll" ? "unenroll" : "enroll");
-    }, 2000);
+      setRequestStatus("pending");
+    } else {
+      setRequestStatus("declined");
+      await axios
+        .put(`http://localhost:8080/cereriCurs/update/${requestId}`, {
+          status: "declined",
+        })
+        .then((rez) => {
+          console.log(rez);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   return (
@@ -70,17 +139,25 @@ function CourseSummary() {
         <div className={style.rightContainer}>
           <h2>Why to enroll to this course?</h2>
           <div className={style.rightContainerDesc}>{curs.descriere}</div>
-          <Button
-            className={`${style.btn} ${
-              requestStatus == "enroll"
-                ? style.enrollBtn
-                : requestStatus === "pending"
-                ? style.pendingBtn
-                : style.unEnrollBtn
-            }`}
-            onClick={handleEnroll}
-            content={requestStatus}
-          ></Button>
+          {requestStatus == "accepted" ? (
+            <Button
+              content={"Unenrrol"}
+              className={`${style.unEnrollBtn} ${style.btn}`}
+              onClick={handleEnroll}
+            />
+          ) : (
+            <Button
+              className={`${style.btn} ${
+                requestStatus == "enroll"
+                  ? style.enrollBtn
+                  : requestStatus === "pending"
+                  ? style.pendingBtn
+                  : style.unEnrollBtn
+              }`}
+              onClick={handleEnroll}
+              content={requestStatus}
+            ></Button>
+          )}
         </div>
       </div>
       <div className={style.accordion}>
