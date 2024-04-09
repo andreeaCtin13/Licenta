@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import currentUser from "../../data/mentor.json";
 import { useParams } from "react-router";
@@ -8,21 +8,102 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import Button from "../../components/Button";
+import axios from "axios";
+import { Toast } from "primereact/toast";
 
 function CourseStatus() {
   const { user, setUser } = useContext(UserContext);
   const { idCourse } = useParams();
+  const [sectiuni, setSectiuni] = useState([]);
+  const toast = useRef(null);
+  const [curs, setCurs] = useState({});
+
+  const getCurs = async () => {
+    await axios
+      .get(`http://localhost:8080/curs/getById/${idCourse}`)
+      .then((rez) => {
+        setCurs(rez.data.curs);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.current.show({
+          severity: "fail",
+          summary: "Failed",
+          detail: "Eroare la incarcarea cursului",
+          life: 3000,
+        });
+      });
+  };
+
+  const getAllSectiuni = async () => {
+    await axios
+      .get(`http://localhost:8080/sectiuni/selectAll/${idCourse}`)
+      .then(async (rez) => {
+        let sectiuni = rez.data.sectiuni;
+        let sectiuneNou = [];
+        for (let i = 0; i < sectiuni.length; i++) {
+          await axios
+            .get(
+              `http://localhost:8080/resurse/getResurseCursSection/${sectiuni[i].id_sectiune}`
+            )
+            .then(async (rez) => {
+              const resurse = rez.data.resurse;
+
+              await axios
+                .get(
+                  `http://localhost:8080/cerinte/getAllCerinte/${sectiuni[i].id_sectiune}`
+                )
+                .then(async (rez) => {
+                  sectiuneNou.push({
+                    ...sectiuni[i],
+                    resurse: [...resurse],
+                    cerinte: [...rez.data.cerinte],
+                  });
+                  setSectiuni(sectiuneNou);
+                })
+                .catch((err) => {
+                  console.log(err);
+                  toast.current.show({
+                    severity: "fail",
+                    summary: "Failed",
+                    detail: "Eroare la incarcarea cerintelor",
+                    life: 3000,
+                  });
+                });
+            })
+            .catch((err) => {
+              console.log(err);
+              toast.current.show({
+                severity: "fail",
+                summary: "Failed",
+                detail: "Eroare la incarcarea resurselor",
+                life: 3000,
+              });
+            });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.current.show({
+          severity: "fail",
+          summary: "Failed",
+          detail: "Eroare la incarcarea sectiunilor",
+          life: 3000,
+        });
+      });
+  };
 
   useEffect(() => {
-    setUser(currentUser);
+    getAllSectiuni();
+    getCurs();
   }, []);
-  const currentClass = currentUser.classes[idCourse];
 
   return (
     <div className={style.mainContainer}>
-      <h1>{currentClass.topic}</h1>
+      <Toast ref={toast} />
+      <h1>{curs.denumire}</h1>
       <div>
-        <Link to="/new-section">
+        <Link to={`/new-section/${idCourse}`}>
           <Button
             className={style.btnCreateSection}
             content="Create a new section"
@@ -30,13 +111,13 @@ function CourseStatus() {
         </Link>
       </div>
       <Accordion>
-        {currentClass.sectiuni.map((sectiune) => {
+        {sectiuni.map((sectiune, i) => {
           return (
-            <AccordionTab header={sectiune.titlu}>
+            <AccordionTab header={sectiune.denumire} index={i}>
               {" "}
               <div>
                 <h2>
-                  Section name: {sectiune.titlu}
+                  Section name: {sectiune.denumire}
                   <button className={style.iconBtn}>
                     <FontAwesomeIcon icon={faPencil} className={style.icon} />
                   </button>
@@ -52,7 +133,11 @@ function CourseStatus() {
                 <h3>Video Link: </h3>
                 <div>
                   <Link to={sectiune.resurse.linkVideo} className={style.link}>
-                    {sectiune.resurse.linkVideo}
+                    {
+                      sectiuni[i].resurse.filter(
+                        (x) => x.tip_resursa === "video_link"
+                      )[0].titlu_resursa
+                    }
                   </Link>
                   <button className={style.iconBtn}>
                     <FontAwesomeIcon icon={faPencil} className={style.icon} />
@@ -60,24 +145,26 @@ function CourseStatus() {
                 </div>
                 <h3>PDFs Resources:</h3>
                 <div>
-                  {sectiune.resurse.pdfList.map((pdf) => {
-                    return (
-                      <div>
-                        {pdf.titlu}
-                        <button className={style.iconBtn}>
-                          <FontAwesomeIcon
-                            icon={faPencil}
-                            className={style.icon}
-                          />
-                        </button>
-                      </div>
-                    );
-                  })}
+                  {sectiuni[0].resurse
+                    .filter((x) => x.tip_resursa === "pdf_path")
+                    .map((pdf) => {
+                      return (
+                        <div>
+                          {pdf.titlu_resursa}
+                          <button className={style.iconBtn}>
+                            <FontAwesomeIcon
+                              icon={faPencil}
+                              className={style.icon}
+                            />
+                          </button>
+                        </div>
+                      );
+                    })}
                 </div>
                 <div>
                   <h3>Assigments list</h3>
                   <div>
-                    {sectiune.resurse.AssigmentsList.map((assigment) => {
+                    {sectiune.cerinte.map((assigment) => {
                       return (
                         <div className={style.assigment}>
                           <h4>Title of the assigment: {assigment.titlu}</h4>
@@ -96,14 +183,8 @@ function CourseStatus() {
                   </div>
                 </div>
                 <Button
-                  content={
-                    sectiune.resurse.test !== undefined ? (
-                      <>Edit test</>
-                    ) : (
-                      <>Create a test</>
-                    )
-                  }
-                  className={style.btnEditTest}
+                  content={"Edit test"}
+                  className={`${style.btn} ${style.btnEditTest}`}
                 ></Button>
               </div>
             </AccordionTab>

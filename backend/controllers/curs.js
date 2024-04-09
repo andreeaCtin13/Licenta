@@ -82,6 +82,30 @@ const controller = {
       });
     }
   },
+  getCursuriOfAMentor: async (req, res) => {
+    const { id_user } = req.params;
+
+    const user = await usersModel.findByPk(id_user);
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: "nu ai introdus un id de utilizator valid" });
+    }
+
+    const cursuri = await cursuriModel.findAll({
+      where: {
+        id_utilizator: id_user,
+      },
+    });
+
+    if (cursuri && cursuri.length >= 0) {
+      return res.status(200).json({ cursuri: cursuri, message: "ok" });
+    } else {
+      console.log(cursuri);
+
+      return res.status(500).json({ message: "server error" });
+    }
+  },
 };
 
 module.exports = controller;

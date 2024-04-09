@@ -21,7 +21,7 @@ function App() {
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <BrowserRouter>
-        {user ? <Sidebar /> : <div></div>}
+        {user && user.status === "junior" ? <Sidebar /> : <div></div>}
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/profile" element={<Profile />} />
@@ -38,7 +38,7 @@ function App() {
             element={<CourseStatus />}
           ></Route>
           <Route path="/new-course" element={<NewCourse />}></Route>
-          <Route path="/new-section" element={<NewSection />}></Route>
+          <Route path="/new-section/:idCourse" element={<NewSection />}></Route>
           <Route path="/admin" element={<AdminHomepage />}></Route>
         </Routes>
       </BrowserRouter>

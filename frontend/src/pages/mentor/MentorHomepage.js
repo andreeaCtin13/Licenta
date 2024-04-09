@@ -1,17 +1,44 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import style from "../../styles/mentor/MentorHomepage.module.css";
-import currentUser from "../../data/mentor.json";
 import { UserContext } from "../../context/UserContext";
 import { Link } from "react-router-dom";
 import Button from "../../components/Button";
+import axios from "axios";
+import { Toast } from "primereact/toast";
 
 function MentorHomepage() {
   const { user, setUser } = useContext(UserContext);
+  const toast = useRef(null);
+  const [cursuri, setCursuri] = useState([]);
+
+  const getCursuri = async () => {
+    axios
+      .get(
+        `http://localhost:8080/curs/getAllCursuriOfAMentor/${user.id_utilizator}`
+      )
+      .then((rez) => {
+        console.log(rez.data.cursuri);
+        setCursuri(rez.data.cursuri);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.current.show({
+          severity: "fail",
+          summary: "Failed",
+          detail: "Eroare la incarcarea cursurilor",
+          life: 3000,
+        });
+      });
+  };
+
   useEffect(() => {
-    setUser(currentUser);
+    getCursuri();
   }, []);
+
   return (
     <div className={style.mainContainer}>
+      <Toast ref={toast} />
+
       <div className={style.btnCreateZone}>
         <Link to="/new-course">
           <Button
@@ -20,30 +47,30 @@ function MentorHomepage() {
           ></Button>
         </Link>
       </div>
-      <h1>Hi, {user.username}</h1>
+      <h1>Hi, {user.nume}</h1>
       <div>
         <h2>Your Couses</h2>
         <div className={style.cursuriArea}>
           {user ? (
-            user.classes.length > 0 ? (
-              user.classes.map((c, index) => {
+            cursuri ? (
+              cursuri.map((c, index) => {
                 return (
                   <div id={index} key={index} className={style.courseCard}>
                     <img
-                      src={c.imagine}
-                      alt="plang"
+                      src={c.imagine_reprezentativa}
+                      alt={c.denumire}
                       className={style.imageCourse}
                     />
                     <div>
                       <h2>
                         <Link
-                          to={`/mentor-homepage/${index}`}
+                          to={`/mentor-homepage/${c.id_curs}`}
                           className={style.link}
                         >
-                          {c.topic}
+                          {c.denumire}
                         </Link>
                       </h2>
-                      <div>{c.description}</div>
+                      <div>{c.descriere}</div>
                     </div>
                   </div>
                 );

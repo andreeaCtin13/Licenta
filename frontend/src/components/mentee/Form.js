@@ -28,7 +28,8 @@ function Form() {
       .then((response) => {
         setUser(response.data.user);
         if (response.data.user.status === "junior") navigate("/profile");
-        else if (response.data.user.status === "mentor") navigate("/profile");
+        else if (response.data.user.status === "mentor")
+          navigate("/mentor-homepage");
         else navigate("/admin");
       })
       .catch((error) => {

@@ -40,6 +40,7 @@ const controller = {
 
   verifyIfRequestExists: async (req, res) => {
     const { id_curs, id_utilizator } = req.body;
+    console.log(id_curs, id_utilizator);
     await cereriCursModel
       .findAll({
         where: {
@@ -58,12 +59,38 @@ const controller = {
         return res.status(200).json({ message: "nope" });
       });
   },
+  getAllCursuriAcceptedOrNotOfAUser: async (req, res) => {
+    const id_utilizator = req.params.id;
+
+    const user = await utilizatorModel.findByPk(id_utilizator);
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: "nu exista un utilizator cu respectivul id" });
+    }
+    await cereriCursModel
+      .findAll({
+        where: { id_utilizator: id_utilizator },
+      })
+      .then((rez) => {
+        if (rez) {
+          return res.status(200).json({ message: "succes", rezultat: rez });
+        } else {
+          return res.status(400).json({
+            message: "utilizatorul nu e inscris la niciun curs momentan",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        return res.status(500).json({ message: "error", err: err.message });
+      });
+  },
 
   getCursuriOfAUser: async (req, res) => {
     const id_utilizator = req.params.id;
 
     const user = await utilizatorModel.findByPk(id_utilizator);
-
     if (!user) {
       return res
         .status(400)

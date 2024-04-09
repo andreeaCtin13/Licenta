@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { useParams } from "react-router";
 import style from "../../styles/mentee/CourseSummary.module.css";
 import { Accordion, AccordionTab } from "primereact/accordion";
-import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import Button from "../../components/Button";
 import axios from "axios";
@@ -11,57 +10,55 @@ import { Toast } from "primereact/toast";
 function CourseSummary() {
   const { idCourse } = useParams();
   const [requestStatus, setRequestStatus] = useState("unenrolled");
-  const [requestId, setRequestId] = useState();
-  const { user, setUser } = useContext(UserContext);
+  const [requestId, setRequestId] = useState(null); // Initialized as null
+  const { user } = useContext(UserContext);
   const toast = useRef(null);
-
-  const [curs, setCurs] = useState({});
+  const [course, setCourse] = useState({});
 
   const verifyRequestExists = async () => {
-    await axios
-      .get(
-        `http://localhost:8080/cereriCurs/getAllCursuriOfAUser/${user.id_utilizator}`
-      )
-      .then((rez) => {
-        const request = rez.data.rezultat.filter(
-          (x) => x.id_curs === Number(idCourse)
-        );
-        if (request.length === 0) {
-          setRequestStatus("unenrolled");
-        } else {
-          setRequestStatus(request.status);
-          setRequestId(request.id_cerere);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/cereriCurs/getAllCursuriALLOfAUser/${user.id_utilizator}`
+      );
+      const request = response.data.rezultat.find(
+        (x) => x.id_curs === Number(idCourse)
+      );
+      console.log("RESPONSE OF AXXIOS IN VERIFY:", response);
+      if (!request) {
+        setRequestStatus("unenrolled");
+      } else {
+        setRequestStatus(request.status);
+        setRequestId(request.id_cerere);
+        console.log("REQUEST ID: ", requestId);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const takeCourse = async () => {
-    await axios
-      .get(`http://localhost:8080/curs/getById/${idCourse}`)
-      .then((rez) => {
-        setCurs((prevState) => ({ ...prevState, ...rez.data.curs }));
-      })
-      .catch(() => {});
+    try {
+      const courseResponse = await axios.get(
+        `http://localhost:8080/curs/getById/${idCourse}`
+      );
+      setCourse((prevState) => ({ ...prevState, ...courseResponse.data.curs }));
 
-    await axios
-      .get(`http://localhost:8080/sectiuni/selectAll/${idCourse}`)
-      .then((result) => {
-        setCurs((prevState) => ({
-          ...prevState,
-          sectiuni: result.data.sectiuni,
-        }));
-      })
-      .catch((err) => {
-        toast.current.show({
-          severity: "fail",
-          summary: "Failed",
-          detail: "eroare incarcare sectiuni",
-          life: 3000,
-        });
+      const sectionsResponse = await axios.get(
+        `http://localhost:8080/sectiuni/selectAll/${idCourse}`
+      );
+      setCourse((prevState) => ({
+        ...prevState,
+        sectiuni: sectionsResponse.data.sectiuni,
+      }));
+    } catch (error) {
+      toast.current.show({
+        severity: "fail",
+        summary: "Failed",
+        detail: "Error loading sections",
+        life: 3000,
       });
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -69,57 +66,47 @@ function CourseSummary() {
     verifyRequestExists();
   }, []);
   const handleEnroll = async () => {
-    if (requestStatus === "unenrolled" || requestStatus === "declined") {
-      await axios
-        .get("http://localhost:8080/cereriCurs/exists", {
-          id_utilizator: user.id_utilizator,
-          id_curs: idCourse,
-        })
-        .then(async (rez) => {
-          if (rez.data.message === "nope") {
-            await axios
-              .post("http://localhost:8080/cereriCurs/insert", {
-                id_utilizator: user.id_utilizator,
-                id_curs: Number(idCourse),
-                status: "pending",
-              })
-              .then((rez) => {
-                console.log(rez);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          } else {
-            console.log("intra aici", requestId);
-            await axios
-              .put(`http://localhost:8080/cereriCurs/update/${requestId}`, {
-                status: "pending",
-              })
-              .then((rez) => {
-                console.log(rez);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    try {
+      console.log(requestStatus);
+      if (requestStatus === "unenrolled" || requestStatus === "declined") {
+        const response = await axios.post(
+          "http://localhost:8080/cereriCurs/exists",
 
-      setRequestStatus("pending");
-    } else {
-      setRequestStatus("declined");
-      await axios
-        .put(`http://localhost:8080/cereriCurs/update/${requestId}`, {
-          status: "declined",
-        })
-        .then((rez) => {
-          console.log(rez);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+          {
+            id_utilizator: Number(user.id_utilizator),
+            id_curs: Number(idCourse),
+          }
+        );
+        console.log(response.data.message);
+        if (response.data.message === "nope") {
+          await axios.post("http://localhost:8080/cereriCurs/insert", {
+            id_utilizator: user.id_utilizator,
+            id_curs: Number(idCourse),
+            status: "pending",
+          });
+          setRequestStatus("pending");
+        } else if (response.data.message === "exists") {
+          console.log("Request already exists");
+
+          await axios
+            .put(`http://localhost:8080/cereriCurs/update/${requestId}`, {
+              status: "pending",
+            })
+            .then(() => {
+              setRequestStatus("pending");
+            });
+        }
+      } else {
+        await axios
+          .put(`http://localhost:8080/cereriCurs/update/${requestId}`, {
+            status: "declined",
+          })
+          .then(() => {
+            setRequestStatus("declined");
+          });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -127,28 +114,28 @@ function CourseSummary() {
     <div className={style.mainContainer}>
       <Toast ref={toast} />
 
-      <h1>{curs.denumire}</h1>
+      <h1>{course.denumire}</h1>
       <div className={style.flexContainer}>
         <div className={style.leftContainer}>
           <img
-            src={curs.imagine_reprezentativa}
+            src={course.imagine_reprezentativa}
             alt=""
             className={style.courseImage}
           />
         </div>
         <div className={style.rightContainer}>
-          <h2>Why to enroll to this course?</h2>
-          <div className={style.rightContainerDesc}>{curs.descriere}</div>
-          {requestStatus == "accepted" ? (
+          <h2>Why enroll in this course?</h2>
+          <div className={style.rightContainerDesc}>{course.descriere}</div>
+          {requestStatus === "accepted" ? (
             <Button
-              content={"Unenrrol"}
+              content={"Unenroll"} // Corrected typo
               className={`${style.unEnrollBtn} ${style.btn}`}
               onClick={handleEnroll}
             />
           ) : (
             <Button
               className={`${style.btn} ${
-                requestStatus == "enroll"
+                requestStatus === "enroll"
                   ? style.enrollBtn
                   : requestStatus === "pending"
                   ? style.pendingBtn
@@ -156,24 +143,24 @@ function CourseSummary() {
               }`}
               onClick={handleEnroll}
               content={requestStatus}
-            ></Button>
+            />
           )}
         </div>
       </div>
       <div className={style.accordion}>
         <Accordion>
-          {curs.sectiuni ? (
-            curs.sectiuni.map((s) => {
-              return (
-                <AccordionTab
-                  key={s.id_sectiune}
-                  header={s.denumire}
-                  className={style.accordionRow}
-                >
-                  <p className={`m=0 accordionDescription`}>{s.descriere}</p>
-                </AccordionTab>
-              );
-            })
+          {course.sectiuni ? (
+            course.sectiuni.map((section) => (
+              <AccordionTab
+                key={section.id_sectiune}
+                header={section.denumire}
+                className={style.accordionRow}
+              >
+                <p className={`m=0 accordionDescription`}>
+                  {section.descriere}
+                </p>
+              </AccordionTab>
+            ))
           ) : (
             <div></div>
           )}
