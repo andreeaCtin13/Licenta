@@ -37,8 +37,6 @@ const controller = {
         .json({ message: "nu exista sectiunea pentru care este testul" });
     }
 
-    //TO DO SA SE INSEREZE MAXIM UN VIDEO LINK PER SECTIUNE - daca ai timp, daca nu, gestionez din frontend
-
     await resurseModel
       .create({
         tip_resursa,

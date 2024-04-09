@@ -31,6 +31,21 @@ function FormNewTest() {
             }}
           />
         </div>
+        <div className={style.formRow}>
+          <label htmlFor="noQuestions">Punctaj minim promovare</label>
+          <input
+            type="number"
+            min={1}
+            max={100000}
+            onChange={(e) => {
+              setNoOfQuestions(e.target.value);
+              setNewSection({
+                ...newSection,
+                punctaj_minim_promovare: Number(e.target.value),
+              });
+            }}
+          />
+        </div>
         {questions}
       </form>
     </div>
