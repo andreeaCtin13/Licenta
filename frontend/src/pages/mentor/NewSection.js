@@ -66,7 +66,7 @@ function NewSection() {
       return;
     }
 
-    if (newSection.resurse.pdfs.length < 1) {
+    if (newSection.files.length < 1) {
       toast.current.show({
         severity: "fail",
         summary: "Failed",

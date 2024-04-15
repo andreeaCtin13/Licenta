@@ -323,6 +323,10 @@ function AdminHomepage() {
 
   return (
     <div className={style.mainContainer}>
+      <div>
+        <Button content="Logout" className={style.btn}></Button>
+      </div>
+
       <h1>Hi, Admin!!!</h1>
       <Toast ref={toast} />
       <div className="card">

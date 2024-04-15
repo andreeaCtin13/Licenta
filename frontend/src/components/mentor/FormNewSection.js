@@ -74,12 +74,13 @@ function FormNewSection() {
     console.log("Handle file change called."); // Verificare dacă funcția este apelată
 
     const fileList = event.target.files;
+    console.log("filelist!!:", fileList);
     const formData = new FormData();
     for (let i = 0; i < fileList.length; i++) {
-      formData.append("file", fileList[i]); // modificare aici
+      formData.append("file", fileList[i]);
     }
     setFileToSend(formData);
-    setFiles([...files, ...fileList]); // actualizare corectă a stării fișierelor
+    setFiles([...files, ...fileList]);
 
     const updatedPdfs = [];
     formData.getAll("file").forEach((file) => {
@@ -88,18 +89,25 @@ function FormNewSection() {
         file_object: file,
       });
     });
+    console.log("vezi");
+    for (const file of formData.getAll("file")) {
+      console.log(file);
+    }
+
     setNewSection({
       ...newSection,
+      files: formData,
       resurse: {
         ...newSection.resurse,
         pdfs: updatedPdfs,
       },
     });
   };
+  console.log("FILES", fileToSend);
 
   const handleRemoveFile = (index) => {
     const updatedFiles = [...files];
-    updatedFiles.splice(index, 1); // eliminarea fișierului din listă
+    updatedFiles.splice(index, 1);
     setFiles(updatedFiles);
 
     const updatedPdfs = updatedFiles.map((file) => ({

@@ -14,6 +14,7 @@ import CourseStatus from "./pages/mentor/CourseStatus";
 import NewCourse from "./pages/mentor/NewCourse";
 import NewSection from "./pages/mentor/NewSection";
 import AdminHomepage from "./pages/admin/AdminHomepage";
+import Requests from "./pages/mentor/Requests.js";
 
 function App() {
   const [user, setUser] = useState(false);
@@ -40,6 +41,7 @@ function App() {
           <Route path="/new-course" element={<NewCourse />}></Route>
           <Route path="/new-section/:idCourse" element={<NewSection />}></Route>
           <Route path="/admin" element={<AdminHomepage />}></Route>
+          <Route path="/requests" element={<Requests />}></Route>
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>

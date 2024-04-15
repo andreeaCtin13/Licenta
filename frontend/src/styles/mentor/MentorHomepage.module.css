@@ -26,7 +26,6 @@
 }
 
 .btnCreateZone {
-  width: 100%;
   display: flex;
   justify-content: flex-end;
 }
@@ -36,6 +35,8 @@
   align-items: center;
   height: 3rem;
   padding: 1rem;
+  width: 10rem;
+  justify-content: center;
   background-color: var(--var--light--purple);
   color: var(--var--white);
   border-radius: 1rem;
@@ -52,6 +53,15 @@
 
 .link {
   color: var(--var--dark--purple);
+}
+
+.zoneOfBtns {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
 }
 
 @media screen and (max-width: 900px) {

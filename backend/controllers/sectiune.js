@@ -11,15 +11,13 @@ const app = express();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./files");
+    cb(null, "./uploads");
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 19);
     cb(null, `${file.originalname}-${uniqueSuffix}`);
   },
 });
-
-const upload = multer({ storage: storage });
 
 const upload = multer({ storage: storage });
 
@@ -46,6 +44,8 @@ const controller = {
     }
   },
   insertSectiune: async (req, res) => {
+    console.log("BODY:", req.body);
+    console.log("FILES:", req.files);
     const {
       denumire,
       descriere,
@@ -53,11 +53,12 @@ const controller = {
       intrebari,
       cerinte,
       resurse,
+      files,
       punctaj_minim_promovare,
     } = req.body;
-    const files = req.files;
-    console.log("files", files);
-    upload.array("file");
+
+    // console.log("files", files);
+    // upload.array("file");
 
     try {
       let curs = await cursuriModel.findByPk(id_curs);

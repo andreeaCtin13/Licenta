@@ -5,12 +5,17 @@ import { Link } from "react-router-dom";
 import Button from "../../components/Button";
 import axios from "axios";
 import { Toast } from "primereact/toast";
+import { Dialog } from "primereact/dialog";
 
 function MentorHomepage() {
   const { user, setUser } = useContext(UserContext);
   const toast = useRef(null);
   const [cursuri, setCursuri] = useState([]);
+  const [logoutDialog, setLogoutDialog] = useState(false);
 
+  const handleLogout = () => {
+    setLogoutDialog(true);
+  };
   const getCursuri = async () => {
     axios
       .get(
@@ -39,13 +44,28 @@ function MentorHomepage() {
     <div className={style.mainContainer}>
       <Toast ref={toast} />
 
-      <div className={style.btnCreateZone}>
-        <Link to="/new-course">
+      <div className={style.zoneOfBtns}>
+        <div className={style.btnCreateZone}>
+          <Link to="/new-course">
+            <Button
+              className={style.btnCreate}
+              content="Create a new course"
+            ></Button>
+          </Link>
+        </div>
+
+        <div className={style.btnCreateZone}>
+          <Link to="/requests">
+            <Button className={style.btnCreate} content="See requests"></Button>
+          </Link>
+        </div>
+        <div className={style.btnCreateZone}>
           <Button
             className={style.btnCreate}
-            content="Create a new course"
+            content="Logout"
+            onClick={handleLogout}
           ></Button>
-        </Link>
+        </div>
       </div>
       <h1>Hi, {user.nume}</h1>
       <div>
@@ -83,6 +103,28 @@ function MentorHomepage() {
           )}
         </div>
       </div>
+      <Dialog
+        visible={logoutDialog}
+        onHide={() => setLogoutDialog(false)}
+        className={style.modal}
+      >
+        Are you sure you want to logout?
+        <div className={style.buttonsLogout}>
+          <Link to="/">
+            <Button
+              onClick={() => {
+                setUser(false);
+                setLogoutDialog(false);
+              }}
+              content={"Yes"}
+            ></Button>
+          </Link>
+          <Button
+            onClick={() => setLogoutDialog(false)}
+            content={"No"}
+          ></Button>
+        </div>
+      </Dialog>
     </div>
   );
 }
