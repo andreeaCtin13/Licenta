@@ -3,7 +3,10 @@ const router = express.Router();
 
 const cerereCursController = require("../controllers").cereriCurs;
 
-router.get("/", cerereCursController.getAllCereri);
+router.get(
+  "/getAllCereri/:id_utilizator/query",
+  cerereCursController.getAllCereri
+);
 router.post("/insert", cerereCursController.insertCerereCurs);
 router.get("/getAllCursuriOfAUser/:id", cerereCursController.getCursuriOfAUser);
 router.put("/update/:id", cerereCursController.updateCerereCurs);

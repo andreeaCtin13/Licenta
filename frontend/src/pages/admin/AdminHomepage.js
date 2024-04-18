@@ -137,19 +137,7 @@ function AdminHomepage() {
     setDeleteUserDialog(true);
   };
 
-  const actionBodyTemplate = (rowData) => {
-    return (
-      <React.Fragment>
-        <Button
-          icon="pi pi-trash"
-          rounded
-          outlined
-          severity="danger"
-          onClick={() => confirmDeleteUser(rowData)}
-        />
-      </React.Fragment>
-    );
-  };
+  1;
 
   const deleteUser = async () => {
     console.log(rowUser);

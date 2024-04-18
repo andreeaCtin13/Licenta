@@ -1,10 +1,69 @@
 const cereriCursModel = require("../models").cereriCurs;
 const cursuriModel = require("../models").cursuri;
 const utilizatorModel = require("../models").users;
+const { EqOp } = require("./Operators");
 
 const controller = {
-  getAllCereri: (req, res) => {
-    res.status(200).send({ message: "totu ok la cereri cursuri" });
+  getAllCereri: async (req, res) => {
+    //with pagination
+    const { id_utilizator } = req.params;
+
+    const filter = req.query;
+
+    if (!filter.take) filter.take = 10;
+    if (!filter.skip) filter.skip = 1;
+
+    let whereClause = {};
+
+    if (filter.status) {
+      whereClause.status = { [EqOp]: filter.status };
+    }
+
+    let user = await utilizatorModel.findByPk(id_utilizator);
+    if (!user) {
+      return res.status(400).json({
+        message: "Nu exista un user cu id-ul dat ca paametru in functie",
+      });
+    }
+
+    const cursuri = await cursuriModel.findAll({
+      where: {
+        id_utilizator: id_utilizator,
+      },
+    });
+
+    let requests = [];
+
+    for (let i = 0; i < cursuri.length; i++) {
+      await await cereriCursModel
+        .findAll({
+          where: { ...whereClause, id_curs: cursuri[i].id_curs },
+        })
+        .then(async (rezultat) => {
+          let reqs = [];
+          for (let j = 0; j < rezultat.length; j++) {
+            user = await utilizatorModel.findByPk(rezultat[j].id_utilizator);
+
+            reqs.push({
+              id_cerere: rezultat[i].id_cerere,
+              id_curs: cursuri[i].dataValues.id_curs,
+              id_utilizator: user.id_utilizator,
+              denumire: cursuri[i].dataValues.denumire,
+              nume: user.nume,
+              mail: user.mail,
+            });
+          }
+          requests.push(...reqs);
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.status(500).send({ message: "server error", err: err });
+        });
+    }
+
+    return res
+      .status(200)
+      .json({ requests: requests, number_of_req: requests.length });
   },
 
   insertCerereCurs: async (req, res) => {
@@ -124,7 +183,7 @@ const controller = {
       return res.status(400).json({ message: "Cererea nu există" });
     } else {
       try {
-        await cerere.update({ status: status }); // Assuming you want to update the status to "accepted"
+        await cerere.update({ status: status });
         return res
           .status(200)
           .json({ message: "Cererea a fost actualizată cu succes" });
