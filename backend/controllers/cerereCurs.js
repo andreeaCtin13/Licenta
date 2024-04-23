@@ -6,12 +6,14 @@ const { EqOp } = require("./Operators");
 const controller = {
   getAllCereri: async (req, res) => {
     //with pagination
-    const { id_utilizator } = req.params;
+    const { id_utilizator, idCourse } = req.params;
 
     const filter = req.query;
 
     if (!filter.take) filter.take = 10;
     if (!filter.skip) filter.skip = 1;
+    console.log("take: ", filter.take);
+    console.log("skip: ", filter.skip);
 
     let whereClause = {};
 
@@ -25,19 +27,19 @@ const controller = {
         message: "Nu exista un user cu id-ul dat ca paametru in functie",
       });
     }
-
-    const cursuri = await cursuriModel.findAll({
-      where: {
-        id_utilizator: id_utilizator,
-      },
-    });
+    console.log(idCourse);
+    const curs = await cursuriModel.findByPk(idCourse);
 
     let requests = [];
 
-    for (let i = 0; i < cursuri.length; i++) {
-      await await cereriCursModel
+    console.log("CURS", curs);
+
+    if (curs) {
+      await cereriCursModel
         .findAll({
-          where: { ...whereClause, id_curs: cursuri[i].id_curs },
+          where: { ...whereClause, id_curs: idCourse },
+          limit: parseInt(filter.take),
+          offset: parseInt(filter.skip - 1) * parseInt(filter.take),
         })
         .then(async (rezultat) => {
           let reqs = [];
@@ -45,10 +47,10 @@ const controller = {
             user = await utilizatorModel.findByPk(rezultat[j].id_utilizator);
 
             reqs.push({
-              id_cerere: rezultat[i].id_cerere,
-              id_curs: cursuri[i].dataValues.id_curs,
+              id_cerere: rezultat[j].id_cerere,
+              id_curs: idCourse,
               id_utilizator: user.id_utilizator,
-              denumire: cursuri[i].dataValues.denumire,
+              denumire: curs.denumire,
               nume: user.nume,
               mail: user.mail,
             });
@@ -59,6 +61,8 @@ const controller = {
           console.log(err);
           return res.status(500).send({ message: "server error", err: err });
         });
+    } else {
+      return res.status(400).send({ message: "nu ai trimis ce trebuia" });
     }
 
     return res

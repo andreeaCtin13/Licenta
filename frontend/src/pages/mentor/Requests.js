@@ -1,9 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import Button from "../../components/Button";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import style from "../../styles/mentor/Requests.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faX, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheck,
+  faX,
+  faArrowLeft,
+  faChevronRight,
+  faChevronLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
@@ -19,18 +25,21 @@ function Requests() {
   const [page, setPage] = useState(1);
   const [totalRec, setTotalRec] = useState(1);
   const { user, setUser } = useContext(UserContext);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [metaKey, setMetaKey] = useState();
+  const { idCourse } = useParams();
 
   const getAllCereri = async () => {
     const query = "query?status=pending";
-    console.log(user);
     await axios
       .get(
-        `http://localhost:8080/cereriCurs/getAllCereri/${user.id_utilizator}/${query}&take=8&skip=${page}`
+        `http://localhost:8080/cereriCurs/getAllCereri/${user.id_utilizator}/${idCourse}/${query}&take=8&skip=${page}`
       )
       .then((rezultat) => {
+        console.log("requests:", rezultat.data.requests);
+        console.log("total records:", rezultat.data.count);
         setRequestRows(rezultat.data.requests);
-
-        console.log(rezultat);
+        setTotalRec(rezultat.data.total_records);
       })
       .catch((err) => {
         console.log(err);
@@ -38,12 +47,27 @@ function Requests() {
   };
 
   useEffect(() => {
-    getAllCereri();
-    console.log(requestRows);
+    setPage(1);
   }, []);
+
+  useEffect(() => {
+    getAllCereri();
+  }, [page]);
 
   const changeVisibility = () => {
     setVisible(!visible);
+  };
+
+  const onPageChange = (type_event) => {
+    if (type_event === "next") {
+      if (page !== totalRec) {
+        setPage(page + 1);
+      }
+    } else {
+      if (page !== 1) {
+        setPage(page - 1);
+      }
+    }
   };
 
   const header = (
@@ -69,6 +93,7 @@ function Requests() {
             content={<FontAwesomeIcon icon={faCheck} />}
             onClick={() => {
               setAction("accept");
+              setSelectedRow(rowData);
               changeVisibility();
             }}
           ></Button>
@@ -77,6 +102,7 @@ function Requests() {
             content={<FontAwesomeIcon icon={faX} />}
             onClick={() => {
               setAction("decline");
+              setSelectedRow(rowData);
               changeVisibility();
             }}
           ></Button>
@@ -86,16 +112,31 @@ function Requests() {
   };
 
   const updateRequest = async () => {
-    //AXIOS CALL BICIZZZZZ
-
     if (action === "accept") {
-      await axios
-        .put(`http://localhost:8080/cereriCurs/update/2`)
-        .then(() => {})
-        .catch((err) => {
-          console.log(err);
-        });
+      if (selectedRow) {
+        console.log("in functie:", selectedRow);
+
+        const requestId = selectedRow.id_cerere;
+
+        console.log("Request ID:", requestId);
+
+        await axios
+          .put(`http://localhost:8080/cereriCurs/update/${requestId}`, {
+            status: "accepted",
+          })
+          .then(() => {
+            setRequestRows([
+              ...requestRows.filter((req) => req.id_cerere != requestId),
+            ]);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        console.error("No row selected.");
+      }
     } else {
+      console.error("Invalid action.");
     }
   };
 
@@ -113,8 +154,13 @@ function Requests() {
 
       <DataTable
         value={requestRows}
-        dataKey="mail"
+        dataKey="id_request"
         rows={10}
+        totalRecords={totalRec}
+        selectionMode="single"
+        selection={selectedRow}
+        onSelectionChange={(e) => setSelectedRow(e.value)}
+        metaKeySelection={metaKey}
         globalFilter={globalFilter}
         header={header}
       >
@@ -140,6 +186,23 @@ function Requests() {
           style={{ minWidth: "5rem" }}
         ></Column>
       </DataTable>
+      <div className={style.paginationZone}>
+        <button
+          className={style.btnPagination}
+          onClick={() => onPageChange("prev")}
+        >
+          <FontAwesomeIcon icon={faChevronLeft} />
+        </button>
+        <span>
+          Page {page} from {totalRec}
+        </span>
+        <button
+          className={style.btnPagination}
+          onClick={() => onPageChange("next")}
+        >
+          <FontAwesomeIcon icon={faChevronRight} />
+        </button>
+      </div>
       <Dialog
         visible={visible}
         style={{ width: "32rem" }}
@@ -151,7 +214,8 @@ function Requests() {
         <div>
           {action === "accept" ? (
             <div>
-              Sigur vrei sa accepti cererea de inscriere din partea lui x?
+              Sigur vrei sa accepti cererea de inscriere din partea lui{" "}
+              {selectedRow ? selectedRow.nume : "x"}?
               <div className={style.btnZoneModal}>
                 <Button
                   className={`${style.declineBtn} ${style.btn}`}

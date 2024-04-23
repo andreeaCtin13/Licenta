@@ -65,3 +65,33 @@
 .btnRequest:nth-child(even) {
   background-color: red;
 }
+
+.btnPagination {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 2rem;
+  background-color: var(--var--dark--purple);
+  color: var(--var--white);
+  font-size: 1rem;
+  border: none;
+  transition: 0.5s;
+}
+
+.btnPagination:hover {
+  cursor: pointer;
+  transition: 0.5s;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.paginationZone {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2rem;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.paginationZone span {
+  font-size: 1.3rem;
+}

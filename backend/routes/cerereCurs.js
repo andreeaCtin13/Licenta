@@ -4,7 +4,7 @@ const router = express.Router();
 const cerereCursController = require("../controllers").cereriCurs;
 
 router.get(
-  "/getAllCereri/:id_utilizator/query",
+  "/getAllCereri/:id_utilizator/:idCourse/query",
   cerereCursController.getAllCereri
 );
 router.post("/insert", cerereCursController.insertCerereCurs);

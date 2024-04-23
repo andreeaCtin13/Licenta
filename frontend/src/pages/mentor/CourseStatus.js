@@ -110,6 +110,11 @@ function CourseStatus() {
           ></Button>
         </Link>
       </div>
+      <div className={style.btnCreateZone}>
+        <Link to={`/requests/${idCourse}`}>
+          <Button className={style.btnCreate} content="See requests"></Button>
+        </Link>
+      </div>
       <Accordion>
         {sectiuni.map((sectiune, i) => {
           return (

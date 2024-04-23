@@ -46,6 +46,7 @@ function AdminHomepage() {
             detail: "User Created",
             life: 3000,
           });
+          loadData();
         })
         .catch((err) => {
           toast.current.show({
@@ -137,7 +138,19 @@ function AdminHomepage() {
     setDeleteUserDialog(true);
   };
 
-  1;
+  const actionBodyTemplate = (rowData) => {
+    return (
+      <React.Fragment>
+        <Button
+          icon="pi pi-trash"
+          rounded
+          outlined
+          severity="danger"
+          onClick={() => confirmDeleteUser(rowData)}
+        />
+      </React.Fragment>
+    );
+  };
 
   const deleteUser = async () => {
     console.log(rowUser);
@@ -193,6 +206,7 @@ function AdminHomepage() {
       />
     </React.Fragment>
   );
+
   const deleteUserDialogFooter = (
     <React.Fragment>
       <Button
@@ -312,7 +326,7 @@ function AdminHomepage() {
   return (
     <div className={style.mainContainer}>
       <div>
-        <Button content="Logout" className={style.btn}></Button>
+        <button className={`${style.btn}`}>Logout</button>
       </div>
 
       <h1>Hi, Admin!!!</h1>

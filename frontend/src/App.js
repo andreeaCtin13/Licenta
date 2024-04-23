@@ -41,7 +41,7 @@ function App() {
           <Route path="/new-course" element={<NewCourse />}></Route>
           <Route path="/new-section/:idCourse" element={<NewSection />}></Route>
           <Route path="/admin" element={<AdminHomepage />}></Route>
-          <Route path="/requests" element={<Requests />}></Route>
+          <Route path="/requests/:idCourse" element={<Requests />}></Route>
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>

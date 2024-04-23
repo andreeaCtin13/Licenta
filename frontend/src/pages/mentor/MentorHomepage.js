@@ -55,11 +55,6 @@ function MentorHomepage() {
         </div>
 
         <div className={style.btnCreateZone}>
-          <Link to="/requests">
-            <Button className={style.btnCreate} content="See requests"></Button>
-          </Link>
-        </div>
-        <div className={style.btnCreateZone}>
           <Button
             className={style.btnCreate}
             content="Logout"
