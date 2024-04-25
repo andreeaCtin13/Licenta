@@ -12,17 +12,21 @@ h1 {
 
 .questionContainer {
   font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
 }
 
 .unlist {
   list-style: none;
 }
 
-li {
+.li {
   display: flex;
-  justify-content: flex-start;
-  height: 2rem;
+  justify-content: center;
   align-items: center;
+  gap: 1rem;
 }
 
 input {
@@ -30,8 +34,25 @@ input {
   width: 1.5rem;
 }
 
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .submitBtn {
   width: 10rem;
   height: 3rem;
+  border: none;
   background-color: var(--var--light--purple);
+  transition: 0.8s;
+  border-radius: 2rem 0;
+}
+
+.submitBtn:hover {
+  cursor: pointer;
+  transition: 0.8s;
+  background-color: var(--var--light--pink);
+  box-shadow: 5px 5px 5px var(--var--black);
 }

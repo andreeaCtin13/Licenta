@@ -3,34 +3,65 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import style from "../../styles/mentee/Test.module.css";
 import axios from "axios";
 function Test() {
-  const { idTest, idSectiune } = useParams();
+  const { idSectiune } = useParams();
+  const [idTest, setIdTest] = useState();
   const [intrebari, setIntrebari] = useState([]);
   const [totalGrade, setTotalGrade] = useState(0);
+  const [sectiune, setSectiune] = useState();
 
   const [selectedOptions, setSelectedOptions] = useState([]);
-  console.log(idTest);
 
-  const handleOptionChange = (qId, optId, optScor) => {
-    const updatedOptions = [...selectedOptions];
-    const exist = updatedOptions.findIndex((option) => option.qId === qId);
+  const getSectiuneById = async () => {
+    await axios
+      .get(`http://localhost:8080/sectiuni/getSectiuneById/${idSectiune}`)
+      .then((rez) => {
+        setSectiune({ ...rez.data.sectiune });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
-    if (exist !== -1) {
-      updatedOptions[exist] = {
-        qId,
-        optId,
-        optScor,
-      };
-    } else {
-      updatedOptions.push({ qId, optId, optScor });
-    }
-    setSelectedOptions(updatedOptions);
+    await axios
+      .get(`http://localhost:8080/teste/getTestByIdSection/${idSectiune}`)
+      .then(async (rez) => {
+        setIdTest(rez.data.test[0].id_test);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+  console.log(selectedOptions);
+
+  const handleOptionChange = (qIndex, optIndex, optScor) => {
+    const updatedIntrebari = [...intrebari];
+    updatedIntrebari[qIndex].varianteDeRaspuns[optIndex].selected =
+      !updatedIntrebari[qIndex].varianteDeRaspuns[optIndex].selected;
+    setIntrebari(updatedIntrebari);
+  };
+
+  console.log("updatedIntrebari", intrebari);
 
   const setGrade = () => {
     let grade = 0;
-    selectedOptions.forEach((option) => {
-      grade += option.optScor;
+    intrebari.forEach((intrebare) => {
+      intrebare.varianteDeRaspuns.forEach((optiune) => {
+        if (optiune.selected && optiune.este_corecta) {
+          grade +=
+            intrebare.punctaj_intrebare /
+            intrebare.varianteDeRaspuns.filter((x) => x.este_corecta).length;
+        } else if (optiune.selected && !optiune.este_corecta) {
+          grade -=
+            intrebare.punctaj_intrebare /
+            intrebare.varianteDeRaspuns.filter((x) => x.este_corecta).length;
+        }
+      });
     });
+
+    if (grade < 0) {
+      grade = 0;
+    }
+
+    console.log("GRADE", grade);
     setTotalGrade(grade);
   };
 
@@ -40,54 +71,56 @@ function Test() {
     )
       .then((rez) => {
         setIntrebari(rez.data.intrebari);
-        console.log(rez);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
-    setTestFunction();
+    getSectiuneById();
   }, []);
 
-  console.log(intrebari);
+  useEffect(() => {
+    setTestFunction();
+  }, [idTest]);
+
   return (
     <div className={style.testContainer}>
-      {/* <h1>{test.testTitle}</h1> */}
-      <div>
-        {intrebari.map((quest, qIndex) => {
-          return (
-            <div key={qIndex} className={style.questionContainer}>
-              <div>{quest.text_intrebare}</div>
-
-              <ul className={style.unlist}>
-                {quest.varianteDeRaspuns.map((opt, optIndex) => {
-                  const qId = `question_${qIndex}`;
-                  const optId = `option_${optIndex}`;
-                  const optScor = opt.scor;
-                  return (
-                    <li key={optId}>
-                      <input
-                        type="radio"
-                        name={qId}
-                        checked={selectedOptions.some(
-                          (option) =>
-                            option.qId === qId && option.optId === optId
-                        )}
-                        onChange={() => handleOptionChange(qId, optId, optScor)}
-                      />
-                      <div>{opt.text_varianta}</div>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          );
-        })}
-        <Link to={`/course/${idSectiune}`}>
-          <button className={style.submitBtn} onClick={setGrade}>
-            Submit
-          </button>
-        </Link>
+      <h1>{sectiune ? sectiune.denumire : ""}</h1>
+      <div className={style.container}>
+        {intrebari.map((intrebare, qIndex) => (
+          <div key={qIndex} className={style.questionContainer}>
+            <div>{intrebare.text_intrebare}</div>
+            <ul className={style.unlist}>
+              {intrebare.varianteDeRaspuns.map((optiune, optIndex) => (
+                <li className={style.li} key={optIndex}>
+                  <input
+                    type="checkbox"
+                    onChange={() =>
+                      handleOptionChange(
+                        qIndex,
+                        optIndex,
+                        optiune.este_corecta
+                          ? intrebare.punctaj_intrebare /
+                              intrebare.varianteDeRaspuns.filter(
+                                (x) => x.este_corecta
+                              ).length
+                          : 0
+                      )
+                    }
+                  />
+                  <div>{optiune.text_varianta}</div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+        {/* <Link to={`/course/${idSectiune}`}> */}
+        <button className={style.submitBtn} onClick={setGrade}>
+          Submit
+        </button>
+        {/* </Link> */}
       </div>
     </div>
   );

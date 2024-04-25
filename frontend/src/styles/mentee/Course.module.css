@@ -134,11 +134,13 @@
   height: 3.3rem;
   border-radius: 2rem;
   transition: 1s;
+  border: none;
 }
 
 .testBtn:hover {
   cursor: pointer;
   border-radius: 10rem 1rem;
+  border: none;
 }
 
 .testBtnLink {
@@ -146,11 +148,13 @@
   font-size: 1.3rem;
   color: var(--var--dark--purple);
   transition: 1s;
+  border: none;
 }
 
 .testBtnLink:hover {
   text-decoration: underline;
   transition: 1s;
+  border: none;
 }
 .containerTest {
   display: flex;

@@ -22,5 +22,5 @@ router.post(
   upload.array("files", 20),
   sectiuniController.insertSectiune
 );
-
+router.get("/getSectiuneById/:id_sectiune", sectiuniController.getSectiuneById);
 module.exports = router;

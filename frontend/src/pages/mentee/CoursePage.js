@@ -237,19 +237,14 @@ function CoursePage() {
 
           <div className={style.containerTest}>
             <h2>VERIFICATION TEST</h2>
+            {console.log("hahaha", courseChosen.sectiuni[currentSectionIndex])}
             <Link
               className={style.testBtnLink}
               to={`/test/${
                 courseChosen
                   ? courseChosen.sectiuni[currentSectionIndex]
-                    ? courseChosen.sectiuni[currentSectionIndex].id_test
-                    : ""
-                  : ""
-              }/${
-                courseChosen
-                  ? courseChosen.sectiuni[currentSectionIndex]
                     ? courseChosen.sectiuni[currentSectionIndex].id_sectiune
-                    : ""
+                    : "1"
                   : ""
               }
               `}

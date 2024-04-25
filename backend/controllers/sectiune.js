@@ -189,6 +189,14 @@ const controller = {
       return res.status(500).json({ message: "server error" });
     }
   },
+
+  getSectiuneById: async (req, res) => {
+    console.log(req.body.id_sectiune);
+    const sectiune = await sectiuniModel.findByPk(req.params.id_sectiune);
+    return res.status(200).json({
+      sectiune: sectiune,
+    });
+  },
 };
 
 module.exports = controller;

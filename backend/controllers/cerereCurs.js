@@ -34,40 +34,41 @@ const controller = {
 
     console.log("CURS", curs);
 
+    let contor = 0;
     if (curs) {
-      await cereriCursModel
-        .findAll({
-          where: { ...whereClause, id_curs: idCourse },
-          limit: parseInt(filter.take),
-          offset: parseInt(filter.skip - 1) * parseInt(filter.take),
-        })
-        .then(async (rezultat) => {
-          let reqs = [];
-          for (let j = 0; j < rezultat.length; j++) {
-            user = await utilizatorModel.findByPk(rezultat[j].id_utilizator);
+      const rezultat = await cereriCursModel.findAndCountAll({
+        where: { ...whereClause, id_curs: idCourse },
+        limit: parseInt(filter.take),
+        offset: parseInt(filter.skip - 1) * parseInt(filter.take),
+      });
 
-            reqs.push({
-              id_cerere: rezultat[j].id_cerere,
-              id_curs: idCourse,
-              id_utilizator: user.id_utilizator,
-              denumire: curs.denumire,
-              nume: user.nume,
-              mail: user.mail,
-            });
-          }
-          requests.push(...reqs);
-        })
-        .catch((err) => {
-          console.log(err);
-          return res.status(500).send({ message: "server error", err: err });
+      console.log(rezultat);
+
+      let reqs = [];
+      for (let j = 0; j < rezultat.rows.length; j++) {
+        const cerere = rezultat.rows[j];
+        const user = await utilizatorModel.findByPk(cerere.id_utilizator);
+        reqs.push({
+          id_cerere: cerere.id_cerere,
+          id_curs: idCourse,
+          id_utilizator: user.id_utilizator,
+          denumire: curs.denumire,
+          nume: user.nume,
+          mail: user.mail,
         });
+      }
+
+      const response = {
+        requests: reqs,
+        number_of_req: rezultat.count,
+      };
+
+      return res.status(200).json(response);
     } else {
       return res.status(400).send({ message: "nu ai trimis ce trebuia" });
     }
 
-    return res
-      .status(200)
-      .json({ requests: requests, number_of_req: requests.length });
+    return res.status(200).json({ requests: requests, number_of_req: contor });
   },
 
   insertCerereCurs: async (req, res) => {

@@ -36,10 +36,10 @@ function Requests() {
         `http://localhost:8080/cereriCurs/getAllCereri/${user.id_utilizator}/${idCourse}/${query}&take=8&skip=${page}`
       )
       .then((rezultat) => {
-        console.log("requests:", rezultat.data.requests);
-        console.log("total records:", rezultat.data.count);
+        console.log("requests:", rezultat);
+        console.log("total records:", rezultat.data.number_of_req);
         setRequestRows(rezultat.data.requests);
-        setTotalRec(rezultat.data.total_records);
+        setTotalRec(Math.ceil(rezultat.data.number_of_req / 8));
       })
       .catch((err) => {
         console.log(err);
@@ -125,9 +125,7 @@ function Requests() {
             status: "accepted",
           })
           .then(() => {
-            setRequestRows([
-              ...requestRows.filter((req) => req.id_cerere != requestId),
-            ]);
+            getAllCereri();
           })
           .catch((err) => {
             console.log(err);
@@ -136,10 +134,31 @@ function Requests() {
         console.error("No row selected.");
       }
     } else {
-      console.error("Invalid action.");
+      if (action == "decline") {
+        if (selectedRow) {
+          console.log("in functie:", selectedRow);
+
+          const requestId = selectedRow.id_cerere;
+
+          console.log("Request ID:", requestId);
+
+          await axios
+            .put(`http://localhost:8080/cereriCurs/update/${requestId}`, {
+              status: "declined",
+            })
+            .then(() => {
+              getAllCereri();
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          console.error("No row selected.");
+        }
+      }
     }
   };
-
+  console.log(requestRows);
   return (
     <div className={style.mainContainer}>
       <div className={style.btnZone}>
@@ -157,8 +176,6 @@ function Requests() {
         dataKey="id_request"
         rows={10}
         totalRecords={totalRec}
-        selectionMode="single"
-        selection={selectedRow}
         onSelectionChange={(e) => setSelectedRow(e.value)}
         metaKeySelection={metaKey}
         globalFilter={globalFilter}
@@ -228,13 +245,15 @@ function Requests() {
                   content={"Da"}
                   onClick={() => {
                     updateRequest();
+                    changeVisibility();
                   }}
                 ></Button>
               </div>
             </div>
           ) : (
             <div>
-              Sigur vrei sa refuzi cererea de inscriere a lui y?
+              Sigur vrei sa refuzi cererea de inscriere a lui{" "}
+              {selectedRow ? selectedRow.nume : "x"}?
               <div className={style.btnZoneModal}>
                 <Button
                   className={`${style.declineBtn} ${style.btn}`}
@@ -247,6 +266,7 @@ function Requests() {
                   content={"Da"}
                   onClick={() => {
                     updateRequest();
+                    changeVisibility();
                   }}
                 ></Button>
               </div>

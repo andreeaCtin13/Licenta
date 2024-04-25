@@ -27,6 +27,26 @@ const controller = {
         return res.status(500).json({ error: err, message: "server error" });
       });
   },
+  getTestById: async (req, res) => {
+    const { id_sectiune } = req.params;
+
+    console.log("sectiune", id_sectiune);
+    const teste = await testeModel
+      .findAll({
+        where: {
+          id_sectiune: id_sectiune,
+        },
+      })
+      .then((rez) => {
+        return res.status(200).json({
+          test: rez,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        return res.status(500).json({ message: "server error" });
+      });
+  },
 };
 
 module.exports = controller;
