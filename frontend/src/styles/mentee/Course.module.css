@@ -13,6 +13,19 @@
   width: 100%;
 }
 
+.containerStatusUltimulTest {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.passed {
+  color: rgb(15, 181, 15);
+  font-weight: 700;
+}
+
 .mentor {
   font-size: 1.3rem;
   color: var(--var--light--pink);
@@ -135,6 +148,7 @@
   border-radius: 2rem;
   transition: 1s;
   border: none;
+  font-size: 1.5rem;
 }
 
 .testBtn:hover {
@@ -158,10 +172,20 @@
 }
 .containerTest {
   display: flex;
-  gap: 3rem;
+  flex-direction: column;
+  gap: 1rem;
   padding: 2rem;
   align-items: center;
   justify-content: center;
+}
+
+.failed {
+  color: red;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 input[type="file"] {

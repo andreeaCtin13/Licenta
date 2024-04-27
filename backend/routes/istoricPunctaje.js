@@ -5,7 +5,7 @@ const istoricPunctajeController = require("../controllers").istoricuriPunctaje;
 
 router.get("/", istoricPunctajeController.getAllIstoricuriPunctaje);
 router.post("/insert", istoricPunctajeController.insertGrade);
-router.post(
+router.get(
   "/getLastIstoricOfAUser/:id_utilizator/:id_sectiune",
   istoricPunctajeController.getLastIstoricOfAUser
 );

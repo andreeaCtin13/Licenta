@@ -44,13 +44,12 @@ const controller = {
       },
     });
 
-    console.log("Test", test);
-    console.log("id_sect:", id_sectiune);
     if (!test || test.length === 0) {
       return res.status(400).json({ message: "test invalid" });
     }
 
-    console.log("TEST", test);
+    console.log("test", test);
+
     const id_test = test[0].id_test;
     const istoric = await istoricuriPunctajeModel.findAll({
       where: {
@@ -59,13 +58,17 @@ const controller = {
       },
     });
     if (!istoric || istoric.length === 0) {
-      return res.status(400).json({
+      return res.status(200).json({
         message: "nu exista istoric",
       });
     }
-    return res
-      .status(200)
-      .json({ message: "ok", lastHistory: istoric[istoric.length - 1] });
+    return res.status(200).json({
+      message: "ok",
+      lastHistory: {
+        istoric: istoric[istoric.length - 1],
+        punctaj_minim_promovare: test[0].punctaj_minim_promovare,
+      },
+    });
   },
 };
 

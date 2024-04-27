@@ -19,6 +19,7 @@ function CoursePage() {
   const [files, setFiles] = useState([]);
   const toast = useRef(null);
   const [courseChosen, setCourseChosen] = useState();
+  const [stare, setStare] = useState();
 
   const playVideo = (index) => {
     setCurrentSectionIndex(index);
@@ -26,20 +27,29 @@ function CoursePage() {
     updateInfo(index);
   };
 
-  const getIstoric = async () => {
+  const getIstoric = async (idSectiune) => {
     await axios
-      .post(
-        `http://localhost:8080/istoricuriPunctaje/getLastIstoricOfAUser/${user.id_utilizator}/${currentSectionIndex}`
+      .get(
+        `http://localhost:8080/istoricuriPunctaje/getLastIstoricOfAUser/${user.id_utilizator}/${idSectiune}`
       )
       .then((rez) => {
         console.log("istoric:", rez.data);
+
+        if (rez.data.message === "nu exista istoric") {
+          setStare({
+            exists: false,
+          });
+        } else if (rez.data.message === "ok") {
+          setStare({
+            exists: true,
+            lastHistory: rez.data.lastHistory,
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
-  console.log("CURENT: ", currentSectionIndex);
 
   const setData = async () => {
     await axios
@@ -63,6 +73,8 @@ function CoursePage() {
             setCurrentSectionIndex(rez.data.sectiuni[0].id_sectiune);
 
             const sectiuni = rez.data.sectiuni;
+            getIstoric(rez.data.sectiuni[0].id_sectiune);
+
             setCourseChosen({ ...curs_data, sectiuni });
 
             await axios
@@ -114,7 +126,7 @@ function CoursePage() {
     }
 
     let formData = new FormData();
-    formData.append("file", files[index]); // Modificarea aici: schimbat 'file' în 'files'
+    formData.append("file", files[index]);
 
     try {
       await axios.post(
@@ -155,7 +167,6 @@ function CoursePage() {
 
   useEffect(() => {
     setData();
-    getIstoric();
   }, []);
 
   return (
@@ -202,9 +213,11 @@ function CoursePage() {
                       ? style.selectedVideo
                       : ""
                   }`}
-                  onClick={() => playVideo(section.id_sectiune)}
+                  onClick={() => {
+                    playVideo(section.id_sectiune);
+                    getIstoric(section.id_sectiune);
+                  }}
                 >
-                  {console.log("VEZI AICI", section.id_sectiune)}
                   <h3 key={index} className={style.videoPlaylistRowTitle}>
                     {section.denumire}
                   </h3>
@@ -261,23 +274,72 @@ function CoursePage() {
 
           <div className={style.containerTest}>
             <h2>Test de verificare</h2>
-
-            <Link
-              className={style.testBtnLink}
-              to={`/test/${
-                currentSectionIndex !== undefined ? currentSectionIndex : ""
-              }/${idCourse}`}
-              onClick={() => {
-                console.log("Course chosen:", courseChosen);
-                console.log("Current section index:", currentSectionIndex);
-              }}
-            >
-              <Button content={"Start"} className={style.testBtn}></Button>
-            </Link>
+            {stare ? (
+              stare.exists === false ? (
+                <Link
+                  className={style.testBtnLink}
+                  to={`/test/${
+                    currentSectionIndex !== undefined ? currentSectionIndex : ""
+                  }/${idCourse}`}
+                  onClick={() => {
+                    console.log("Course chosen:", courseChosen);
+                    console.log("Current section index:", currentSectionIndex);
+                  }}
+                >
+                  <Button content={"Start"} className={style.testBtn}></Button>
+                </Link>
+              ) : stare.lastHistory ? (
+                stare.lastHistory.istoric ? (
+                  stare.lastHistory.istoric.punctaj_obtinut <
+                  stare.lastHistory.punctaj_minim_promovare ? (
+                    <div className={style.containerStatusUltimulTest}>
+                      <div className={style.failed}>
+                        <div>
+                          Ultimul punctaj obținut:{" "}
+                          {stare.lastHistory.istoric.punctaj_obtinut} pct.
+                        </div>
+                        <div>
+                          Punctaj minim promovare:{" "}
+                          {stare.lastHistory.punctaj_minim_promovare} pct.
+                        </div>
+                      </div>
+                      <Link
+                        className={style.testBtnLink}
+                        to={`/test/${
+                          currentSectionIndex !== undefined
+                            ? currentSectionIndex
+                            : ""
+                        }/${idCourse}`}
+                        onClick={() => {
+                          console.log("Course chosen:", courseChosen);
+                          console.log(
+                            "Current section index:",
+                            currentSectionIndex
+                          );
+                        }}
+                      >
+                        <Button
+                          content={"Start"}
+                          className={style.testBtn}
+                        ></Button>
+                      </Link>
+                    </div>
+                  ) : (
+                    <div className={style.passed}>A fost trecut testul!</div>
+                  )
+                ) : (
+                  <div></div>
+                )
+              ) : (
+                <div></div>
+              )
+            ) : (
+              <div>Nu s-a putut incarca istoricul testelor</div>
+            )}
           </div>
         </div>
       ) : (
-        <div></div>
+        <div>jnbfre</div>
       )}
     </div>
   );

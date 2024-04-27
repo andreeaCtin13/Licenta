@@ -1,7 +1,12 @@
 .heroImage {
   width: 100%;
   height: 100vh;
-  background-image: url("../assets/landing-page-image.jpg");
+  background: linear-gradient(
+      0deg,
+      rgba(82, 54, 81, 0.3),
+      rgba(82, 54, 81, 0.3)
+    ),
+    url("../assets/landing_page_licenta.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -13,28 +18,35 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 100%;
+  width: 50%;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-around;
   color: var(--var--white);
+  background-color: var(--var--dark--purple);
+  box-shadow: 15px 10px 15px var(--var--light--purple);
+  border-radius: 1.2rem;
+  border: 0.4rem solid var(--var--dark--pink);
 }
 
 .title {
-  font-size: 7rem;
+  font-size: 6rem;
   text-shadow: 5px 5px 5px var(--var--black);
-  position: fixed;
-  margin-top: -8rem;
 }
 
 .formStyle {
-  background-color: var(--var--dark--purple);
   color: var(--var--white);
   padding: 2rem;
   width: 20rem;
   border-radius: 1rem;
-  box-shadow: 5px 5px 5px var(--var--black);
+}
+
+.logo {
+  border-radius: 50%;
+  height: 20rem;
+  width: 20rem;
 }
 
 .formRow {
