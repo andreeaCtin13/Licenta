@@ -22,26 +22,22 @@ function App() {
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <BrowserRouter>
-        {user && user.status === "junior" ? <Sidebar /> : <div></div>}
+        {user && user.status === "junior" && <Sidebar />}
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/course/:idCourse" element={<CoursePage />} />
           <Route path="/topics" element={<UserMarket />} />
-          <Route
-            path="/course-summary/:idCourse"
-            element={<CourseSummary />}
-          ></Route>
-          <Route path="/test/:idSectiune" element={<Test />} />
-          <Route path="/mentor-homepage" element={<MentorHomepage />}></Route>
-          <Route
-            path="/mentor-homepage/:idCourse"
-            element={<CourseStatus />}
-          ></Route>
-          <Route path="/new-course" element={<NewCourse />}></Route>
-          <Route path="/new-section/:idCourse" element={<NewSection />}></Route>
-          <Route path="/admin" element={<AdminHomepage />}></Route>
-          <Route path="/requests/:idCourse" element={<Requests />}></Route>
+          <Route path="/course-summary/:idCourse" element={<CourseSummary />} />
+          <Route path="/mentor-homepage" element={<MentorHomepage />} />
+          <Route path="/mentor-homepage/:idCourse" element={<CourseStatus />} />
+          <Route path="/new-course" element={<NewCourse />} />
+          <Route path="/new-section/:idCourse" element={<NewSection />} />
+          <Route path="/admin" element={<AdminHomepage />} />
+          <Route path="/requests/:idCourse" element={<Requests />} />
+          {user && user.status === "junior" && (
+            <Route path="/test/:idSectiune/:idCourse" element={<Test />} />
+          )}
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>

@@ -11,13 +11,14 @@ import { UserContext } from "../../context/UserContext";
 import { Toast } from "primereact/toast";
 
 function CoursePage() {
-  const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
+  const [currentSectionIndex, setCurrentSectionIndex] = useState();
   const { idCourse } = useParams();
   const { user, setUser } = useContext(UserContext);
   const [cerinte, setCerinte] = useState([]);
   const [resurse, setResurse] = useState([]);
   const [files, setFiles] = useState([]);
   const toast = useRef(null);
+  const [courseChosen, setCourseChosen] = useState();
 
   const playVideo = (index) => {
     setCurrentSectionIndex(index);
@@ -25,7 +26,21 @@ function CoursePage() {
     updateInfo(index);
   };
 
-  const [courseChosen, setCourseChosen] = useState();
+  const getIstoric = async () => {
+    await axios
+      .post(
+        `http://localhost:8080/istoricuriPunctaje/getLastIstoricOfAUser/${user.id_utilizator}/${currentSectionIndex}`
+      )
+      .then((rez) => {
+        console.log("istoric:", rez.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  console.log("CURENT: ", currentSectionIndex);
+
   const setData = async () => {
     await axios
       .get(`http://localhost:8080/curs/getById/${idCourse}`)
@@ -45,6 +60,8 @@ function CoursePage() {
         await axios
           .get(`http://localhost:8080/sectiuni/selectAll/${idCourse}`)
           .then(async (rez) => {
+            setCurrentSectionIndex(rez.data.sectiuni[0].id_sectiune);
+
             const sectiuni = rez.data.sectiuni;
             setCourseChosen({ ...curs_data, sectiuni });
 
@@ -138,6 +155,7 @@ function CoursePage() {
 
   useEffect(() => {
     setData();
+    getIstoric();
   }, []);
 
   return (
@@ -150,15 +168,15 @@ function CoursePage() {
             {courseChosen.denumire ? (
               <h1>{courseChosen.denumire}</h1>
             ) : (
-              <h1>error</h1>
+              <h1>eroare</h1>
             )}
             <div className={style.mentor}>
-              Mentored by {courseChosen.mentor.nume} ({courseChosen.mentor.mail}
+              Susținut de {courseChosen.mentor.nume} ({courseChosen.mentor.mail}
               )
             </div>
             <div className={style.description}>{courseChosen.descriere}</div>
           </div>
-          <h2>Video Resources</h2>
+          <h2>Resurse Video</h2>
 
           <div className={style.containerVideo}>
             <div className={style.video}>
@@ -172,7 +190,7 @@ function CoursePage() {
                     : "https://youtu.be/MTOiveIjRc0?si=jnIFMgnewLh8iose"
                 }
                 width={450}
-                controls
+                controls={true}
               />
             </div>
             <div className={style.videoPlaylistContainer}>
@@ -186,6 +204,7 @@ function CoursePage() {
                   }`}
                   onClick={() => playVideo(section.id_sectiune)}
                 >
+                  {console.log("VEZI AICI", section.id_sectiune)}
                   <h3 key={index} className={style.videoPlaylistRowTitle}>
                     {section.denumire}
                   </h3>
@@ -194,25 +213,30 @@ function CoursePage() {
             </div>
           </div>
           <div className={style.containerPDFS}>
-            <h2>PDF Resources</h2>
+            <h2>Resurse PDF</h2>
             <div className={style.pdfs}>
-              {resurse
-                .filter((x) => x.tip_resursa === "pdf_path")
-                .map((x, index) => {
-                  return (
-                    <button key={index} className={style.btnPDFS}>
-                      <div>{x.titlu_resursa}</div>
-                      <div>
-                        <FontAwesomeIcon icon={faAnglesDown} />
-                      </div>
-                    </button>
-                  );
-                })}
+              {resurse.filter((x) => x.tip_resursa === "pdf_path").length >
+              0 ? (
+                resurse
+                  .filter((x) => x.tip_resursa === "pdf_path")
+                  .map((x, index) => {
+                    return (
+                      <button key={index} className={style.btnPDFS}>
+                        <div>{x.titlu_resursa}</div>
+                        <div>
+                          <FontAwesomeIcon icon={faAnglesDown} />
+                        </div>
+                      </button>
+                    );
+                  })
+              ) : (
+                <div>Nu sunt disponibile resurse PDF</div>
+              )}
             </div>
           </div>
 
           <div className={style.containerAssigments}>
-            <h2>Assigments</h2>
+            <h2>Cerințe</h2>
             {cerinte.map((x, index) => {
               return (
                 <div className={style.assigment} key={index}>
@@ -226,7 +250,7 @@ function CoursePage() {
                     />
                     <Button
                       className={style.assigmentBtn}
-                      content="Upload"
+                      content="Încarcă"
                       onClick={() => uploadAssigment(x.id_cerinta, index)}
                     ></Button>
                   </div>
@@ -236,18 +260,17 @@ function CoursePage() {
           </div>
 
           <div className={style.containerTest}>
-            <h2>VERIFICATION TEST</h2>
-            {console.log("hahaha", courseChosen.sectiuni[currentSectionIndex])}
+            <h2>Test de verificare</h2>
+
             <Link
               className={style.testBtnLink}
               to={`/test/${
-                courseChosen
-                  ? courseChosen.sectiuni[currentSectionIndex]
-                    ? courseChosen.sectiuni[currentSectionIndex].id_sectiune
-                    : "1"
-                  : ""
-              }
-              `}
+                currentSectionIndex !== undefined ? currentSectionIndex : ""
+              }/${idCourse}`}
+              onClick={() => {
+                console.log("Course chosen:", courseChosen);
+                console.log("Current section index:", currentSectionIndex);
+              }}
             >
               <Button content={"Start"} className={style.testBtn}></Button>
             </Link>

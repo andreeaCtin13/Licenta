@@ -7,7 +7,7 @@ import {
   faArrowRightFromBracket,
   faShop,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Sidebar } from "primereact/sidebar";
 import { UserContext } from "../context/UserContext";
 import { Dialog } from "primereact/dialog";
@@ -25,6 +25,8 @@ function CustomSidebar() {
   const [visibleSidebar, setVisibleSidebar] = useState(false);
   const { user, setUser } = useContext(UserContext);
   const [coursesList, setCoursesList] = useState([]);
+  const location = useLocation();
+  console.log(location.pathname);
 
   const callData = async () => {
     console.log("ID USER: ", user.id_utilizator);
@@ -59,104 +61,116 @@ function CustomSidebar() {
 
   return (
     <div className={style.containerSidebar}>
-      <button
-        onClick={() => {
-          setVisibleSidebar(true);
-          callData();
-        }}
-        className={style.showButton}
-      >
-        <FontAwesomeIcon icon={faBars} className={style.menuIcon} />
-      </button>
-      <Sidebar
-        visible={visibleSidebar}
-        className={style.sidebar}
-        position="left"
-        onHide={() => setVisibleSidebar(false)}
-      >
-        <div className={style.logoAppContainer}>
-          <img src={Logo} alt="logo_learnIT" className={style.logo} />
-          <h1>LearnIT</h1>
-        </div>
-        <ul className={style.listOfCourses}>
-          <li className={style.courseListItem}>
-            <Link
-              to="/profile"
-              className={style.courseLink}
-              onClick={closeSidebarEvent}
-            >
-              <FontAwesomeIcon className={style.iconListItem} icon={faUser} />
-              Profile
-            </Link>
-          </li>
-          <li className={style.courseListItem}>
-            <Link
-              to="/topics"
-              onClick={closeSidebarEvent}
-              className={style.courseLink}
-            >
-              <FontAwesomeIcon icon={faShop} className={style.iconListItem} />
-              Courses Market
-            </Link>
-          </li>
-
-          {coursesList.map((course, indx) => {
-            return (
-              <li key={course.id_curs} className={style.courseListItem}>
+      {location.pathname.includes("/test") ? (
+        <div></div>
+      ) : (
+        <div>
+          <button
+            onClick={() => {
+              setVisibleSidebar(true);
+              callData();
+            }}
+            className={style.showButton}
+          >
+            <FontAwesomeIcon icon={faBars} className={style.menuIcon} />
+          </button>
+          <Sidebar
+            visible={visibleSidebar}
+            className={style.sidebar}
+            position="left"
+            onHide={() => setVisibleSidebar(false)}
+          >
+            <div className={style.logoAppContainer}>
+              <img src={Logo} alt="logo_learnIT" className={style.logo} />
+              <h1>LearnIT</h1>
+            </div>
+            <ul className={style.listOfCourses}>
+              <li className={style.courseListItem}>
                 <Link
+                  to="/profile"
                   className={style.courseLink}
-                  to={"/course/" + course.id_curs}
                   onClick={closeSidebarEvent}
                 >
                   <FontAwesomeIcon
                     className={style.iconListItem}
-                    icon={faGraduationCap}
+                    icon={faUser}
                   />
-                  {course.denumire}
+                  Profilul
                 </Link>
               </li>
-            );
-          })}
-          <li className={style.courseListItem}>
-            <Button
-              onClick={handleLogout}
-              className={style.logoutButton}
-              content={
-                <>
+              <li className={style.courseListItem}>
+                <Link
+                  to="/topics"
+                  onClick={closeSidebarEvent}
+                  className={style.courseLink}
+                >
                   <FontAwesomeIcon
-                    icon={faArrowRightFromBracket}
+                    icon={faShop}
                     className={style.iconListItem}
                   />
-                  Logout
-                </>
-              }
-            ></Button>
-          </li>
-        </ul>
-      </Sidebar>
+                  Oferta de cursuri
+                </Link>
+              </li>
 
-      <Dialog
-        visible={logoutDialog}
-        onHide={() => setLogoutDialog(false)}
-        className={style.modal}
-      >
-        Are you sure you want to logout?
-        <div className={style.buttonsLogout}>
-          <Link to="/">
-            <Button
-              onClick={() => {
-                setUser(false);
-                setLogoutDialog(false);
-              }}
-              content={"Yes"}
-            ></Button>
-          </Link>
-          <Button
-            onClick={() => setLogoutDialog(false)}
-            content={"No"}
-          ></Button>
+              {coursesList.map((course, indx) => {
+                return (
+                  <li key={course.id_curs} className={style.courseListItem}>
+                    <Link
+                      className={style.courseLink}
+                      to={"/course/" + course.id_curs}
+                      onClick={closeSidebarEvent}
+                    >
+                      <FontAwesomeIcon
+                        className={style.iconListItem}
+                        icon={faGraduationCap}
+                      />
+                      {course.denumire}
+                    </Link>
+                  </li>
+                );
+              })}
+              <li className={style.courseListItem}>
+                <Button
+                  onClick={handleLogout}
+                  className={style.logoutButton}
+                  content={
+                    <>
+                      <FontAwesomeIcon
+                        icon={faArrowRightFromBracket}
+                        className={style.iconListItem}
+                      />
+                      Ieșire
+                    </>
+                  }
+                ></Button>
+              </li>
+            </ul>
+          </Sidebar>
+
+          <Dialog
+            visible={logoutDialog}
+            onHide={() => setLogoutDialog(false)}
+            className={style.modal}
+          >
+            Sigur vrei să te ieși din aplicație?
+            <div className={style.buttonsLogout}>
+              <Link to="/">
+                <Button
+                  onClick={() => {
+                    setUser(false);
+                    setLogoutDialog(false);
+                  }}
+                  content={"Da"}
+                ></Button>
+              </Link>
+              <Button
+                onClick={() => setLogoutDialog(false)}
+                content={"Nu"}
+              ></Button>
+            </div>
+          </Dialog>
         </div>
-      </Dialog>
+      )}
     </div>
   );
 }

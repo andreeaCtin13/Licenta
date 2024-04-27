@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import style from "../../styles/mentee/Test.module.css";
 import axios from "axios";
+import { UserContext } from "../../context/UserContext";
+import { Toast } from "primereact/toast";
+import "react-toastify/dist/ReactToastify.css";
+
 function Test() {
-  const { idSectiune } = useParams();
+  const { user, setUser } = useContext(UserContext);
+  const { idSectiune, idCourse } = useParams();
   const [idTest, setIdTest] = useState();
   const [intrebari, setIntrebari] = useState([]);
   const [totalGrade, setTotalGrade] = useState(0);
   const [sectiune, setSectiune] = useState();
-
+  const toast = useRef(null);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const getSectiuneById = async () => {
@@ -41,6 +46,27 @@ function Test() {
 
   console.log("updatedIntrebari", intrebari);
 
+  const sendGradeInBackend = async (grade) => {
+    await axios
+      .post(`http://localhost:8080/istoricuriPunctaje/insert`, {
+        id_test: idTest,
+        id_utilizator: user.id_utilizator,
+        grade,
+      })
+      .then((rez) => {
+        console.log(rez.data);
+        toast.current.show({
+          severity: "succes",
+          summary: "Succesful",
+          detail: "S-a înregistrat raspunsul tău!",
+          life: 3000,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const setGrade = () => {
     let grade = 0;
     intrebari.forEach((intrebare) => {
@@ -63,6 +89,8 @@ function Test() {
 
     console.log("GRADE", grade);
     setTotalGrade(grade);
+
+    sendGradeInBackend(grade);
   };
 
   const setTestFunction = async () => {
@@ -87,6 +115,8 @@ function Test() {
 
   return (
     <div className={style.testContainer}>
+      <Toast ref={toast} />
+
       <h1>{sectiune ? sectiune.denumire : ""}</h1>
       <div className={style.container}>
         {intrebari.map((intrebare, qIndex) => (
@@ -116,11 +146,11 @@ function Test() {
             </ul>
           </div>
         ))}
-        {/* <Link to={`/course/${idSectiune}`}> */}
-        <button className={style.submitBtn} onClick={setGrade}>
-          Submit
-        </button>
-        {/* </Link> */}
+        <Link to={`/course/${idCourse}`}>
+          <button className={style.submitBtn} onClick={setGrade}>
+            Submit
+          </button>
+        </Link>
       </div>
     </div>
   );
