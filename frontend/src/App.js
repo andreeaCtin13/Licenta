@@ -15,6 +15,8 @@ import NewCourse from "./pages/mentor/NewCourse";
 import NewSection from "./pages/mentor/NewSection";
 import AdminHomepage from "./pages/admin/AdminHomepage";
 import Requests from "./pages/mentor/Requests.js";
+import Feedback from "./pages/mentor/Feedback.js";
+import { AuthProvider } from "./context/AuthContext.js";
 
 function App() {
   const [user, setUser] = useState(false);
@@ -35,6 +37,7 @@ function App() {
           <Route path="/new-section/:idCourse" element={<NewSection />} />
           <Route path="/admin" element={<AdminHomepage />} />
           <Route path="/requests/:idCourse" element={<Requests />} />
+          <Route path="/feedback/:idCourse" element={<Feedback />} />
           {user && user.status === "junior" && (
             <Route path="/test/:idSectiune/:idCourse" element={<Test />} />
           )}

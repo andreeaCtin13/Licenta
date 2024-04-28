@@ -102,19 +102,33 @@ function CourseStatus() {
     <div className={style.mainContainer}>
       <Toast ref={toast} />
       <h1>{curs.denumire}</h1>
-      <div>
-        <Link to={`/new-section/${idCourse}`}>
-          <Button
-            className={style.btnCreateSection}
-            content="Create a new section"
-          ></Button>
-        </Link>
+      <div className={style.buttonZone}>
+        <div>
+          <Link to={`/new-section/${idCourse}`}>
+            <Button
+              className={style.btnCreateSection}
+              content="Create a new section"
+            ></Button>
+          </Link>
+        </div>
+        <div>
+          <Link to={`/feedback/${idCourse}`}>
+            <Button
+              className={style.btnCreateSection}
+              content="Acorda feedback"
+            ></Button>
+          </Link>
+        </div>
+        <div>
+          <Link to={`/requests/${idCourse}`}>
+            <Button
+              className={style.btnCreateSection}
+              content="See requests"
+            ></Button>
+          </Link>
+        </div>
       </div>
-      <div className={style.btnCreateZone}>
-        <Link to={`/requests/${idCourse}`}>
-          <Button className={style.btnCreate} content="See requests"></Button>
-        </Link>
-      </div>
+
       <Accordion>
         {sectiuni.map((sectiune, i) => {
           return (

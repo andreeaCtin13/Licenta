@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+
 const generateAccessToken = (user) => {
   return jwt.sign({ user }, process.env.SECRET_KEY, { expiresIn: "2h" });
 };
@@ -32,22 +33,31 @@ const controller = {
         return res.status(500).send({ message: "server error", err: err });
       });
   },
+
   login: async (req, res) => {
     console.log(req.body);
     const mail = req.body.mail;
     const password = req.body.password;
     const user = await usersModel.findOne({ where: { mail: mail } });
-    if (user) {
-      const password_valid = await bcrypt.compare(password, user.password);
-      if (password_valid) {
-        const jwtToken = generateAccessToken(user);
-        return res.status(200).json({ user, jwtToken });
-      } else {
-        return res.status(400).json({ error: "Password Incorrect" });
-      }
-    } else {
+    if (!user) {
       return res.status(404).json({ error: "User does not exist" });
     }
+
+    const password_valid = await bcrypt.compare(password, user.password);
+    if (!password_valid) {
+      return res.status(400).json({ error: "Password Incorrect" });
+    }
+
+    const jwtToken = generateAccessToken(user);
+    return res.status(200).json({
+      user: {
+        id_utilizator: user.id_utilizator,
+        nume: user.nume,
+        mail: user.mail,
+        status: user.status,
+      },
+      jwtToken,
+    });
   },
 
   register: async (req, res) => {

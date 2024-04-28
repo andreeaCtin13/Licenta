@@ -7,6 +7,7 @@ const port = process.env.PORT || 8006;
 const router = require("./routes");
 const cors = require("cors");
 const auth = require("./middlewares/index").auth;
+const cookieParser = require("cookie-parser");
 
 app.use(
   cors({
@@ -16,7 +17,7 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
-
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.static("public/files"));
 
@@ -26,6 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //   res.status(200).send({ message: "ESTI AUTORIZAT" });
 // });
 
+// app.use("/", auth, router);
 app.use("/", router);
 
 app.listen(port, () => {

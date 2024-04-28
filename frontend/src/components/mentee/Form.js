@@ -8,6 +8,8 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import { UserContext } from "../../context/UserContext";
 import { Toast } from "primereact/toast";
+import axiosInstance from "../../axiosConfig/AxiosConfig";
+import { AuthProvider } from "../../context/AuthContext";
 
 function Form() {
   const { user, setUser } = useContext(UserContext);
@@ -23,13 +25,15 @@ function Form() {
   const sendData = async (e) => {
     e.preventDefault();
     console.log(info);
-    await axios
+    await axiosInstance
       .post("http://localhost:8080/useri/login", info)
       .then((response) => {
-        setUser(response.data.user);
-        if (response.data.user.status === "junior") navigate("/profile");
-        else if (response.data.user.status === "mentor")
-          navigate("/mentor-homepage");
+        const { user, jwtToken } = response.data;
+        localStorage.setItem("token", jwtToken);
+
+        setUser(user);
+        if (user.status === "junior") navigate("/profile");
+        else if (user.status === "mentor") navigate("/mentor-homepage");
         else navigate("/admin");
       })
       .catch((error) => {
@@ -58,54 +62,60 @@ function Form() {
 
   return (
     <>
-      <Toast ref={toast} />
-      <form className={style.formStyle}>
-        <div className={style.formRow}>
-          <label htmlFor="mail">Mail</label>
-          <input
-            type="text"
-            id="mail"
-            onChange={(e) => setInfo({ ...info, mail: e.target.value })}
-          />
-        </div>
-        <div className={style.formRow}>
-          <label htmlFor="password">Password</label>
-          {locked ? (
-            <div className={style.passwordRow}>
-              <input
-                type="password"
-                id="password"
-                onChange={(e) => setInfo({ ...info, password: e.target.value })}
-              />
-              <FontAwesomeIcon
-                onClick={changeLock}
-                className={style.icon}
-                icon={faEyeSlash}
-              />
-            </div>
-          ) : (
-            <div className={style.passwordRow}>
-              <input
-                type="text"
-                id="password"
-                onChange={(e) => setInfo({ ...info, password: e.target.value })}
-              />
-              <FontAwesomeIcon
-                icon={faEye}
-                onClick={changeLock}
-                className={style.icon}
-              />
-            </div>
-          )}
-        </div>
-        <div className={style.formButtons}>
-          <Button
-            className={style.btnLogin}
-            content="Login"
-            onClick={sendData}
-          ></Button>
-        </div>
-      </form>
+      <AuthProvider value={(user, sendData)}>
+        <Toast ref={toast} />
+        <form className={style.formStyle}>
+          <div className={style.formRow}>
+            <label htmlFor="mail">Mail</label>
+            <input
+              type="text"
+              id="mail"
+              onChange={(e) => setInfo({ ...info, mail: e.target.value })}
+            />
+          </div>
+          <div className={style.formRow}>
+            <label htmlFor="password">Password</label>
+            {locked ? (
+              <div className={style.passwordRow}>
+                <input
+                  type="password"
+                  id="password"
+                  onChange={(e) =>
+                    setInfo({ ...info, password: e.target.value })
+                  }
+                />
+                <FontAwesomeIcon
+                  onClick={changeLock}
+                  className={style.icon}
+                  icon={faEyeSlash}
+                />
+              </div>
+            ) : (
+              <div className={style.passwordRow}>
+                <input
+                  type="text"
+                  id="password"
+                  onChange={(e) =>
+                    setInfo({ ...info, password: e.target.value })
+                  }
+                />
+                <FontAwesomeIcon
+                  icon={faEye}
+                  onClick={changeLock}
+                  className={style.icon}
+                />
+              </div>
+            )}
+          </div>
+          <div className={style.formButtons}>
+            <Button
+              className={style.btnLogin}
+              content="Login"
+              onClick={sendData}
+            ></Button>
+          </div>
+        </form>
+      </AuthProvider>
     </>
   );
 }

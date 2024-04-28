@@ -87,18 +87,6 @@ function AdminHomepage() {
     setRowUser(_user);
   };
 
-  const generatePassword = () => {
-    let password = "";
-    let chars =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    for (let i = 0; i < 20; i++) {
-      password += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-
-    return password;
-  };
-
   const saveUser = () => {
     setSubmitted(true);
     if (rowUser.mail && rowUser.mail.trim()) {
@@ -114,8 +102,6 @@ function AdminHomepage() {
           life: 3000,
         });
       } else {
-        __row_user.password = generatePassword();
-
         __users.push(__row_user);
       }
       setRowUser(__users);
@@ -301,17 +287,8 @@ function AdminHomepage() {
             id_utilizator,
             ...stud,
           });
-          if (response.data.requests.count <= 8) {
-            setTotalRec(1);
-          } else {
-            if (response.data.requests.count % 8 != 0) {
-              console.log(Math.round(response.data.requests.count / 8) + 1);
-
-              setTotalRec(Math.round(response.data.requests.count / 8) + 1);
-            } else {
-              setTotalRec(Math.round(response.data.requests.count / 8));
-            }
-          }
+          console.log("count", response.data);
+          setTotalRec(Math.ceil(response.data.requests.count / 8));
         }
         setUsersRows(req);
       })
