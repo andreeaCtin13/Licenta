@@ -1,5 +1,9 @@
 const ictoricCerinteModel = require("../models").istoricAssigments;
+const cerinteModel = require("../models").assigment;
+const sectiuniModel = require("../models").sectiuni;
+const cursuriModel = require("../models").cursuri;
 const multer = require("multer");
+const { istoricCerinte } = require(".");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -12,8 +16,54 @@ const storage = multer.diskStorage({
 });
 
 const controller = {
-  getAllIstoricCerinte: (req, res) => {
-    res.status(200).send({ message: "totu ok la istoricuri punctaje" });
+  getAllIstoricCerinte: async (req, res) => {
+    const { id_utilizator, id_curs } = req.params;
+
+    console.log("id_curs", id_curs);
+    console.log("id_utilizator", id_utilizator);
+
+    let curs = await cursuriModel.findByPk(id_curs);
+
+    if (!curs) {
+      return res.status(400).json({
+        message: "nu ai introdus un id_curs valid",
+      });
+    }
+    const sectiuni = await sectiuniModel.findAll({
+      where: {
+        id_curs,
+      },
+    });
+
+    let cerinte = [];
+
+    for (let sectiune of sectiuni) {
+      let cerintePerSectiune = await cerinteModel.findAll({
+        where: {
+          id_sectiune: sectiune.id_sectiune,
+        },
+      });
+
+      cerinte.push(...cerintePerSectiune);
+    }
+
+    let istoric = [];
+
+    for (let cerinta of cerinte) {
+      let assig = await ictoricCerinteModel.findAll({
+        where: {
+          id_cerinta: cerinta.id_cerinta,
+          id_utilizator: id_utilizator,
+        },
+      });
+      if (assig.length > 0) {
+        istoric.push([...assig]);
+      }
+    }
+
+    return res.status(200).json({
+      istoric: istoric,
+    });
   },
   uploadFile: async (req, res) => {
     if (req.file === undefined) {

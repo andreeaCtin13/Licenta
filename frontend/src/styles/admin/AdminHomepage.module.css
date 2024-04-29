@@ -65,6 +65,71 @@
     1px 1px 1px 1px var(--var--light--pink);
 }
 
+.btnLogout {
+  display: flex;
+  align-items: center;
+  height: 3rem;
+  padding: 1rem;
+  width: 10rem;
+  justify-content: center;
+  background-color: var(--var--light--purple);
+  color: var(--var--white);
+  border-radius: 1rem;
+  border: none;
+  transition: 0.5s;
+}
+
+.btnLogout:hover {
+  cursor: pointer;
+  background-color: var(--var--light--pink);
+  color: var(--var--dark--purple);
+  transition: 0.5s;
+}
+
+.btnLogoutResponse {
+  display: flex;
+  align-items: center;
+  height: 3rem;
+  width: 5rem;
+  justify-content: center;
+  color: var(--var--white);
+  border-radius: 1rem;
+  border: none;
+  transition: 0.5s;
+}
+
+.btnLogoutResponse:nth-child(odd) {
+  background-color: var(--var--dark--pink);
+}
+.btnLogoutResponse:nth-child(even) {
+  background-color: var(--var--light--purple);
+}
+
+.btnLogoutResponse:nth-child(odd):hover {
+  background-color: var(--var--dark--purple);
+}
+
+.btnLogoutResponse:nth-child(even):hover {
+  background-color: var(--var--dark--purple);
+}
+
+.btnLogoutResponse:hover {
+  cursor: pointer;
+}
+.zoneOfBtns {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.link {
+  text-decoration: none;
+}
+
 .paginationZone {
   display: flex;
   flex-direction: row;

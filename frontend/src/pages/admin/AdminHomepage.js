@@ -11,6 +11,8 @@ import { Toolbar } from "primereact/toolbar";
 import { RadioButton } from "primereact/radiobutton";
 import { InputText } from "primereact/inputtext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
+
 import {
   faChevronRight,
   faChevronLeft,
@@ -34,6 +36,8 @@ function AdminHomepage() {
   const dt = useRef(null);
   const [page, setPage] = useState(1);
   const { user, setUser } = useContext(UserContext);
+  const [logoutDialog, setLogoutDialog] = useState(false);
+
   const sendData = async (e) => {
     e.preventDefault();
     try {
@@ -300,10 +304,19 @@ function AdminHomepage() {
     loadData();
   }, [page]);
 
+  const handleLogout = () => {
+    setLogoutDialog(true);
+  };
+
   return (
     <div className={style.mainContainer}>
       <div>
-        <button className={`${style.btn}`}>Logout</button>
+        <button
+          className={`${style.btn} ${style.btnLogout}`}
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
       </div>
 
       <h1>Hi, Admin!!!</h1>
@@ -377,6 +390,33 @@ function AdminHomepage() {
               Are you sure you want to delete <b>{rowUser.mail}</b>?
             </span>
           )}
+        </div>
+      </Dialog>
+
+      <Dialog
+        visible={logoutDialog}
+        onHide={() => setLogoutDialog(false)}
+        className={style.modal}
+      >
+        Are you sure you want to logout?
+        <div className={style.zoneOfBtns}>
+          <Link to="/" className={style.link}>
+            <button
+              className={style.btnLogoutResponse}
+              onClick={() => {
+                setUser(false);
+                setLogoutDialog(false);
+              }}
+            >
+              Yes
+            </button>
+          </Link>
+          <button
+            className={style.btnLogoutResponse}
+            onClick={() => setLogoutDialog(false)}
+          >
+            No
+          </button>
         </div>
       </Dialog>
 
