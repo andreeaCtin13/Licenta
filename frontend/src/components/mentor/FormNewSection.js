@@ -77,7 +77,7 @@ function FormNewSection() {
     console.log("filelist!!:", fileList);
     const formData = new FormData();
     for (let i = 0; i < fileList.length; i++) {
-      formData.append("file", fileList[i]);
+      formData.append("files", fileList[i]);
     }
     setFileToSend(formData);
     setFiles([...files, ...fileList]);

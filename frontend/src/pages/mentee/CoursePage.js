@@ -133,7 +133,13 @@ function CoursePage() {
         `http://localhost:8080/istoricCerinte/upload/${id}/${user.id_utilizator}`,
         formData
       );
-      console.log("File uploaded successfully");
+
+      toast.current.show({
+        severity: "succes",
+        summary: "Succes",
+        detail: "Felicitari! Ai incarcat rezolvarea!",
+        life: 3000,
+      });
     } catch (err) {
       toast.current.show({
         severity: "error",

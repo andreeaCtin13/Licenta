@@ -29,7 +29,7 @@ const controller = {
       });
   },
   insertResursa: async (req, res) => {
-    const { tip_resursa, link_resursa, titlu_resursa, id_sectiune } = req.body;
+    let { tip_resursa, link_resursa, titlu_resursa, id_sectiune } = req.body;
     let sectiune = await sectiuniModel.findByPk(id_sectiune);
     if (!sectiune) {
       return res
@@ -37,19 +37,47 @@ const controller = {
         .json({ message: "nu exista sectiunea pentru care este testul" });
     }
 
-    await resurseModel
-      .create({
-        tip_resursa,
-        link_resursa,
-        titlu_resursa,
-        id_sectiune,
-      })
-      .then((rez) => {
-        return res.status(200).json({ resursa: rez, message: "success" });
-      })
-      .catch((err) => {
-        return res.status(500).json({ error: err, message: "server error" });
+    if (tip_resursa === "pdf_path") {
+      const files = req.files;
+
+      for (let file of files) {
+        link_resursa = file?.path;
+        titlu_resursa = file?.originalname;
+
+        await resurseModel
+          .create({
+            tip_resursa,
+            link_resursa,
+            titlu_resursa,
+            id_sectiune,
+          })
+          .then((rez) => {
+            return res.status(200).json({ resursa: rez, message: "success" });
+          })
+          .catch((err) => {
+            return res
+              .status(500)
+              .json({ error: err, message: "server error" });
+          });
+      }
+      return res.status(200).json({
+        message: "ok",
       });
+    } else {
+      await resurseModel
+        .create({
+          tip_resursa,
+          link_resursa,
+          titlu_resursa,
+          id_sectiune,
+        })
+        .then((rez) => {
+          return res.status(200).json({ resursa: rez, message: "success" });
+        })
+        .catch((err) => {
+          return res.status(500).json({ error: err, message: "server error" });
+        });
+    }
   },
 };
 

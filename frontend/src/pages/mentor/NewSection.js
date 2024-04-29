@@ -35,7 +35,6 @@ function NewSection() {
       });
       return;
     }
-    console.log("CERINTE", newSection.cerinte.length);
     if (newSection.cerinte.length < 1) {
       toast.current.show({
         severity: "fail",
@@ -108,8 +107,6 @@ function NewSection() {
         });
       });
   };
-  console.log("AICI:", newSection);
-  console.log("FILE TO SEND", fileToSend);
   return (
     <FilesContext.Provider value={{ fileToSend, setFileToSend }}>
       <SectionContext.Provider value={{ newSection, setNewSection }}>

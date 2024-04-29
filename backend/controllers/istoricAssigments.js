@@ -3,17 +3,6 @@ const cerinteModel = require("../models").assigment;
 const sectiuniModel = require("../models").sectiuni;
 const cursuriModel = require("../models").cursuri;
 const multer = require("multer");
-const { istoricCerinte } = require(".");
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    return cb(null, "./files");
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    return cb(null, `${file.originalname}-${uniqueSuffix}`);
-  },
-});
 
 const controller = {
   getAllIstoricCerinte: async (req, res) => {
@@ -85,8 +74,6 @@ const controller = {
           return res.status(200).send("A fost incarcata rezolvarea");
         })
         .catch((err) => {
-          console.log("sar aci");
-
           return res.status(500).json({ message: "eroare la update request" });
         });
     } catch (err) {
