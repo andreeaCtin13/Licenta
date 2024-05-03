@@ -2,15 +2,17 @@ const ictoricCerinteModel = require("../models").istoricAssigments;
 const cerinteModel = require("../models").assigment;
 const sectiuniModel = require("../models").sectiuni;
 const cursuriModel = require("../models").cursuri;
+const utilizatoriModel = require("../models").users;
 const multer = require("multer");
 
 const controller = {
   getAllIstoricCerinte: async (req, res) => {
-    const { id_utilizator, id_curs } = req.params;
+    const { id_curs, id_cerinta } = req.params;
+    const filter = req.query;
+    if (!filter.take) filter.take = 10;
 
-    console.log("id_curs", id_curs);
-    console.log("id_utilizator", id_utilizator);
-
+    if (!filter.skip) filter.skip = 1;
+    console.log("skip", filter.skip);
     let curs = await cursuriModel.findByPk(id_curs);
 
     if (!curs) {
@@ -18,41 +20,36 @@ const controller = {
         message: "nu ai introdus un id_curs valid",
       });
     }
-    const sectiuni = await sectiuniModel.findAll({
-      where: {
-        id_curs,
-      },
-    });
 
-    let cerinte = [];
-
-    for (let sectiune of sectiuni) {
-      let cerintePerSectiune = await cerinteModel.findAll({
+    await ictoricCerinteModel
+      .findAndCountAll({
         where: {
-          id_sectiune: sectiune.id_sectiune,
+          id_cerinta: id_cerinta,
         },
+        limit: parseInt(filter.take),
+        offset: parseInt(filter.skip - 1) * parseInt(filter.take),
+      })
+      .then(async (rez) => {
+        let as = [];
+        console.log("vezi ", rez);
+        for (let x of rez.rows) {
+          let user = await utilizatoriModel.findByPk(x.id_utilizator);
+          as.push({
+            id_cerinta_istoric: x.id_cerinta_istoric,
+            data_finalizare: x.data_finalizare,
+            rezolvare: x.rezolvare,
+            feedback: x.feedback,
+            id_utilizator: x.id_utilizator,
+            id_cerinta: x.id_cerinta,
+            mail: user.mail,
+            nume: user.nume,
+          });
+        }
+        return res.status(200).json({
+          istoric: as,
+          count: rez.count,
+        });
       });
-
-      cerinte.push(...cerintePerSectiune);
-    }
-
-    let istoric = [];
-
-    for (let cerinta of cerinte) {
-      let assig = await ictoricCerinteModel.findAll({
-        where: {
-          id_cerinta: cerinta.id_cerinta,
-          id_utilizator: id_utilizator,
-        },
-      });
-      if (assig.length > 0) {
-        istoric.push([...assig]);
-      }
-    }
-
-    return res.status(200).json({
-      istoric: istoric,
-    });
   },
   uploadFile: async (req, res) => {
     if (req.file === undefined) {
@@ -66,7 +63,6 @@ const controller = {
       id_utilizator: id_utilizator,
       id_cerinta: id_cerinta,
     };
-    console.log("ASTA INTRODUC IN BD ", new_cerinta);
     try {
       await ictoricCerinteModel
         .create(new_cerinta)

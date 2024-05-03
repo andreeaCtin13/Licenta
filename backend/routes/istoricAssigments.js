@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.get(
-  "/getAll/:id_utilizator/:id_curs",
+  "/getAll/:id_curs/:id_cerinta/filter",
   istoricAssigments.getAllIstoricCerinte
 );
 router.post(

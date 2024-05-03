@@ -5,6 +5,9 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Dialog } from "primereact/dialog";
+import { Dock } from "primereact/dock";
+import { Accordion, AccordionTab } from "primereact/accordion";
 
 import {
   faCheck,
@@ -13,8 +16,8 @@ import {
   faChevronRight,
   faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
-import Button from "../../components/Button";
 import { UserContext } from "../../context/UserContext";
+import axios from "axios";
 
 function Feedback() {
   const { idCourse } = useParams();
@@ -26,25 +29,46 @@ function Feedback() {
   const [assigmentsRows, setAssigmentsRows] = useState([]);
   const [globalFilter, setGlobalFilter] = useState(null);
   const [visible, setVisible] = useState(false);
+  const [items, setItems] = useState();
+  const [selectedScreen, setSelectedScreen] = useState();
+  const [acordeonArray, setAcordeonArray] = useState([]);
+  const [sectiuni, setSectiuni] = useState([]);
+  const [activeIndex, setActiveIndex] = useState();
+  const [idCerinta, setIdCerinta] = useState(0);
 
   console.log(idCourse);
 
+  const setData = async (id_cerinta) => {
+    console.log("id_cerinta", id_cerinta);
+
+    await axios
+      .get(
+        `http://localhost:8080/istoricCerinte/getAll/${idCourse}/${idCerinta}/filter?&take=8&skip=${page}`
+      )
+      .then((rez) => {
+        console.log("istoric", rez.data);
+        setAssigmentsRows(rez.data.istoric);
+
+        setTotalRec(Math.ceil(rez.data.count / 8));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     setPage(1);
-    setAssigmentsRows([
-      {
-        nume: "Andreea",
-        mail: "Andreea",
-        data_finalizare: "24/03/2024",
-        rezolvare: "hahaha",
-      },
-    ]);
+
+    setData();
   }, []);
 
-  useEffect(() => {}, [page]);
-  const onPageChange = (type_event) => {
+  useEffect(() => {
+    setData();
+  }, [page]);
+
+  const onPageChange = (e, type_event) => {
     if (type_event === "next") {
-      if (page !== totalRec) {
+      if (page !== totalRec / 8) {
         setPage(page + 1);
       }
     } else {
@@ -56,7 +80,7 @@ function Feedback() {
 
   const header = (
     <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-      <h4 className="m-0">Manage Users</h4>
+      <h4 className="m-0">Rezolvări Încărcate</h4>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
         <InputText
@@ -76,55 +100,204 @@ function Feedback() {
     return (
       <React.Fragment>
         <div className={style.btnZoneRequest}>
-          <Button
+          <button
             className={`${style.btnRequest}`}
-            content={"Descarcă"}
             onClick={() => {
               setSelectedRow(rowData);
               changeVisibility();
             }}
-          ></Button>
+          >
+            Descarcă
+          </button>
         </div>
       </React.Fragment>
     );
+  };
+
+  const sendFeedback = async () => {
+    await axios
+      .post(``)
+      .then((rez) => {})
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const changeView = async (index) => {
+    await axios
+      .get(`http://localhost:8080/cerinte/getAllCerinte/${index}`)
+      .then((rez) => {
+        console.log(rez);
+        setAcordeonArray(rez.data.cerinte);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getSection = async () => {
+    await axios
+      .get(`http://localhost:8080/sectiuni/selectAll/${idCourse}`)
+      .then((rez) => {
+        setSelectedScreen(rez.data.sectiuni[0].id_sectiune);
+        setSectiuni(rez.data.sectiuni);
+        setItems(
+          rez.data.sectiuni.map((x, index) => {
+            return {
+              icon: (
+                <button
+                  className={style.btnFeedback}
+                  onClick={() => {
+                    changeView(x.id_sectiune);
+                    setSelectedScreen(x.id_sectiune);
+                  }}
+                >
+                  {index + 1}
+                </button>
+              ),
+            };
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getSection();
+  }, []);
+
+  useEffect(() => {
+    changeView(selectedScreen);
+  }, [selectedScreen]);
+
+  useEffect(() => {
+    setData(idCerinta);
+  }, [idCerinta]);
+
+  const takeIstoricForCurrentAssigment = (event) => {
+    if (acordeonArray[event.index]) {
+      setIdCerinta(acordeonArray[event.index].id_cerinta);
+    }
   };
 
   return (
     <div className={style.mainContainer}>
       <h1>Feedback</h1>
 
-      <DataTable
-        value={assigmentsRows}
-        dataKey=""
-        rows={10}
-        totalRecords={totalRec}
-        onSelectionChange={(e) => setSelectedRow(e.value)}
-        metaKeySelection={metaKey}
-        globalFilter={globalFilter}
-        header={header}
+      <div className="dock-window">
+        <Dock className={style.dock} model={items} position="bottom" />
+      </div>
+      <h2>
+        Secțiunea{" "}
+        {sectiuni ? (
+          sectiuni.find((x) => x.id_sectiune === selectedScreen) ? (
+            sectiuni.find((x) => x.id_sectiune === selectedScreen).denumire
+          ) : (
+            <></>
+          )
+        ) : (
+          <></>
+        )}
+      </h2>
+      <Accordion
+        activeIndex={activeIndex}
+        onTabChange={(e) => {
+          setActiveIndex(e.index);
+          takeIstoricForCurrentAssigment(e);
+        }}
       >
-        <Column
-          field="nume"
-          header="Nume"
-          style={{ minWidth: "12rem" }}
-        ></Column>
-        <Column
-          field="mail"
-          header="Mail"
-          style={{ minWidth: "12rem" }}
-        ></Column>
-        <Column
-          field="data_finalizare"
-          header="Data Finalizare"
-          style={{ minWidth: "12rem" }}
-        ></Column>
-        <Column
-          body={actionBodyTemplate}
-          header="Rezolvare"
-          exportable={false}
-          style={{ minWidth: "5rem" }}
-        ></Column>
-      </DataTable>
+        {acordeonArray ? (
+          acordeonArray.map((x) => {
+            return (
+              <AccordionTab
+                header={x.titlu}
+                id={x.id_cerinta}
+                key={x.id_cerinta}
+              >
+                <h3>Cerința aferentă task-ului "{x.titlu}"</h3>
+                <p className="m-0"> {x.cerinta}</p>
+
+                <DataTable
+                  className={style.dataTable}
+                  value={assigmentsRows}
+                  dataKey=""
+                  rows={10}
+                  totalRecords={totalRec}
+                  onSelectionChange={(e) => {
+                    setSelectedRow(e.value);
+                    setVisible(true);
+                  }}
+                  checked={metaKey}
+                  selectionMode="single"
+                  selection={selectedRow}
+                  metaKeySelection={metaKey}
+                  globalFilter={globalFilter}
+                  header={header}
+                >
+                  <Column
+                    field="nume"
+                    header="Nume"
+                    style={{ minWidth: "12rem" }}
+                  ></Column>
+                  <Column
+                    field="mail"
+                    header="Mail"
+                    style={{ minWidth: "12rem" }}
+                  ></Column>
+                  <Column
+                    field="data_finalizare"
+                    header="Data Finalizare"
+                    style={{ minWidth: "12rem" }}
+                  ></Column>
+                  <Column
+                    body={actionBodyTemplate}
+                    header="Rezolvare"
+                    exportable={false}
+                    style={{ minWidth: "5rem" }}
+                  ></Column>
+                </DataTable>
+                <div className={style.paginationZone}>
+                  <button
+                    className={style.btnPagination}
+                    onClick={(e) => onPageChange(e, "prev")}
+                  >
+                    <FontAwesomeIcon icon={faChevronLeft} />
+                  </button>
+                  <span>
+                    Page {page} from {totalRec}
+                  </span>
+                  <button
+                    className={style.btnPagination}
+                    onClick={(e) => onPageChange(e, "next")}
+                  >
+                    <FontAwesomeIcon icon={faChevronRight} />
+                  </button>
+                </div>
+              </AccordionTab>
+            );
+          })
+        ) : (
+          <div>nu exista</div>
+        )}
+      </Accordion>
+
+      <Dialog
+        header="Feedback"
+        visible={visible}
+        maximizable
+        style={{ width: "50vw" }}
+        onHide={() => setVisible(false)}
+      >
+        <p className={style.modalContent}>
+          Acordă feedback pentru {selectedRow ? selectedRow.nume : ""}!
+          <textarea name="" id="" cols="30" rows="10"></textarea>
+          <button className={style.btnTrimitereFeedback} onClick={sendFeedback}>
+            Trimite feedback
+          </button>
+        </p>
+      </Dialog>
     </div>
   );
 }

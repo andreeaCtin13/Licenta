@@ -1,3 +1,47 @@
 .mainContainer {
   margin: 4rem;
 }
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent textarea {
+  min-width: 25rem;
+  padding: 1rem;
+}
+
+.btnTrimitereFeedback {
+  width: 10rem;
+  font-size: 1.1rem;
+  padding: 0.4rem;
+  background-color: var(--var--dark--pink);
+  border: none;
+  border-radius: 2rem;
+  transition: 0.8s;
+}
+
+.btnTrimitereFeedback:hover {
+  cursor: pointer;
+  background-color: var(--var--light--pink);
+  transition: 0.8s;
+}
+
+.btnFeedback {
+  min-width: 15rem;
+  height: 10rem;
+  font-size: 2rem;
+  text-decoration: none;
+}
+
+.paginationZone {
+  margin: 0 0 4rem 0;
+}
+
+.dock {
+  position: fixed;
+}
