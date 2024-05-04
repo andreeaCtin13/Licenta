@@ -8,10 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dialog } from "primereact/dialog";
 import { Dock } from "primereact/dock";
 import { Accordion, AccordionTab } from "primereact/accordion";
-
+import { Link } from "react-router-dom";
 import {
-  faCheck,
-  faX,
   faArrowLeft,
   faChevronRight,
   faChevronLeft,
@@ -35,18 +33,14 @@ function Feedback() {
   const [sectiuni, setSectiuni] = useState([]);
   const [activeIndex, setActiveIndex] = useState();
   const [idCerinta, setIdCerinta] = useState(0);
-
-  console.log(idCourse);
-
+  const [feedback, setFeedback] = useState("");
+  const [fileToDownload, setFileToDownload] = useState();
   const setData = async (id_cerinta) => {
-    console.log("id_cerinta", id_cerinta);
-
     await axios
       .get(
         `http://localhost:8080/istoricCerinte/getAll/${idCourse}/${idCerinta}/filter?&take=8&skip=${page}`
       )
       .then((rez) => {
-        console.log("istoric", rez.data);
         setAssigmentsRows(rez.data.istoric);
 
         setTotalRec(Math.ceil(rez.data.count / 8));
@@ -96,19 +90,41 @@ function Feedback() {
     setVisible(!visible);
   };
 
+  const getTheLink = () => {
+    const backendFilesDirectory = "/files";
+    let file = selectedRow?.rezolvare;
+    const fileName = file?.split(`\\`)[file.split(`\\`)?.length - 1]; // Name of the file
+
+    const fileRelativePath = `${backendFilesDirectory}/${fileName}`;
+
+    const backendBaseUrl = "http://localhost:8080"; // Base URL of your backend server
+    const fileUrl = `${backendBaseUrl}${fileRelativePath}`;
+    console.log("file url", fileUrl);
+    setFileToDownload(fileUrl);
+  };
+
   const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
         <div className={style.btnZoneRequest}>
-          <button
-            className={`${style.btnRequest}`}
-            onClick={() => {
-              setSelectedRow(rowData);
-              changeVisibility();
-            }}
+          <Link
+            to={fileToDownload} // Set the link to the full URL of the file
+            download="Example-PDF-document"
+            target="_blank"
+            rel="noreferrer"
           >
-            Descarcă
-          </button>
+            <button
+              className={`${style.btnRequest}`}
+              onClick={() => {
+                setSelectedRow(rowData);
+                console.log("alo");
+                console.log(rowData);
+                getTheLink();
+              }}
+            >
+              Descarcă
+            </button>
+          </Link>
         </div>
       </React.Fragment>
     );
@@ -116,8 +132,16 @@ function Feedback() {
 
   const sendFeedback = async () => {
     await axios
-      .post(``)
-      .then((rez) => {})
+      .put(
+        `http://localhost:8080/istoricCerinte/updateIstoricAssigment/${selectedRow?.id_cerinta_istoric}`,
+        {
+          feedback,
+        }
+      )
+      .then((rez) => {
+        console.log("a functionat");
+        setVisible(false);
+      })
       .catch((err) => {
         console.log(err);
       });
@@ -127,7 +151,6 @@ function Feedback() {
     await axios
       .get(`http://localhost:8080/cerinte/getAllCerinte/${index}`)
       .then((rez) => {
-        console.log(rez);
         setAcordeonArray(rez.data.cerinte);
       })
       .catch((err) => {
@@ -150,6 +173,7 @@ function Feedback() {
                   onClick={() => {
                     changeView(x.id_sectiune);
                     setSelectedScreen(x.id_sectiune);
+                    setActiveIndex(null);
                   }}
                 >
                   {index + 1}
@@ -292,7 +316,15 @@ function Feedback() {
       >
         <p className={style.modalContent}>
           Acordă feedback pentru {selectedRow ? selectedRow.nume : ""}!
-          <textarea name="" id="" cols="30" rows="10"></textarea>
+          <textarea
+            name=""
+            id=""
+            cols="30"
+            rows="10"
+            onChange={(e) => {
+              setFeedback(e.target.value);
+            }}
+          ></textarea>
           <button className={style.btnTrimitereFeedback} onClick={sendFeedback}>
             Trimite feedback
           </button>

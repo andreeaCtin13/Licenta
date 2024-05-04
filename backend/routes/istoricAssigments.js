@@ -24,5 +24,9 @@ router.post(
   istoricAssigments.uploadFile
 );
 router.get("/getIstoric", istoricAssigments.getIstoricForOneAssigment);
+router.put(
+  "/updateIstoricAssigment/:id_cerinta_istoric",
+  istoricAssigments.updateIstoricAssigment
+);
 
 module.exports = router;

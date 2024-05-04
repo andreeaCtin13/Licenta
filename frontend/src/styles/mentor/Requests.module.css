@@ -34,6 +34,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: 0.3s;
+}
+
+.btnRequest:hover {
+  cursor: pointer;
+  opacity: 0.6;
+  transition: 0.3s;
 }
 
 .btnZoneModal {

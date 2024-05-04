@@ -12,7 +12,6 @@ const controller = {
     if (!filter.take) filter.take = 10;
 
     if (!filter.skip) filter.skip = 1;
-    console.log("skip", filter.skip);
     let curs = await cursuriModel.findByPk(id_curs);
 
     if (!curs) {
@@ -31,7 +30,6 @@ const controller = {
       })
       .then(async (rez) => {
         let as = [];
-        console.log("vezi ", rez);
         for (let x of rez.rows) {
           let user = await utilizatoriModel.findByPk(x.id_utilizator);
           as.push({
@@ -53,7 +51,6 @@ const controller = {
   },
   uploadFile: async (req, res) => {
     if (req.file === undefined) {
-      console.log("de ce intra aici?");
       return res.status(400).json({ message: "you should introduce a file" });
     }
     const { id_cerinta, id_utilizator } = req.params;
@@ -94,6 +91,30 @@ const controller = {
       console.error("Error downloading file:", err);
       return res.status(500).send({ message: "Server ERROR", err: err });
     }
+  },
+  updateIstoricAssigment: async (req, res) => {
+    const { id_cerinta_istoric } = req.params;
+    const { feedback } = req.body;
+    ictoricCerinteModel
+      .update(
+        { feedback },
+        {
+          where: {
+            id_cerinta_istoric,
+          },
+        }
+      )
+      .then(() => {
+        return res.status(200).json({
+          message: "succes",
+        });
+      })
+      .catch((err) => {
+        return res.status(500).json({
+          message: "failed",
+          err: err,
+        });
+      });
   },
 };
 

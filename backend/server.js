@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-
+const path = require("path");
 require("dotenv").config();
 const port = process.env.PORT || 8006;
 const router = require("./routes");
@@ -20,6 +20,7 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.static("public/files"));
+app.use("/files", express.static(path.join(__dirname, "files")));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 

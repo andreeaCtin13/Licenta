@@ -162,7 +162,7 @@ function Requests() {
   return (
     <div className={style.mainContainer}>
       <div className={style.btnZone}>
-        <Link to={"/mentor-homepage"}>
+        <Link to={`/mentor-homepage/${idCourse}`}>
           <Button
             className={style.btnBack}
             content={<FontAwesomeIcon icon={faArrowLeft} />}
