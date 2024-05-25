@@ -110,9 +110,7 @@ const controller = {
     const id_utilizator = req.body.id_utilizator;
     let new_user = {};
     if (req.body.hasOwnProperty("password")) {
-      console.log("password received: ", req.body.password);
       const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
-      console.log("INTRU AICI S HASHED PASSWORD UL ESTE:", hashedPassword);
       new_user = { ...req.body, password: hashedPassword };
     } else {
       new_user = { ...req.body };

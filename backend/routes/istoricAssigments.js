@@ -3,6 +3,7 @@ const multer = require("multer");
 const router = express.Router();
 
 const istoricAssigments = require("../controllers").istoricCerinte;
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     return cb(null, __dirname + "/../files");
@@ -11,7 +12,6 @@ const storage = multer.diskStorage({
     return cb(null, Date.now() + "--" + file.originalname);
   },
 });
-
 const upload = multer({ storage: storage });
 
 router.get(

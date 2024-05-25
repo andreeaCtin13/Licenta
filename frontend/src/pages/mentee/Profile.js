@@ -1,9 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import ProfilePic from "../../assets/profileAvatar.jpeg";
 import style from "../../styles/mentee/Profile.module.css";
 import { UserContext } from "../../context/UserContext";
-import currentUser from "../../data/user.json";
-import { Link } from "react-router-dom";
 import Button from "../../components/Button";
 import { Dialog } from "primereact/dialog";
 import axios from "axios";

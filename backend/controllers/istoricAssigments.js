@@ -67,7 +67,9 @@ const controller = {
           return res.status(200).send("A fost incarcata rezolvarea");
         })
         .catch((err) => {
-          return res.status(500).json({ message: "eroare la update request" });
+          return res
+            .status(500)
+            .json({ message: "eroare la update request", err: err });
         });
     } catch (err) {
       return res.status(500).json({ message: "error" });

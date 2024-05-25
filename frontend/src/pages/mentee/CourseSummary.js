@@ -10,7 +10,7 @@ import { Toast } from "primereact/toast";
 function CourseSummary() {
   const { idCourse } = useParams();
   const [requestStatus, setRequestStatus] = useState("unenrolled");
-  const [requestId, setRequestId] = useState(null); // Initialized as null
+  const [requestId, setRequestId] = useState(null);
   const { user } = useContext(UserContext);
   const toast = useRef(null);
   const [course, setCourse] = useState({});
@@ -23,13 +23,11 @@ function CourseSummary() {
       const request = response.data.rezultat.find(
         (x) => x.id_curs === Number(idCourse)
       );
-      console.log("RESPONSE OF AXXIOS IN VERIFY:", response);
       if (!request) {
         setRequestStatus("unenrolled");
       } else {
         setRequestStatus(request.status);
         setRequestId(request.id_cerere);
-        console.log("REQUEST ID: ", requestId);
       }
     } catch (error) {
       console.log(error);
@@ -65,9 +63,9 @@ function CourseSummary() {
     takeCourse();
     verifyRequestExists();
   }, []);
+
   const handleEnroll = async () => {
     try {
-      console.log(requestStatus);
       if (requestStatus === "unenrolled" || requestStatus === "declined") {
         const response = await axios.post(
           "http://localhost:8080/cereriCurs/exists",

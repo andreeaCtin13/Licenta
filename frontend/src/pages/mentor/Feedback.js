@@ -86,18 +86,17 @@ function Feedback() {
     </div>
   );
 
-  const changeVisibility = () => {
-    setVisible(!visible);
-  };
+  // const changeVisibility = () => {
+  //   setVisible(!visible);
+  // };
 
   const getTheLink = () => {
     const backendFilesDirectory = "/files";
     let file = selectedRow?.rezolvare;
-    const fileName = file?.split(`\\`)[file.split(`\\`)?.length - 1]; // Name of the file
-
+    const fileName = file?.split(`\\`)[file.split(`\\`)?.length - 1];
     const fileRelativePath = `${backendFilesDirectory}/${fileName}`;
 
-    const backendBaseUrl = "http://localhost:8080"; // Base URL of your backend server
+    const backendBaseUrl = "http://localhost:8080";
     const fileUrl = `${backendBaseUrl}${fileRelativePath}`;
     console.log("file url", fileUrl);
     setFileToDownload(fileUrl);
@@ -108,7 +107,7 @@ function Feedback() {
       <React.Fragment>
         <div className={style.btnZoneRequest}>
           <Link
-            to={fileToDownload} // Set the link to the full URL of the file
+            to={fileToDownload}
             download="Example-PDF-document"
             target="_blank"
             rel="noreferrer"
@@ -209,7 +208,6 @@ function Feedback() {
   return (
     <div className={style.mainContainer}>
       <h1>Feedback</h1>
-
       <div className="dock-window">
         <Dock className={style.dock} model={items} position="bottom" />
       </div>

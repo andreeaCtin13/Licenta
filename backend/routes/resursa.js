@@ -20,5 +20,6 @@ router.get(
   resurseController.getAllResurse
 );
 router.post("/insert", upload.array("files"), resurseController.insertResursa);
+router.delete("/delete/:id", resurseController.deleteResursa);
 
 module.exports = router;

@@ -30,6 +30,36 @@
   border: none;
 }
 
+.addIcon {
+  background-color: var(--var--light--pink);
+  border-radius: 50%;
+  border: 1px solid var(--var--white);
+  height: 2rem;
+  width: 2rem;
+  transition: 0.3s;
+}
+
+.addIcon:hover {
+  background-color: var(--var--dark--purple);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.rowPDFS {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.notVisible {
+  width: 2rem;
+  background-color: aqua;
+}
+
+.faTrash {
+  background-color: var(--var--dark--purple);
+}
+
 .iconBtn:hover {
   cursor: pointer;
 }

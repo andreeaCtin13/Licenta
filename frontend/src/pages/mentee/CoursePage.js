@@ -256,6 +256,7 @@ function CoursePage() {
 
           <div className={style.containerAssigments}>
             <h2>Cerințe</h2>
+            {console.log("cerinte pe care le am din bd:", cerinte)}
             {cerinte.map((x, index) => {
               return (
                 <div className={style.assigment} key={index}>
