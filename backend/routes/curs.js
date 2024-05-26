@@ -5,10 +5,10 @@ const cursController = require("../controllers").cursuri;
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    return cb(null, __dirname + "/../files");
+    cb(null, __dirname + "/../images");
   },
   filename: function (req, file, cb) {
-    return cb(null, Date.now() + "--" + file.originalname);
+    cb(null, Date.now() + "--" + file.originalname);
   },
 });
 

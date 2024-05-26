@@ -139,7 +139,6 @@ function CourseStatus() {
     uploadFile(file, id);
   };
 
-  // Inside CourseStatus component
   const deleteResource = async (resourceId) => {
     await axios
       .delete(`http://localhost:8080/resurse/delete/${resourceId}`)
@@ -258,7 +257,6 @@ function CourseStatus() {
                               icon={faTrash}
                             />
                           </button>
-                          ;
                         </div>
                       );
                     })}

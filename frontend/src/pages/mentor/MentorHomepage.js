@@ -16,6 +16,7 @@ function MentorHomepage() {
   const handleLogout = () => {
     setLogoutDialog(true);
   };
+
   const getCursuri = async () => {
     axios
       .get(
@@ -64,15 +65,23 @@ function MentorHomepage() {
       </div>
       <h1>Hi, {user.nume}</h1>
       <div>
-        <h2>Your Couses</h2>
+        <h2>Your Courses</h2>
         <div className={style.cursuriArea}>
           {user ? (
             cursuri ? (
               cursuri.map((c, index) => {
+                // Construct the image URL
+                const imageUrl = c.imagine_reprezentativa
+                  ? `http://localhost:8080/${c.imagine_reprezentativa.replace(
+                      /^.*[\\\/]/,
+                      "images/"
+                    )}`
+                  : "default-image-url"; // Add a default image URL if needed
+
                 return (
                   <div id={index} key={index} className={style.courseCard}>
                     <img
-                      src={c.imagine_reprezentativa}
+                      src={imageUrl}
                       alt={c.denumire}
                       className={style.imageCourse}
                     />

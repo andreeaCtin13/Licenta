@@ -16,34 +16,119 @@ import NewSection from "./pages/mentor/NewSection";
 import AdminHomepage from "./pages/admin/AdminHomepage";
 import Requests from "./pages/mentor/Requests.js";
 import Feedback from "./pages/mentor/Feedback.js";
-import { AuthProvider } from "./context/AuthContext.js";
+import PrivateRoute from "./PrivateRoute.js";
+import { UserProvider } from "./context/UserContext";
 
 function App() {
   const [user, setUser] = useState(false);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserProvider value={{ user, setUser }}>
       <BrowserRouter>
         {user && user.status === "junior" && <Sidebar />}
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/course/:idCourse" element={<CoursePage />} />
-          <Route path="/topics" element={<UserMarket />} />
-          <Route path="/course-summary/:idCourse" element={<CourseSummary />} />
-          <Route path="/mentor-homepage" element={<MentorHomepage />} />
-          <Route path="/mentor-homepage/:idCourse" element={<CourseStatus />} />
-          <Route path="/new-course" element={<NewCourse />} />
-          <Route path="/new-section/:idCourse" element={<NewSection />} />
-          <Route path="/admin" element={<AdminHomepage />} />
-          <Route path="/requests/:idCourse" element={<Requests />} />
-          <Route path="/feedback/:idCourse" element={<Feedback />} />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/course/:idCourse"
+            element={
+              <PrivateRoute>
+                <CoursePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/topics"
+            element={
+              <PrivateRoute>
+                <UserMarket />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/course-summary/:idCourse"
+            element={
+              <PrivateRoute>
+                <CourseSummary />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/mentor-homepage"
+            element={
+              <PrivateRoute>
+                <MentorHomepage />
+              </PrivateRoute>
+            }
+          />{" "}
+          <Route
+            path="/mentor-homepage/:idCourse"
+            element={
+              <PrivateRoute>
+                <CourseStatus />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/new-course"
+            element={
+              <PrivateRoute>
+                <NewCourse />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/new-section/:idCourse"
+            element={
+              <PrivateRoute>
+                <NewSection />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <PrivateRoute>
+                <AdminHomepage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/requests/:idCourse"
+            element={
+              <PrivateRoute>
+                <Requests />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/feedback/:idCourse"
+            element={
+              <PrivateRoute>
+                <Feedback />
+              </PrivateRoute>
+            }
+          />
           {user && user.status === "junior" && (
-            <Route path="/test/:idSectiune/:idCourse" element={<Test />} />
+            <Route
+              path="/test/:idSectiune/:idCourse"
+              element={
+                <PrivateRoute>
+                  <Test />
+                </PrivateRoute>
+              }
+            />
           )}
         </Routes>
       </BrowserRouter>
-    </UserContext.Provider>
+    </UserProvider>
   );
 }
 

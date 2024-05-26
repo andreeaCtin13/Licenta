@@ -1,18 +1,29 @@
 const cursuriModel = require("../models").cursuri;
 const usersModel = require("../models").users;
-const resurseModel = require("../models").resurse;
-const cerinteModel = require("../models").cerinteModel;
+const multer = require("multer");
+const path = require("path");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, "../images"));
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "--" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 const controller = {
   getAllCursuri: async (req, res) => {
     const filter = req.query;
     if (!filter.take) filter.take = 10;
-
     if (!filter.skip) filter.skip = 1;
 
     let whereClause = {};
-    if (filter.denumire)
+    if (filter.denumire) {
       whereClause.denumire = { [LikeOp]: `%${filter.denumire}%` };
+    }
 
     await cursuriModel
       .findAndCountAll({
@@ -20,90 +31,71 @@ const controller = {
         limit: parseInt(filter.take),
         offset: parseInt(filter.skip - 1) * parseInt(filter.take),
       })
-      .then((rezultat) => {
-        return res.status(200).send({ requests: rezultat });
-      })
-      .catch((err) => {
-        console.log(err);
-        return res.status(500).send({ message: "server error", err: err });
-      });
+      .then((rezultat) => res.status(200).send({ requests: rezultat }))
+      .catch((err) => res.status(500).send({ message: "server error", err }));
   },
+
   insertCurs: async (req, res) => {
-    let {
-      denumire,
-      descriere,
-      nr_sectiuni,
-      imagine_reprezentativa,
-      id_utilizator,
-    } = req.body;
+    let { denumire, descriere, id_utilizator } = req.body;
 
     try {
       let user = await usersModel.findByPk(id_utilizator);
+
       if (!user) {
         return res
           .status(400)
           .json({ message: "user associated does not exist" });
       }
-      console.log("user found: ", user);
       if (user.status !== "mentor") {
         return res.status(400).json({ message: "wrong data provided" });
       }
-    } catch (err) {
-      return res.status(500).json({ message: "server error", err: err });
-    }
 
-    nr_sectiuni = nr_sectiuni ? nr_sectiuni : 0;
-    await cursuriModel
-      .create({
-        denumire,
-        descriere,
-        nr_sectiuni,
-        imagine_reprezentativa,
-        id_utilizator,
-      })
-      .then((rez) => {
-        return res.status(200).json({ user: rez, message: "course created" });
-      })
-      .catch((err) => {
-        return res.status(500).json({ message: "server error", err: err });
-      });
+      const imagine_reprezentativa = req.file ? req.file.path : null;
+
+      await cursuriModel
+        .create({
+          denumire,
+          descriere,
+          nr_sectiuni: 0, // default value, adjust if needed
+          imagine_reprezentativa,
+          id_utilizator,
+        })
+        .then((rez) =>
+          res.status(200).json({ user: rez, message: "course created" })
+        )
+        .catch((err) => res.status(500).json({ message: "server error", err }));
+    } catch (err) {
+      res.status(500).json({ message: "server error", err });
+    }
   },
+
   getCursById: async (req, res) => {
     const id_curs = req.params.id_curs;
     let curs = await cursuriModel.findByPk(id_curs);
     if (!curs) {
-      return res
-        .status(400)
-        .json({ message: "nu exista curs cu id-ul respectiv" });
+      res.status(400).json({ message: "nu exista curs cu id-ul respectiv" });
     } else {
-      return res.status(200).json({
-        curs,
-        message: "success",
-      });
+      res.status(200).json({ curs, message: "success" });
     }
   },
+
   getCursuriOfAMentor: async (req, res) => {
     const { id_user } = req.params;
-
     const user = await usersModel.findByPk(id_user);
     if (!user) {
-      return res
+      res
         .status(400)
         .json({ message: "nu ai introdus un id de utilizator valid" });
     }
 
     const cursuri = await cursuriModel.findAll({
-      where: {
-        id_utilizator: id_user,
-      },
+      where: { id_utilizator: id_user },
     });
 
     if (cursuri && cursuri.length >= 0) {
-      return res.status(200).json({ cursuri: cursuri, message: "ok" });
+      res.status(200).json({ cursuri, message: "ok" });
     } else {
-      console.log(cursuri);
-
-      return res.status(500).json({ message: "server error" });
+      res.status(500).json({ message: "server error" });
     }
   },
 };

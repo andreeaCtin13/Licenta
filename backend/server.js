@@ -23,6 +23,7 @@ app.use(express.static("public/files"));
 app.use("/files", express.static(path.join(__dirname, "files")));
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 // app.get("/jwt-secret", auth, (req, res) => {
 //   res.status(200).send({ message: "ESTI AUTORIZAT" });
