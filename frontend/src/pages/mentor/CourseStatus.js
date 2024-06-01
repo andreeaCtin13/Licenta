@@ -4,7 +4,11 @@ import { useParams } from "react-router";
 import style from "../../styles/mentor/CourseStatus.module.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPencil,
+  faTrash,
+  faArrowLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import Button from "../../components/Button";
 import axios from "axios";
@@ -107,7 +111,7 @@ function CourseStatus() {
     formData.append("id_sectiune", id);
     formData.append("files", file);
 
-    console.log([...formData.entries()]); // Log formData to verify
+    console.log([...formData.entries()]);
 
     await axios
       .post(`http://localhost:8080/resurse/insert`, formData, {
@@ -121,8 +125,8 @@ function CourseStatus() {
           summary: "Success",
           detail: "File Uploaded",
         });
-        getAllSectiuni(); // Refresh sections after upload
-        fileUploadRefs.current[id].clear(); // Clear the file input after upload
+        getAllSectiuni();
+        fileUploadRefs.current[id].clear();
       })
       .catch((err) => {
         console.log(err);
@@ -148,7 +152,7 @@ function CourseStatus() {
           summary: "Success",
           detail: "Resource deleted successfully",
         });
-        getAllSectiuni(); // Refresh sections after deletion
+        getAllSectiuni();
       })
       .catch((err) => {
         console.log(err);
@@ -162,6 +166,12 @@ function CourseStatus() {
 
   return (
     <div className={style.mainContainer}>
+      <Link to={`/mentor-homepage`}>
+        <Button
+          className={style.btnBack}
+          content={<FontAwesomeIcon icon={faArrowLeft} />}
+        ></Button>
+      </Link>
       <Toast ref={toast} />
       <h1>{curs.denumire}</h1>
       <div className={style.buttonZone}>

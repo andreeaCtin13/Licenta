@@ -1,21 +1,20 @@
 import React, { useContext, useRef, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import style from "../../styles/mentor/NewCourse.module.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUpload } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import axios from "axios";
 import { Toast } from "primereact/toast";
-import { FileUpload } from "primereact/fileupload";
 
 function NewCourse() {
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const toast = useRef(null);
-  const fileUploadRefs = useRef({});
   const [imageFile, setImageFile] = useState(null);
+  const navigate = useNavigate();
   const [curs, setCurs] = useState({
     id_utilizator: user.id_utilizator,
+    denumire: "",
+    descriere: "",
   });
 
   const updateInput = (value, nameOfProperty) => {
@@ -29,7 +28,8 @@ function NewCourse() {
     setImageFile(e.target.files[0]);
   };
 
-  const uploadCurs = async () => {
+  const uploadCurs = async (e) => {
+    e.preventDefault();
     const formData = new FormData();
     formData.append("denumire", curs.denumire);
     formData.append("descriere", curs.descriere);
@@ -44,12 +44,12 @@ function NewCourse() {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("Course inserted successfully");
       toast.current.show({
         severity: "success",
         summary: "Success",
-        detail: "Course created successfully",
+        detail: "Curs creat cu succes",
       });
+      navigate("/mentor-homepage");
     } catch (err) {
       console.log("Error occurred while inserting course", err);
       toast.current.show({
@@ -64,19 +64,23 @@ function NewCourse() {
     <div className={style.mainContainer}>
       <Toast ref={toast} />
       <h1>Create a new course</h1>
-      <form>
+      <form onSubmit={uploadCurs}>
         <div className={style.formRow}>
           <label>Title of the course</label>
           <input
             type="text"
+            value={curs.denumire}
             onChange={(e) => updateInput(e.target.value, "denumire")}
+            required
           />
         </div>
         <div className={style.formRow}>
           <label>Description</label>
           <input
             type="text"
+            value={curs.descriere}
             onChange={(e) => updateInput(e.target.value, "descriere")}
+            required
           />
         </div>
         <div className={style.formRow}>
@@ -91,8 +95,8 @@ function NewCourse() {
             />
           </Link>
           <Button
+            type="submit"
             content="CREATE"
-            onClick={uploadCurs}
             className={`${style.btn} ${style.btnCreate}`}
           />
         </div>

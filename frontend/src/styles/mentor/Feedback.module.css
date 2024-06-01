@@ -49,3 +49,21 @@
 .dock {
   position: fixed;
 }
+
+.btnCancel {
+  border: none;
+  background-color: var(--var--dark--pink);
+  color: var(--var--white);
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.3rem;
+  border-radius: 50%;
+  transition: 0.5s;
+  margin-left: -2rem;
+}
+
+.btnCancel:hover {
+  cursor: pointer;
+  background-color: var(--var--light--pink);
+  transition: 0.5s;
+}

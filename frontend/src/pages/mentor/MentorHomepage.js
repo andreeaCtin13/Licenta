@@ -47,10 +47,10 @@ function MentorHomepage() {
 
       <div className={style.zoneOfBtns}>
         <div className={style.btnCreateZone}>
-          <Link to="/new-course">
+          <Link to="/new-course" className={style.nonUnderline}>
             <Button
               className={style.btnCreate}
-              content="Create a new course"
+              content="Crează un nou curs"
             ></Button>
           </Link>
         </div>
@@ -58,25 +58,24 @@ function MentorHomepage() {
         <div className={style.btnCreateZone}>
           <Button
             className={style.btnCreate}
-            content="Logout"
+            content="Dezautentificare"
             onClick={handleLogout}
           ></Button>
         </div>
       </div>
       <h1>Hi, {user.nume}</h1>
       <div>
-        <h2>Your Courses</h2>
+        <h2>Cursurile susținute de dvs.</h2>
         <div className={style.cursuriArea}>
           {user ? (
-            cursuri ? (
+            cursuri.length != 0 ? (
               cursuri.map((c, index) => {
-                // Construct the image URL
                 const imageUrl = c.imagine_reprezentativa
                   ? `http://localhost:8080/${c.imagine_reprezentativa.replace(
                       /^.*[\\\/]/,
                       "images/"
                     )}`
-                  : "default-image-url"; // Add a default image URL if needed
+                  : "default-image-url";
 
                 return (
                   <div id={index} key={index} className={style.courseCard}>
@@ -100,10 +99,10 @@ function MentorHomepage() {
                 );
               })
             ) : (
-              <div>No classes created.</div>
+              <div>Nicio clasă creată momentan.</div>
             )
           ) : (
-            <div></div>
+            <div>Nicio clasă creată momentan.</div>
           )}
         </div>
       </div>
@@ -112,7 +111,7 @@ function MentorHomepage() {
         onHide={() => setLogoutDialog(false)}
         className={style.modal}
       >
-        Are you sure you want to logout?
+        Sigru dorelti să de dezautentifici?
         <div className={style.buttonsLogout}>
           <Link to="/">
             <Button
@@ -120,10 +119,12 @@ function MentorHomepage() {
                 setUser(false);
                 setLogoutDialog(false);
               }}
+              className={style.btnModala}
               content={"Yes"}
             ></Button>
           </Link>
           <Button
+            className={style.btnModala}
             onClick={() => setLogoutDialog(false)}
             content={"No"}
           ></Button>

@@ -15,6 +15,43 @@
   width: 20rem;
 }
 
+.nonUnderline {
+  text-decoration: none;
+}
+
+.btnModala {
+  border: none;
+  padding: 1rem;
+  width: 5rem;
+  border-radius: 20%;
+}
+
+.buttonsLogout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem;
+}
+
+.btnModala:nth-child(even) {
+  background-color: var(--var--dark--purple);
+}
+
+.btnModala:nth-child(even):hover {
+  background-color: var(--var--light--purple);
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.btnModala:nth-child(odd) {
+  background-color: var(--var--light--purple);
+}
+.btnModala:nth-child(odd):hover {
+  background-color: var(--var--light--pink);
+  cursor: pointer;
+  transition: 0.5s;
+}
+
 .courseCard {
   background-color: var(--var--white);
   color: var(--var--dark--purple);

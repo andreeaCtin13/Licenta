@@ -8,11 +8,12 @@ import axios from "axios";
 import { Toast } from "primereact/toast";
 import { useParams } from "react-router";
 import { FilesContext } from "../../context/FilesContext";
+import { useNavigate } from "react-router";
 
 function NewSection() {
   const { idCourse } = useParams();
   const [fileToSend, setFileToSend] = useState();
-
+  const navigate = useNavigate();
   const [newSection, setNewSection] = useState({
     id_curs: Number(idCourse),
   });
@@ -88,7 +89,6 @@ function NewSection() {
       .post(`http://localhost:8080/sectiuni/adaugare`, newSection, fileToSend)
       .then((rez) => {
         if (rez.message === "successful") {
-          console.log("s-a realizat treaba");
           toast.current.show({
             severity: "succes",
             summary: "Succesed",
@@ -96,6 +96,7 @@ function NewSection() {
             life: 3000,
           });
         }
+        navigate(`/mentor-homepage/${idCourse}`);
       })
       .catch((err) => {
         console.log(err.message);

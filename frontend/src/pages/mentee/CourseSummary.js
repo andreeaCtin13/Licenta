@@ -76,7 +76,7 @@ function CourseSummary() {
           }
         );
         console.log(response.data.message);
-        if (response.data.message === "nope") {
+        if (response.data.message === "nu există cererea") {
           await axios.post("http://localhost:8080/cereriCurs/insert", {
             id_utilizator: user.id_utilizator,
             id_curs: Number(idCourse),

@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          len: [3, 255],
+          len: [2, 255],
         },
       },
       este_corecta: {

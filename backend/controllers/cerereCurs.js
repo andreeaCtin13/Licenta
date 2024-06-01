@@ -1,7 +1,7 @@
 const cereriCursModel = require("../models").cereriCurs;
 const cursuriModel = require("../models").cursuri;
 const utilizatorModel = require("../models").users;
-const { EqOp } = require("./Operators");
+const { EqOp } = require("../controllers/Operators");
 
 const controller = {
   getAllCereri: async (req, res) => {
@@ -114,7 +114,7 @@ const controller = {
       })
       .then((rez) => {
         if (rez.length == 0) {
-          return res.status(400).json({ message: "nope" });
+          return res.status(200).json({ message: "nu există cererea" });
         } else {
           return res.status(200).json({ message: "exists" });
         }

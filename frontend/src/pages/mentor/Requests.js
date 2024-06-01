@@ -39,7 +39,11 @@ function Requests() {
         console.log("requests:", rezultat);
         console.log("total records:", rezultat.data.number_of_req);
         setRequestRows(rezultat.data.requests);
-        setTotalRec(Math.ceil(rezultat.data.number_of_req / 8));
+        setTotalRec(
+          Math.ceil(rezultat.data.number_of_req / 8) > 0
+            ? Math.ceil(rezultat.data.number_of_req / 8)
+            : 1
+        );
       })
       .catch((err) => {
         console.log(err);
