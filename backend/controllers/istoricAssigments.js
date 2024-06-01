@@ -4,29 +4,37 @@ const sectiuniModel = require("../models").sectiuni;
 const cursuriModel = require("../models").cursuri;
 const utilizatoriModel = require("../models").users;
 const multer = require("multer");
+const _ = require("lodash");
 
 const controller = {
   getAllIstoricCerinte: async (req, res) => {
     const { id_curs, id_cerinta } = req.params;
-    const filter = req.query;
-    if (!filter.take) filter.take = 10;
+    const { take, skip, feedback } = req.query;
 
-    if (!filter.skip) filter.skip = 1;
+    const takeValue = take ? parseInt(take) : 10;
+    const skipValue = skip ? parseInt(skip) : 1;
+
     let curs = await cursuriModel.findByPk(id_curs);
 
     if (!curs) {
       return res.status(400).json({
-        message: "nu ai introdus un id_curs valid",
+        message: "Nu ai introdus un id_curs valid",
       });
+    }
+
+    const whereClause = {
+      id_cerinta: id_cerinta,
+    };
+
+    if (feedback === "null") {
+      whereClause.feedback = null;
     }
 
     await ictoricCerinteModel
       .findAndCountAll({
-        where: {
-          id_cerinta: id_cerinta,
-        },
-        limit: parseInt(filter.take),
-        offset: parseInt(filter.skip - 1) * parseInt(filter.take),
+        where: whereClause,
+        limit: takeValue,
+        offset: (skipValue - 1) * takeValue,
       })
       .then(async (rez) => {
         let as = [];
@@ -47,8 +55,61 @@ const controller = {
           istoric: as,
           count: rez.count,
         });
+      })
+      .catch((err) => {
+        console.error("Error fetching assignment history:", err);
+        return res.status(500).json({ message: "Server error", err: err });
       });
   },
+  getIstoricRezolvariPerUser: async (req, res) => {
+    const { id_utilizator } = req.params;
+
+    let user = await utilizatoriModel.findByPk(id_utilizator);
+    if (!user) {
+      return res.status(400).json({
+        message: "nu exista utilizator cu id-ul mentionat",
+      });
+    }
+
+    let istoric = await ictoricCerinteModel.findAll({
+      where: {
+        id_utilizator: id_utilizator,
+      },
+      order: [["data_finalizare", "ASC"]],
+    });
+
+    const luniInRomana = {
+      1: "ianuarie",
+      2: "februarie",
+      3: "martie",
+      4: "aprilie",
+      5: "mai",
+      6: "iunie",
+      7: "iulie",
+      8: "august",
+      9: "septembrie",
+      10: "octombrie",
+      11: "noiembrie",
+      12: "decembrie",
+    };
+
+    const istoricGrupatPeLuni = _.groupBy(istoric, (rezolvare) => {
+      const data = new Date(rezolvare.data_finalizare);
+      const monthName = luniInRomana[data.getMonth() + 1];
+      return monthName;
+    });
+
+    const numarRezolvariPeLuni = {};
+    for (const [luna, rezolvari] of Object.entries(istoricGrupatPeLuni)) {
+      numarRezolvariPeLuni[luna] = rezolvari.length;
+    }
+
+    return res.status(200).json({
+      istoric: numarRezolvariPeLuni,
+      message: "Succes",
+    });
+  },
+
   uploadFile: async (req, res) => {
     if (req.file === undefined) {
       return res.status(400).json({ message: "you should introduce a file" });

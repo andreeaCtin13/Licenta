@@ -18,6 +18,11 @@ router.get(
   "/getAll/:id_curs/:id_cerinta/filter",
   istoricAssigments.getAllIstoricCerinte
 );
+
+router.get(
+  "/getIstoricRezolvariPerUser/:id_utilizator",
+  istoricAssigments.getIstoricRezolvariPerUser
+);
 router.post(
   "/upload/:id_cerinta/:id_utilizator",
   upload.single("file"),

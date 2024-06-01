@@ -9,4 +9,8 @@ router.get(
   "/getLastIstoricOfAUser/:id_utilizator/:id_sectiune",
   istoricPunctajeController.getLastIstoricOfAUser
 );
+router.get(
+  "/getPunctajePerUtilizator/:id_utilizator",
+  istoricPunctajeController.getIstoricPunctajeOfAUser
+);
 module.exports = router;

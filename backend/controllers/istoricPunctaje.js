@@ -1,6 +1,8 @@
 const istoricuriPunctajeModel = require("../models").istoricuriPunctaje;
 const testeModel = require("../models").teste;
 const sectiuniModel = require("../models").sectiuni;
+const utilizatoriModel = require("../models").users;
+
 const controller = {
   getAllIstoricuriPunctaje: (req, res) => {
     res.status(200).send({ message: "totu ok la istoricuri punctaje" });
@@ -68,6 +70,54 @@ const controller = {
         istoric: istoric[istoric.length - 1],
         punctaj_minim_promovare: test[0].punctaj_minim_promovare,
       },
+    });
+  },
+  getIstoricPunctajeOfAUser: async (req, res) => {
+    const { id_utilizator } = req.params;
+
+    let user = await utilizatoriModel.findByPk(id_utilizator);
+    if (!user) {
+      return res.status(400).json({
+        message: "nu exista utilizator cu id-ul mentionat",
+      });
+    }
+
+    let istoric = await istoricuriPunctajeModel.findAll({
+      where: {
+        id_utilizator: id_utilizator,
+      },
+    });
+
+    const luniInRomana = {
+      0: "ianuarie",
+      1: "februarie",
+      2: "martie",
+      3: "aprilie",
+      4: "mai",
+      5: "iunie",
+      6: "iulie",
+      7: "august",
+      8: "septembrie",
+      9: "octombrie",
+      10: "noiembrie",
+      11: "decembrie",
+    };
+
+    const numarTestePeLuni = {};
+
+    istoric.forEach((punctaj) => {
+      const data = new Date(punctaj.data_sustinere);
+      const luna = luniInRomana[data.getMonth()];
+      if (!numarTestePeLuni[luna]) {
+        numarTestePeLuni[luna] = 1;
+      } else {
+        numarTestePeLuni[luna]++;
+      }
+    });
+
+    return res.status(200).json({
+      numarTestePeLuni: numarTestePeLuni,
+      message: "Succes",
     });
   },
 };

@@ -57,9 +57,6 @@ const controller = {
       punctaj_minim_promovare,
     } = req.body;
 
-    // console.log("files", files);
-    // upload.array("file");
-
     try {
       let curs = await cursuriModel.findByPk(id_curs);
       if (!curs) {
@@ -75,7 +72,6 @@ const controller = {
           })
           .then(async (rez) => {
             id_sectiune = rez.id_sectiune;
-            console.log("s-a inserat sectiunea");
             for (let i = 0; i < cerinte.length; i++) {
               await cerinteModel
                 .create({

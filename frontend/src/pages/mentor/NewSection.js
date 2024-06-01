@@ -16,29 +16,57 @@ function NewSection() {
   const navigate = useNavigate();
   const [newSection, setNewSection] = useState({
     id_curs: Number(idCourse),
+    denumire: "",
+    descriere: "",
+    resurse: { video_link: "", pdfs: [] },
+    cerinte: [],
+    intrebari: [],
+    punctaj_minim: 0,
   });
   const toast = useRef(null);
 
   const createSection = async () => {
+    console.log("NEW SECTION", newSection);
+
+    // Detailed logging for debugging
+    console.log("id_curs", newSection.id_curs);
+    console.log("denumire", newSection.denumire);
+    console.log("descriere", newSection.descriere);
+    console.log("resurse", newSection.resurse);
+    console.log("cerinte", newSection.cerinte);
+    console.log("intrebari", newSection.intrebari);
+    console.log("punctaj_minim", newSection.punctaj_minim);
+
     if (
-      !newSection.hasOwnProperty("id_curs") ||
-      !newSection.hasOwnProperty("denumire") ||
-      !newSection.hasOwnProperty("descriere") ||
-      !newSection.hasOwnProperty("resurse") ||
-      !newSection.hasOwnProperty("cerinte") ||
-      !newSection.hasOwnProperty("intrebari")
+      !newSection.id_curs ||
+      !newSection.denumire ||
+      !newSection.descriere ||
+      !newSection.resurse ||
+      !newSection.cerinte ||
+      !newSection.intrebari ||
+      newSection.punctaj_minim === undefined
     ) {
       toast.current.show({
-        severity: "fail",
+        severity: "error",
         summary: "Failed",
         detail: "Nu ai furnizat toate informatiile necesare",
         life: 3000,
       });
       return;
     }
+
+    if (!newSection.files) {
+      toast.current.show({
+        severity: "error",
+        summary: "Failed",
+        detail: "Nu ai furnizat pdf urile",
+        life: 3000,
+      });
+      return;
+    }
     if (newSection.cerinte.length < 1) {
       toast.current.show({
-        severity: "fail",
+        severity: "error",
         summary: "Failed",
         detail: "Trebuie sa incluzi minim o cerinta",
         life: 3000,
@@ -46,9 +74,9 @@ function NewSection() {
       return;
     }
 
-    if (!newSection.resurse.hasOwnProperty("video_link")) {
+    if (!newSection.resurse.video_link) {
       toast.current.show({
-        severity: "fail",
+        severity: "error",
         summary: "Failed",
         detail: "Trebuie sa incluzi un link video",
         life: 3000,
@@ -56,42 +84,40 @@ function NewSection() {
       return;
     }
 
-    if (!newSection.resurse.hasOwnProperty("pdfs")) {
-      toast.current.show({
-        severity: "fail",
-        summary: "Failed",
-        detail: "Trebuie sa incluzi macar o resursa pdf",
-        life: 3000,
-      });
-      return;
-    }
-
-    if (newSection.files.length < 1) {
-      toast.current.show({
-        severity: "fail",
-        summary: "Failed",
-        detail: "Trebuie sa incluzi minim un pdf",
-        life: 3000,
-      });
-      return;
-    }
-
     if (newSection.intrebari.length < 1) {
       toast.current.show({
-        severity: "fail",
+        severity: "error",
         summary: "Failed",
-        detail: "Trebuie sa incluzi minim o intrebare ",
+        detail: "Trebuie sa incluzi minim o intrebare",
         life: 3000,
       });
       return;
     }
+
+    // Calculate the total score of all questions
+    const totalScore = newSection.intrebari.reduce((acc, intrebare) => {
+      return acc + intrebare.punctaj;
+    }, 0);
+
+    // Check if the minimum passing score is at least the total score of the questions
+    if (newSection.punctaj_minim < totalScore) {
+      toast.current.show({
+        severity: "error",
+        summary: "Failed",
+        detail:
+          "Punctajul minim de promovare trebuie sa fie cel putin egal cu suma punctajelor intrebarilor",
+        life: 3000,
+      });
+      return;
+    }
+
     axios
       .post(`http://localhost:8080/sectiuni/adaugare`, newSection, fileToSend)
       .then((rez) => {
         if (rez.message === "successful") {
           toast.current.show({
-            severity: "succes",
-            summary: "Succesed",
+            severity: "success",
+            summary: "Succes",
             detail: "S-a realizat inserarea",
             life: 3000,
           });
@@ -101,13 +127,14 @@ function NewSection() {
       .catch((err) => {
         console.log(err.message);
         toast.current.show({
-          severity: "fail",
+          severity: "error",
           summary: "Failed",
           detail: "Eroare la incarcarea cursurilor",
           life: 3000,
         });
       });
   };
+
   return (
     <FilesContext.Provider value={{ fileToSend, setFileToSend }}>
       <SectionContext.Provider value={{ newSection, setNewSection }}>
@@ -123,13 +150,12 @@ function NewSection() {
             <Button
               className={`${style.btn} ${style.btnCancel}`}
               content={"Back"}
+              onClick={() => navigate(`/mentor-homepage/${idCourse}`)}
             ></Button>
             <Button
               className={`${style.btn} ${style.btnCreate}`}
               content={"Create"}
-              onClick={() => {
-                createSection();
-              }}
+              onClick={createSection}
             ></Button>
           </div>
           {/* <div>{newSection}</div> */}

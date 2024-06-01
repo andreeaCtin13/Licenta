@@ -9,6 +9,7 @@ import Button from "../../components/Button";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
 import { Toast } from "primereact/toast";
+import { FileUpload } from "primereact/fileupload";
 
 function CoursePage() {
   const [currentSectionIndex, setCurrentSectionIndex] = useState();
@@ -20,6 +21,7 @@ function CoursePage() {
   const toast = useRef(null);
   const [courseChosen, setCourseChosen] = useState();
   const [stare, setStare] = useState();
+  const fileUploadRefs = useRef({});
 
   const playVideo = (index) => {
     setCurrentSectionIndex(index);
@@ -175,6 +177,48 @@ function CoursePage() {
     setData();
   }, []);
 
+  const uploadFile = async (file, id) => {
+    let formData = new FormData();
+
+    formData.append("file", file);
+
+    console.log([...formData.entries()]);
+
+    console.log(id);
+    await axios
+      .post(
+        `http://localhost:8080/istoricCerinte/upload/${id}/${user.id_utilizator}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then(() => {
+        toast.current.show({
+          severity: "info",
+          summary: "Success",
+          detail: "File Uploaded",
+        });
+        // getAllSectiuni();
+        fileUploadRefs.current[id].clear();
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.current.show({
+          severity: "error",
+          summary: "Failed",
+          detail: "File upload failed",
+        });
+      });
+  };
+
+  const onUpload = ({ files }, id) => {
+    const [file] = files;
+    uploadFile(file, id);
+  };
+
   return (
     <div className={style.mainContainer}>
       <Toast ref={toast} />
@@ -263,6 +307,19 @@ function CoursePage() {
                   <h3>{x.titlu}</h3>
                   <div className={style.assigmentRow}>
                     <div>{x.cerinta}</div>
+                    <FileUpload
+                      ref={(el) => (fileUploadRefs.current[0] = el)}
+                      mode="basic"
+                      name="demo[]"
+                      accept="application/pdf"
+                      customUpload={true}
+                      uploadHandler={(e) =>
+                        onUpload(e, cerinte[index].id_cerinta)
+                      }
+                      auto
+                      chooseLabel={"Adaugă"}
+                    />
+
                     <input
                       type="file"
                       content="Selecteaza fisier"
