@@ -18,27 +18,26 @@ function Profile() {
 
   const [noIstoricAssigments, setNoIstoricAssigments] = useState([]);
   const [noIstoricPunctaje, setNoIstoricPunctaje] = useState([]);
-  const setData = async () => {
-    await axios
-      .get(
-        `http://localhost:8080/istoricCerinte/getIstoricRezolvariPerUser/${user.id_utilizator}`
-      )
-      .then((rez) => {
-        setNoIstoricAssigments(rez.data.istoric);
-      });
 
-    await axios
-      .get(
+  const setData = async () => {
+    try {
+      const assignmentsResponse = await axios.get(
+        `http://localhost:8080/istoricCerinte/getIstoricRezolvariPerUser/${user.id_utilizator}`
+      );
+      setNoIstoricAssigments(assignmentsResponse.data.istoric);
+
+      const punctajeResponse = await axios.get(
         `http://localhost:8080/istoricuriPunctaje/getPunctajePerUtilizator/${user.id_utilizator}`
-      )
-      .then((rez) => {
-        setNoIstoricPunctaje(rez.data.numarTestePeLuni);
-      });
+      );
+      setNoIstoricPunctaje(punctajeResponse.data.numarTestePeLuni);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   useEffect(() => {
     setData();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const documentStyle = getComputedStyle(document.documentElement);
@@ -47,6 +46,7 @@ function Profile() {
       "--text-color-primary"
     );
     const surfaceBorder = documentStyle.getPropertyValue("--surface-border");
+
     const data = {
       labels: [
         "ianuarie",
@@ -68,22 +68,18 @@ function Profile() {
           backgroundColor: documentStyle.getPropertyValue("--purple-500"),
           borderColor: documentStyle.getPropertyValue("--purple-500"),
           data: [
-            noIstoricPunctaje.hasOwnProperty("ianuarie")
-              ? noIstoricPunctaje["ianuarie"]
-              : 0,
-            noIstoricPunctaje["februarie"] ? noIstoricPunctaje["februarie"] : 0,
-            noIstoricPunctaje["martie"] ? noIstoricPunctaje["martie"] : 0,
-            noIstoricPunctaje["aprilie"] ? noIstoricPunctaje["aprilie"] : 0,
-            noIstoricPunctaje["mai"] ? noIstoricPunctaje["mai"] : 0,
-            noIstoricPunctaje["iunie"] ? noIstoricPunctaje["iunie"] : 0,
-            noIstoricPunctaje["iulie"] ? noIstoricPunctaje["iulie"] : 0,
-            noIstoricPunctaje["august"] ? noIstoricPunctaje["august"] : 0,
-            noIstoricPunctaje["septembrie"]
-              ? noIstoricPunctaje["septembrie"]
-              : 0,
-            noIstoricPunctaje["octombrie"] ? noIstoricPunctaje["octombrie"] : 0,
-            noIstoricPunctaje["noiembrie"] ? noIstoricPunctaje["noiembrie"] : 0,
-            noIstoricPunctaje["decembrie"] ? noIstoricPunctaje["decembrie"] : 0,
+            noIstoricPunctaje["ianuarie"] || 0,
+            noIstoricPunctaje["februarie"] || 0,
+            noIstoricPunctaje["martie"] || 0,
+            noIstoricPunctaje["aprilie"] || 0,
+            noIstoricPunctaje["mai"] || 0,
+            noIstoricPunctaje["iunie"] || 0,
+            noIstoricPunctaje["iulie"] || 0,
+            noIstoricPunctaje["august"] || 0,
+            noIstoricPunctaje["septembrie"] || 0,
+            noIstoricPunctaje["octombrie"] || 0,
+            noIstoricPunctaje["noiembrie"] || 0,
+            noIstoricPunctaje["decembrie"] || 0,
           ],
         },
         {
@@ -91,42 +87,32 @@ function Profile() {
           backgroundColor: documentStyle.getPropertyValue("--pink-500"),
           borderColor: documentStyle.getPropertyValue("--pink-500"),
           data: [
-            noIstoricAssigments["ianuarie"]
-              ? noIstoricAssigments["ianuarie"]
-              : 0,
-            noIstoricAssigments["februarie"]
-              ? noIstoricAssigments["februarie"]
-              : 0,
-            noIstoricAssigments["martie"] ? noIstoricAssigments["martie"] : 0,
-            noIstoricAssigments["aprilie"] ? noIstoricAssigments["aprilie"] : 0,
-            noIstoricAssigments["mai"] ? noIstoricAssigments["mai"] : 0,
-            noIstoricAssigments["iunie"] ? noIstoricAssigments["iunie"] : 0,
-            noIstoricAssigments["iulie"] ? noIstoricAssigments["iulie"] : 0,
-            noIstoricAssigments["august"] ? noIstoricAssigments["august"] : 0,
-            noIstoricAssigments["septembrie"]
-              ? noIstoricAssigments["septembrie"]
-              : 0,
-            noIstoricAssigments["octombrie"]
-              ? noIstoricAssigments["octombrie"]
-              : 0,
-            noIstoricAssigments["noiembrie"]
-              ? noIstoricAssigments["noiembrie"]
-              : 0,
-            noIstoricAssigments["decembrie"]
-              ? noIstoricAssigments["decembrie"]
-              : 0,
+            noIstoricAssigments["ianuarie"] || 0,
+            noIstoricAssigments["februarie"] || 0,
+            noIstoricAssigments["martie"] || 0,
+            noIstoricAssigments["aprilie"] || 0,
+            noIstoricAssigments["mai"] || 0,
+            noIstoricAssigments["iunie"] || 0,
+            noIstoricAssigments["iulie"] || 0,
+            noIstoricAssigments["august"] || 0,
+            noIstoricAssigments["septembrie"] || 0,
+            noIstoricAssigments["octombrie"] || 0,
+            noIstoricAssigments["noiembrie"] || 0,
+            noIstoricAssigments["decembrie"] || 0,
           ],
         },
       ],
     };
+
     const options = {
       indexAxis: "y",
       maintainAspectRatio: false,
-      aspectRatio: 0.8,
+      aspectRatio: 0.5,
       plugins: {
         legend: {
           labels: {
             fontColor: textColor,
+            font: { size: 20 },
           },
         },
       },
@@ -135,7 +121,8 @@ function Profile() {
           ticks: {
             color: textColorSecondary,
             font: {
-              weight: 500,
+              weight: 300,
+              size: 17,
             },
           },
           grid: {
@@ -146,6 +133,7 @@ function Profile() {
         y: {
           ticks: {
             color: textColorSecondary,
+            font: { size: 20 },
           },
           grid: {
             color: surfaceBorder,
@@ -157,32 +145,28 @@ function Profile() {
 
     setChartData(data);
     setChartOptions(options);
-  }, [noIstoricAssigments]);
+  }, [noIstoricPunctaje, noIstoricAssigments]);
 
   const show = (position) => {
     setPosition(position);
     setVisible(true);
   };
-  console.log(user);
 
   const updatePassword = async () => {
     if (newPass !== "") {
-      console.log("new pass", newPass);
-      await axios
-        .put("http://localhost:8080/useri/actualizare", {
+      try {
+        await axios.put("http://localhost:8080/useri/actualizare", {
           id_utilizator: user.id_utilizator,
           password: newPass,
-        })
-        .then((rez) => {
-          console.log("ce am modificat:", rez);
-          console.log("totul ok");
-        })
-        .catch((err) => {
-          console.log(err);
         });
+        console.log("Password updated successfully");
+      } catch (error) {
+        console.error("Error updating password:", error);
+      }
     }
     setVisible(false);
   };
+
   const footerContent = (
     <div className={style.btnZone}>
       <Button
@@ -192,9 +176,7 @@ function Profile() {
       />
       <Button
         content="Change"
-        onClick={() => {
-          updatePassword();
-        }}
+        onClick={updatePassword}
         className={`${style.btnModal} ${style.btnChange}`}
       />
     </div>
@@ -203,48 +185,19 @@ function Profile() {
   return (
     <div className={style.profileMain}>
       <div className={style.profileCard}>
-        <img src={ProfilePic} alt="ernjg" className={style.profilePic} />
+        <img src={ProfilePic} alt="profile" className={style.profilePic} />
         <h1>{user ? user.nume : "no user"}</h1>
-        {/* <div>No of classes enrolled: {user ? user.classes.length : 0}</div> */}
         <div>
           <Button
             content="Change Password"
             className={style.btnChangePassword}
             onClick={() => show("top-right")}
-          ></Button>
+          />
         </div>
         <div className={style.containerGrafic}>
+          <h2 className={style.h2Title}>Progresul tău anul acesta</h2>
           <Chart type="bar" data={chartData} options={chartOptions} />
         </div>
-        {/* 
-        <div className={style.userCoursesArea}>
-          {user ? (
-            user.classes.length > 0 ? (
-              <div>
-                {" "}
-                <h2>Your Classes</h2>
-                <div className={style.userCoursesListArea}>
-                  {user.classes.map((x, index) => {
-                    return (
-                      <div key={index} className={style.userCoursesCard}>
-                        <h3>
-                          <Link to={`/course/${index}`} className={style.link}>
-                            {x.name_of_class}
-                          </Link>
-                        </h3>
-                        <div>Mentored by {x.name_of_mentor}</div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            ) : (
-              <div className={style.noClasses}>No classes enrolled yet.</div>
-            )
-          ) : (
-            <div></div>
-          )}
-        </div>*/}
         <Dialog
           header="Change the password"
           visible={visible}
@@ -256,7 +209,7 @@ function Profile() {
           resizable={false}
         >
           <div className={style.formRow}>
-            <label htmlFor="">New Password</label>
+            <label>New Password</label>
             <input
               type="text"
               required

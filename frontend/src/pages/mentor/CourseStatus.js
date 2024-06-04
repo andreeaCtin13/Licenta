@@ -199,6 +199,14 @@ function CourseStatus() {
             ></Button>
           </Link>
         </div>
+        <div>
+          <Link to={`/performanta/${idCourse}`}>
+            <Button
+              className={style.btnCreateSection}
+              content="Analizează performanța"
+            ></Button>
+          </Link>
+        </div>
       </div>
 
       <Accordion>

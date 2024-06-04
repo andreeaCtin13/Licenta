@@ -21,5 +21,6 @@ router.get(
 );
 router.post("/insert", upload.array("files"), resurseController.insertResursa);
 router.delete("/delete/:id", resurseController.deleteResursa);
+router.get("/download/:id", resurseController.downloadPDF);
 
 module.exports = router;

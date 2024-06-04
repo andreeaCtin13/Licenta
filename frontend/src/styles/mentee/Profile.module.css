@@ -23,6 +23,10 @@
   margin: 3rem 0;
 }
 
+.h2Title {
+  color: #d8297d;
+}
+
 .profileCard {
   background-color: var(--var--light--purple);
   padding: 3rem;

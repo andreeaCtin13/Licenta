@@ -33,5 +33,9 @@ router.put(
   "/updateIstoricAssigment/:id_cerinta_istoric",
   istoricAssigments.updateIstoricAssigment
 );
+router.get(
+  "/getLastFeedback/:id_utilizator/:id_cerinta",
+  istoricAssigments.getLastFeedback
+);
 
 module.exports = router;

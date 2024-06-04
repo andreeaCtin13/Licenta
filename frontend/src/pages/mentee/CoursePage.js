@@ -2,19 +2,20 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ReactPlayer from "react-player";
 import style from "../../styles/mentee/Course.module.css";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAnglesDown } from "@fortawesome/free-solid-svg-icons";
+import { faAnglesDown, faComment } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../components/Button";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
 import { Toast } from "primereact/toast";
 import { FileUpload } from "primereact/fileupload";
+import { Dialog } from "primereact/dialog";
 
 function CoursePage() {
+  const [dialog, setDialog] = useState(false);
   const [currentSectionIndex, setCurrentSectionIndex] = useState();
   const { idCourse } = useParams();
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [cerinte, setCerinte] = useState([]);
   const [resurse, setResurse] = useState([]);
   const [files, setFiles] = useState([]);
@@ -22,11 +23,16 @@ function CoursePage() {
   const [courseChosen, setCourseChosen] = useState();
   const [stare, setStare] = useState();
   const fileUploadRefs = useRef({});
+  const [feedback, setFeedback] = useState(null);
 
   const playVideo = (index) => {
     setCurrentSectionIndex(index);
     console.log("PLAY VIDEO", index);
     updateInfo(index);
+  };
+
+  const handleLogout = () => {
+    setDialog(true);
   };
 
   const getIstoric = async (idSectiune) => {
@@ -52,6 +58,10 @@ function CoursePage() {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    getIstoric();
+  }, []);
 
   const setData = async () => {
     await axios
@@ -107,75 +117,12 @@ function CoursePage() {
       });
   };
 
-  const handleFileChange = (e, index) => {
-    const selectedFile = e.target.files[0];
-    let updatedFiles = [...files];
-    updatedFiles[index] = selectedFile;
-    setFiles(updatedFiles);
-  };
-
-  const uploadAssigment = async (id, index) => {
-    console.log("INDEX:", index);
-    console.log(files[index]);
-    if (!files[index]) {
-      toast.current.show({
-        severity: "error",
-        summary: "Failed",
-        detail: "trebuie sa incarci un fisier pentru a uploada",
-        life: 3000,
-      });
-      return;
-    }
-
-    let formData = new FormData();
-    formData.append("file", files[index]);
-
-    try {
-      await axios.post(
-        `http://localhost:8080/istoricCerinte/upload/${id}/${user.id_utilizator}`,
-        formData
-      );
-
-      toast.current.show({
-        severity: "succes",
-        summary: "Succes",
-        detail: "Felicitari! Ai incarcat rezolvarea!",
-        life: 3000,
-      });
-    } catch (err) {
-      toast.current.show({
-        severity: "error",
-        summary: "Failed",
-        detail: "trebuie sa incarci un fisier pentru a uploada",
-        life: 3000,
-      });
-      console.log("Error uploading file:", err);
-    }
-  };
-
-  const updateInfo = async (index) => {
-    await axios
-      .get(`http://localhost:8080/cerinte/getAllCerinte/${index}`)
-      .then((rez) => {
-        setCerinte(rez.data.cerinte);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    await axios
-      .get(`http://localhost:8080/resurse/getResurseCursSection/${index}`)
-      .then((rez) => {
-        setResurse(rez.data.resurse);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    setData();
-  }, []);
+  // const handleFileChange = (e, index) => {
+  //   const selectedFile = e.target.files[0];
+  //   let updatedFiles = [...files];
+  //   updatedFiles[index] = selectedFile;
+  //   setFiles(updatedFiles);
+  // };
 
   const uploadFile = async (file, id) => {
     let formData = new FormData();
@@ -201,7 +148,6 @@ function CoursePage() {
           summary: "Success",
           detail: "File Uploaded",
         });
-        // getAllSectiuni();
         fileUploadRefs.current[id].clear();
       })
       .catch((err) => {
@@ -219,6 +165,63 @@ function CoursePage() {
     uploadFile(file, id);
   };
 
+  const updateInfo = async (index) => {
+    await axios
+      .get(`http://localhost:8080/cerinte/getAllCerinte/${index}`)
+      .then((rez) => {
+        setCerinte(rez.data.cerinte);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    await axios
+      .get(`http://localhost:8080/resurse/getResurseCursSection/${index}`)
+      .then((rez) => {
+        setResurse(rez.data.resurse);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const downloadPDF = async (id) => {
+    try {
+      const response = await axios({
+        url: `http://localhost:8080/resurse/download/${id}`,
+        method: "GET",
+        responseType: "blob", // important
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "file.pdf"); // you can specify a better file name here
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Error downloading the file", error);
+    }
+  };
+
+  useEffect(() => {
+    setData();
+  }, []);
+
+  const getFeedbackAssig = async (id) => {
+    setDialog(true);
+    console.log(id);
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/istoricCerinte/getLastFeedback/${user.id_utilizator}/${id}`
+      );
+      setFeedback(response.data.feedback);
+    } catch (error) {
+      console.error("Error fetching last feedback:", error);
+      throw error;
+    }
+  };
   return (
     <div className={style.mainContainer}>
       <Toast ref={toast} />
@@ -284,7 +287,11 @@ function CoursePage() {
                   .filter((x) => x.tip_resursa === "pdf_path")
                   .map((x, index) => {
                     return (
-                      <button key={index} className={style.btnPDFS}>
+                      <button
+                        key={index}
+                        className={style.btnPDFS}
+                        onClick={() => downloadPDF(x.id_resursa)}
+                      >
                         <div>{x.titlu_resursa}</div>
                         <div>
                           <FontAwesomeIcon icon={faAnglesDown} />
@@ -307,29 +314,33 @@ function CoursePage() {
                   <h3>{x.titlu}</h3>
                   <div className={style.assigmentRow}>
                     <div>{x.cerinta}</div>
-                    <FileUpload
-                      ref={(el) => (fileUploadRefs.current[0] = el)}
-                      mode="basic"
-                      name="demo[]"
-                      accept="application/pdf"
-                      customUpload={true}
-                      uploadHandler={(e) =>
-                        onUpload(e, cerinte[index].id_cerinta)
-                      }
-                      auto
-                      chooseLabel={"Adaugă"}
-                    />
-
-                    <input
-                      type="file"
-                      content="Selecteaza fisier"
-                      onChange={(e) => handleFileChange(e, index)}
-                    />
-                    <Button
-                      className={style.assigmentBtn}
-                      content="Încarcă"
-                      onClick={() => uploadAssigment(x.id_cerinta, index)}
-                    ></Button>
+                    <div className={style.btnZone}>
+                      <FileUpload
+                        ref={(el) =>
+                          (fileUploadRefs.current[x.id_cerinta] = el)
+                        }
+                        mode="basic"
+                        name="demo[]"
+                        accept="application/pdf"
+                        className={style.btnUpload}
+                        customUpload={true}
+                        uploadHandler={(e) =>
+                          onUpload(e, cerinte[index].id_cerinta)
+                        }
+                        auto
+                        chooseLabel={"Adaugă"}
+                      />
+                      <Button
+                        className={style.btnSeeFeedback}
+                        content={
+                          <FontAwesomeIcon
+                            icon={faComment}
+                            className={style.iconComm}
+                          />
+                        }
+                        onClick={() => getFeedbackAssig(x.id_cerinta)}
+                      ></Button>
+                    </div>
                   </div>
                 </div>
               );
@@ -405,6 +416,19 @@ function CoursePage() {
       ) : (
         <div>jnbfre</div>
       )}
+
+      <Dialog
+        visible={dialog}
+        onHide={() => setDialog(false)}
+        className={style.modal}
+      >
+        <h2>Iată direcțiile acordate de către mentorul tău!/</h2>
+        {feedback == null ? (
+          <div>Mentorul încă nu a acordat feedback</div>
+        ) : (
+          feedback
+        )}
+      </Dialog>
     </div>
   );
 }

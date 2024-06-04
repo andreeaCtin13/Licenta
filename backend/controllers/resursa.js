@@ -85,6 +85,28 @@ const controller = {
         });
       });
   },
+
+  downloadPDF: async (req, res) => {
+    const { id } = req.params;
+    await resurseModel
+      .findByPk(id)
+      .then((resursa) => {
+        if (!resursa) {
+          return res.status(404).json({ message: "Resource not found" });
+        }
+        const filePath = resursa.link_resursa;
+        res.download(filePath, (err) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).json({ message: "Failed to download file" });
+          }
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        return res.status(500).json({ message: "Server error" });
+      });
+  },
 };
 
 module.exports = controller;

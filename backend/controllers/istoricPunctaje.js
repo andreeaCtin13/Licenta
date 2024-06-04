@@ -2,7 +2,7 @@ const istoricuriPunctajeModel = require("../models").istoricuriPunctaje;
 const testeModel = require("../models").teste;
 const sectiuniModel = require("../models").sectiuni;
 const utilizatoriModel = require("../models").users;
-
+const sequelize = require("../config/db");
 const controller = {
   getAllIstoricuriPunctaje: (req, res) => {
     res.status(200).send({ message: "totu ok la istoricuri punctaje" });
@@ -82,10 +82,17 @@ const controller = {
       });
     }
 
-    let istoric = await istoricuriPunctajeModel.findAll({
-      where: {
-        id_utilizator: id_utilizator,
-      },
+    const query = `
+      SELECT ip.*
+      FROM istoricuri_punctaje ip
+      INNER JOIN teste t ON ip.id_test = t.id_test
+      WHERE ip.id_utilizator = :id_utilizator
+        AND ip.punctaj_obtinut >= t.punctaj_minim_promovare;
+    `;
+
+    let istoric = await sequelize.query(query, {
+      replacements: { id_utilizator },
+      type: sequelize.QueryTypes.SELECT,
     });
 
     const luniInRomana = {
@@ -118,6 +125,37 @@ const controller = {
     return res.status(200).json({
       numarTestePeLuni: numarTestePeLuni,
       message: "Succes",
+    });
+  },
+  getNoPromovateOrNepromovate: async (req, res) => {
+    const { id_curs } = req.params;
+
+    const query1 = `
+    SELECT ip.*
+    FROM istoricuri_punctaje ip
+    INNER JOIN teste t ON ip.id_test = t.id_test
+    WHERE ip.punctaj_obtinut >= t.punctaj_minim_promovare;
+  `;
+
+    const query2 = `
+  SELECT ip.*
+  FROM istoricuri_punctaje ip
+  INNER JOIN teste t ON ip.id_test = t.id_test;
+`;
+    let total = await sequelize.query(query2, {
+      replacements: { id_curs },
+      type: sequelize.QueryTypes.SELECT,
+    });
+
+    let istoric = await sequelize.query(query1, {
+      replacements: { id_curs },
+      type: sequelize.QueryTypes.SELECT,
+    });
+
+    return res.status(200).json({
+      message: "succes",
+      promovate: istoric.length,
+      nepromovate: total.length - istoric.length,
     });
   },
 };

@@ -141,7 +141,7 @@ function NewSection() {
         <Toast ref={toast} />
 
         <div className={style.mainContainer}>
-          <h1>Hi, create a new section!</h1>
+          <h1>Salut, crează o nouă secțiune!</h1>
           <div className={style.formsContainer}>
             <FormNewSection></FormNewSection>
             <FormNewTest></FormNewTest>
@@ -158,7 +158,6 @@ function NewSection() {
               onClick={createSection}
             ></Button>
           </div>
-          {/* <div>{newSection}</div> */}
         </div>
       </SectionContext.Provider>
     </FilesContext.Provider>

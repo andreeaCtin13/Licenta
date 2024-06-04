@@ -13,4 +13,8 @@ router.get(
   "/getPunctajePerUtilizator/:id_utilizator",
   istoricPunctajeController.getIstoricPunctajeOfAUser
 );
+router.get(
+  "/getPunctajePromovateOrNepromovate/:id_curs",
+  istoricPunctajeController.getNoPromovateOrNepromovate
+);
 module.exports = router;

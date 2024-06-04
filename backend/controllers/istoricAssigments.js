@@ -179,6 +179,32 @@ const controller = {
         });
       });
   },
+  getLastFeedback: async (req, res) => {
+    const { id_utilizator, id_cerinta } = req.params;
+
+    try {
+      const lastFeedback = await ictoricCerinteModel.findOne({
+        where: {
+          id_utilizator: id_utilizator,
+          id_cerinta: id_cerinta,
+        },
+        order: [["data_finalizare", "DESC"]],
+        attributes: ["feedback"],
+      });
+
+      if (!lastFeedback) {
+        return res.status(404).json({ message: "No feedback found" });
+      }
+
+      return res.status(200).json({
+        feedback: lastFeedback.feedback,
+        message: "Success",
+      });
+    } catch (err) {
+      console.error("Error fetching last feedback:", err);
+      return res.status(500).json({ message: "Server error", err: err });
+    }
+  },
 };
 
 module.exports = controller;

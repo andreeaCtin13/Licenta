@@ -16,6 +16,7 @@ import NewSection from "./pages/mentor/NewSection";
 import AdminHomepage from "./pages/admin/AdminHomepage";
 import Requests from "./pages/mentor/Requests.js";
 import Feedback from "./pages/mentor/Feedback.js";
+import AnalizaPerformanta from "./pages/mentor/AnalizaPerformanta.js";
 
 function App() {
   const [user, setUser] = useState(false);
@@ -75,6 +76,14 @@ function App() {
             }
           />
           <Route
+            path="/performanta/:idCourse"
+            element={
+              // <PrivateRoute>
+              <AnalizaPerformanta />
+              // </PrivateRoute>
+            }
+          />
+          <Route
             path="/new-course"
             element={
               // <PrivateRoute>
@@ -114,16 +123,14 @@ function App() {
               // </PrivateRoute>
             }
           />
-          {user && user.status === "junior" && (
-            <Route
-              path="/test/:idSectiune/:idCourse"
-              element={
-                // <PrivateRoute>
-                <Test />
-                // </PrivateRoute>
-              }
-            />
-          )}
+          <Route
+            path="/test/:idSectiune/:idCourse"
+            element={
+              // <PrivateRoute>
+              <Test />
+              // </PrivateRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
