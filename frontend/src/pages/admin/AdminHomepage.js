@@ -237,7 +237,7 @@ function AdminHomepage() {
 
   const header = (
     <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-      <h4 className="m-0">Manage Users</h4>
+      <h4 className="m-0">Gestionează conturile de utilizator</h4>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
         <InputText
@@ -310,16 +310,17 @@ function AdminHomepage() {
 
   return (
     <div className={style.mainContainer}>
-      <div>
+      <div className={style.flex}>
+      <h1>Salut, {user.nume}!!!</h1>
+
         <button
           className={`${style.btn} ${style.btnLogout}`}
           onClick={handleLogout}
         >
-          Logout
+          Dezautentificare
         </button>
       </div>
 
-      <h1>Hi, Admin!!!</h1>
       <Toast ref={toast} />
       <div className="card">
         <Toolbar
@@ -361,7 +362,7 @@ function AdminHomepage() {
             <FontAwesomeIcon icon={faChevronLeft} />
           </button>
           <span>
-            Page {page} from {totalRec}
+            Pagina {page} din {totalRec}
           </span>
           <button
             className={style.btnPagination}
@@ -387,7 +388,7 @@ function AdminHomepage() {
           />
           {rowUser && (
             <span>
-              Are you sure you want to delete <b>{rowUser.mail}</b>?
+              Sigur vrei să ștergi contul asociat <b>{rowUser.mail}</b>?
             </span>
           )}
         </div>
@@ -398,7 +399,7 @@ function AdminHomepage() {
         onHide={() => setLogoutDialog(false)}
         className={style.modal}
       >
-        Are you sure you want to logout?
+        Sigur vrei să te dezautentifici?
         <div className={style.zoneOfBtns}>
           <Link to="/" className={style.link}>
             <button
@@ -408,14 +409,14 @@ function AdminHomepage() {
                 setLogoutDialog(false);
               }}
             >
-              Yes
+              Da
             </button>
           </Link>
           <button
             className={style.btnLogoutResponse}
             onClick={() => setLogoutDialog(false)}
           >
-            No
+            Nu
           </button>
         </div>
       </Dialog>
@@ -443,7 +444,7 @@ function AdminHomepage() {
             className={classNames({ "p-invalid": submitted && !rowUser.nume })}
           />
           {submitted && !rowUser.nume && (
-            <small className="p-error">Name is required.</small>
+            <small className="p-error">Numele este necesar.</small>
           )}
         </div>
         <div className="field">
@@ -459,7 +460,7 @@ function AdminHomepage() {
             className={classNames({ "p-invalid": submitted && !rowUser.mail })}
           />
           {submitted && !rowUser.mail && (
-            <small className="p-error">Mail is required.</small>
+            <small className="p-error">Mail-ul este necesar.</small>
           )}
         </div>
         <div className="field">
@@ -477,7 +478,7 @@ function AdminHomepage() {
             })}
           />
           {submitted && !rowUser.password && (
-            <small className="p-error">Password is required.</small>
+            <small className="p-error">Parola este necesară.</small>
           )}
         </div>
         <div className="field">

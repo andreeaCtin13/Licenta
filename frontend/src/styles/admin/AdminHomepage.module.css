@@ -19,6 +19,12 @@
   box-shadow: 5px 5px 5px var(--var--black);
 }
 
+.flex{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .btnCancel {
   background-color: rgb(108, 1, 1);
   color: var(--var--white);

@@ -10,7 +10,9 @@ function LineChart({ idCourse }) {
     const getData = async () => {
         try {
             const response = await axios.get(`http://localhost:8080/istoricuriPunctaje/getPunctajeLunare/${idCourse}`);
-            setDateChart(response.data.numarTestePromovatePerLuna);
+            let date = response.data.numarTestePromovatePerLuna
+      
+            setDateChart(date);
         } catch (error) {
             console.log("Error:", error);
         }
@@ -33,7 +35,7 @@ function LineChart({ idCourse }) {
         const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
         const monthNames = ['Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai', 'Iunie', 'Iulie', 'August', 'Septembrie', 'Octombrie', 'Noiembrie', 'Decembrie'];
-
+        
         const data = {
             labels: monthNames.map(capitalizeFirstLetter),
             datasets: [
@@ -41,7 +43,7 @@ function LineChart({ idCourse }) {
                     label: 'Punctaje Obținute',
                     data: monthNames.map(month => dateChart[month.toLowerCase()]),
                     fill: false,
-                    borderColor: documentStyle.getPropertyValue('--blue-500'),
+                    borderColor: documentStyle.getPropertyValue('--pink-500'),
                     tension: 0.4
                 }
             ]

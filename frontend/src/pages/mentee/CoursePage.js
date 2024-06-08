@@ -221,8 +221,10 @@ function CoursePage() {
           {cerinte.map((cerinta, index) => (
             <div key={index} className={style.gridContainerCerinte}>
               <p className={style.label}>
-                Cerința {index + 1} : {cerinta.denumire_cerinta}
+                Cerința {index + 1} : {cerinta.titlu}
+
               </p>
+              <p>{cerinta.cerinta}</p>
               <FileUpload
                 name="file"
                 accept="*"
