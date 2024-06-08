@@ -111,7 +111,7 @@ function NewSection() {
       return;
     }
 
-    axios
+    await axios
       .post(`http://localhost:8080/sectiuni/adaugare`, newSection, fileToSend)
       .then((rez) => {
         if (rez.message === "successful") {
@@ -157,6 +157,9 @@ function NewSection() {
               content={"Create"}
               onClick={createSection}
             ></Button>
+          </div>
+          <div>
+            hahah
           </div>
         </div>
       </SectionContext.Provider>

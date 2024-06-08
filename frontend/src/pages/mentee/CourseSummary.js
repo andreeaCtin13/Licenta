@@ -108,6 +108,13 @@ function CourseSummary() {
     }
   };
 
+  // Funcție pentru a construi URL-ul corect pentru imagine
+  const getImageUrl = (path) => {
+    if (!path) return '';
+    const fileName = path.split('\\').pop();
+    return `http://localhost:8080/images/${fileName}`;
+  };
+
   return (
     <div className={style.mainContainer}>
       <Toast ref={toast} />
@@ -116,7 +123,7 @@ function CourseSummary() {
       <div className={style.flexContainer}>
         <div className={style.leftContainer}>
           <img
-            src={course.imagine_reprezentativa}
+            src={getImageUrl(course.imagine_reprezentativa)}
             alt=""
             className={style.courseImage}
           />

@@ -5,6 +5,13 @@
   width: 3rem;
   height: 3rem;
   background-color: var(--var--dark--pink);
+  transition: 0.3s;
+}
+
+.btnBack:hover{
+  cursor: pointer;
+  background-color: var(--var--light--purple);
+  transition: 0.3s;
 }
 
 .btnZone {

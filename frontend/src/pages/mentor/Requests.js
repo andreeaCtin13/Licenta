@@ -76,7 +76,7 @@ function Requests() {
 
   const header = (
     <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-      <h4 className="m-0">Manage Users</h4>
+      <h4 className="m-0">Evalueză cererile</h4>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
         <InputText
@@ -166,14 +166,14 @@ function Requests() {
   return (
     <div className={style.mainContainer}>
       <div className={style.btnZone}>
-        <Link to={`/mentor-homepage/${idCourse}`}>
+        <Link to={`/mentor-homepage/${idCourse}`} >
           <Button
             className={style.btnBack}
             content={<FontAwesomeIcon icon={faArrowLeft} />}
           ></Button>
         </Link>
       </div>
-      <h1>Requests</h1>
+      <h1>Cereri curs</h1>
 
       <DataTable
         value={requestRows}
@@ -215,7 +215,7 @@ function Requests() {
           <FontAwesomeIcon icon={faChevronLeft} />
         </button>
         <span>
-          Page {page} from {totalRec}
+          Pagina {page} din {totalRec}
         </span>
         <button
           className={style.btnPagination}

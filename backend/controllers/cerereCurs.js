@@ -2,12 +2,11 @@ const cereriCursModel = require("../models").cereriCurs;
 const cursuriModel = require("../models").cursuri;
 const utilizatorModel = require("../models").users;
 const { EqOp } = require("../controllers/Operators");
+const sequelize = require("../config/db");
 
 const controller = {
   getAllCereri: async (req, res) => {
-    //with pagination
     const { id_utilizator, idCourse } = req.params;
-
     const filter = req.query;
 
     if (!filter.take) filter.take = 10;
@@ -123,6 +122,7 @@ const controller = {
         return res.status(200).json({ message: "nope" });
       });
   },
+
   getAllCursuriAcceptedOrNotOfAUser: async (req, res) => {
     const id_utilizator = req.params.id;
 
@@ -199,5 +199,33 @@ const controller = {
       }
     }
   },
+  getCereriChart: async (req, res) => {
+    const { mentorId } = req.params;
+    console.log(mentorId)
+    try {
+      let query = `
+        SELECT c.denumire AS denumire, COUNT(cr.id_cerere) as requestCount
+        FROM cereri_cursuri cr
+        RIGHT JOIN cursuri c ON cr.id_curs = c.id_curs
+        WHERE c.id_utilizator = ?
+        GROUP BY c.denumire;
+      `;
+      const results = await sequelize.query(query, {
+        replacements: [mentorId], 
+        type: sequelize.QueryTypes.SELECT
+    });
+    
+     
+      return res.status(200).json({ rez: results, message: "succes" });
+ 
+    
+    } catch (error) {
+      console.error("Error fetching course requests:", error);
+      console.error("Replacements:", [mentorId]);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+  
 };
+
 module.exports = controller;

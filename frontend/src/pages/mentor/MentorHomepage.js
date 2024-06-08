@@ -6,6 +6,7 @@ import Button from "../../components/Button";
 import axios from "axios";
 import { Toast } from "primereact/toast";
 import { Dialog } from "primereact/dialog";
+import VerticalBarChart from "../../components/mentor/VerticalBarChart";
 
 function MentorHomepage() {
   const { user, setUser } = useContext(UserContext);
@@ -23,7 +24,6 @@ function MentorHomepage() {
         `http://localhost:8080/curs/getAllCursuriOfAMentor/${user.id_utilizator}`
       )
       .then((rez) => {
-        console.log(rez.data.cursuri);
         setCursuri(rez.data.cursuri);
       })
       .catch((err) => {
@@ -63,7 +63,8 @@ function MentorHomepage() {
           ></Button>
         </div>
       </div>
-      <h1>Hi, {user.nume}</h1>
+      <h1>Hei, {user.nume}</h1>
+      <VerticalBarChart />
       <div>
         <h2>Cursurile susținute de dvs.</h2>
         <div className={style.cursuriArea}>
@@ -111,7 +112,7 @@ function MentorHomepage() {
         onHide={() => setLogoutDialog(false)}
         className={style.modal}
       >
-        Sigru dorelti să de dezautentifici?
+        Sigur dorești să de dezautentifici?
         <div className={style.buttonsLogout}>
           <Link to="/">
             <Button

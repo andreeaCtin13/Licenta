@@ -56,16 +56,16 @@ const controller = {
         .create({
           denumire,
           descriere,
-          nr_sectiuni: 0, // default value, adjust if needed
+          nr_sectiuni: 0, 
           imagine_reprezentativa,
           id_utilizator,
         })
         .then((rez) =>
           res.status(200).json({ user: rez, message: "course created" })
         )
-        .catch((err) => res.status(500).json({ message: "server error", err }));
+        .catch((err) =>  res.status(500).json({ message: "server error", err }));
     } catch (err) {
-      res.status(500).json({ message: "server error", err });
+      return res.status(500).json({ message: "server error", err });
     }
   },
 

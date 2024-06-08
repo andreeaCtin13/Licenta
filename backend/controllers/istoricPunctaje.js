@@ -158,6 +158,57 @@ const controller = {
       nepromovate: total.length - istoric.length,
     });
   },
+  getTestsPromotedPerMonth: async (req, res) => {
+    const { id_curs } = req.params;
+
+    try {
+        const query = `
+            SELECT COUNT(ip.id_istoric) AS numar_promovate, 
+                MONTH(ip.data_sustinere) AS luna
+            FROM istoricuri_punctaje ip
+            INNER JOIN teste t ON ip.id_test = t.id_test
+            INNER JOIN sectiuni s ON t.id_sectiune = s.id_sectiune
+            WHERE ip.punctaj_obtinut >= t.punctaj_minim_promovare
+                AND s.id_curs = :id_curs
+            GROUP BY MONTH(ip.data_sustinere);
+        `;
+
+        const testsPerMonth = await sequelize.query(query, {
+            replacements: { id_curs },
+            type: sequelize.QueryTypes.SELECT,
+        });
+
+        const numarTestePromovatePerLuna = {};
+        testsPerMonth.forEach((result) => {
+            const luniInRomana = {
+                1: "ianuarie",
+                2: "februarie",
+                3: "martie",
+                4: "aprilie",
+                5: "mai",
+                6: "iunie",
+                7: "iulie",
+                8: "august",
+                9: "septembrie",
+                10: "octombrie",
+                11: "noiembrie",
+                12: "decembrie",
+            };
+            const luna = luniInRomana[result.luna];
+            numarTestePromovatePerLuna[luna] = result.numar_promovate;
+        });
+
+        res.status(200).json({
+            numarTestePromovatePerLuna,
+            message: "Success",
+        });
+    } catch (error) {
+        console.error("Error fetching promoted tests per month:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+},
+
+
 };
 
 module.exports = controller;

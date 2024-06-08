@@ -15,5 +15,6 @@ router.get(
   "/getAllCursuriALLOfAUser/:id",
   cerereCursController.getAllCursuriAcceptedOrNotOfAUser
 );
+router.get("/requestsChart/:mentorId", cerereCursController.getCereriChart)
 
 module.exports = router;

@@ -31,32 +31,19 @@ function CoursePage() {
     updateInfo(index);
   };
 
-  const handleLogout = () => {
-    setDialog(true);
-  };
-
   const getIstoric = async (idSectiune) => {
-    await axios
-      .get(
-        `http://localhost:8080/istoricuriPunctaje/getLastIstoricOfAUser/${user.id_utilizator}/${idSectiune}`
-      )
-      .then((rez) => {
-        console.log("istoric:", rez.data);
+    try {
+      const rez = await axios.get(`http://localhost:8080/istoricuriPunctaje/getLastIstoricOfAUser/${user.id_utilizator}/${idSectiune}`);
+      console.log("istoric:", rez.data);
 
-        if (rez.data.message === "nu exista istoric") {
-          setStare({
-            exists: false,
-          });
-        } else if (rez.data.message === "ok") {
-          setStare({
-            exists: true,
-            lastHistory: rez.data.lastHistory,
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      if (rez.data.message === "nu exista istoric") {
+        setStare({ exists: false });
+      } else if (rez.data.message === "ok") {
+        setStare({ exists: true, lastHistory: rez.data.lastHistory });
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -64,100 +51,46 @@ function CoursePage() {
   }, []);
 
   const setData = async () => {
-    await axios
-      .get(`http://localhost:8080/curs/getById/${idCourse}`)
-      .then(async (rez) => {
-        let curs_data = rez.data.curs;
-        console.log(curs_data);
+    try {
+      const rez = await axios.get(`http://localhost:8080/curs/getById/${idCourse}`);
+      let curs_data = rez.data.curs;
+      console.log(curs_data);
 
-        await axios
-          .get(
-            `http://localhost:8080/useri/getUserNameById/${curs_data.id_utilizator}`
-          )
-          .then((rez) => {
-            curs_data = { ...curs_data, mentor: rez.data };
-          })
-          .catch((err) => console.log(err));
+      const userRes = await axios.get(`http://localhost:8080/useri/getUserNameById/${curs_data.id_utilizator}`);
+      curs_data = { ...curs_data, mentor: userRes.data };
 
-        await axios
-          .get(`http://localhost:8080/sectiuni/selectAll/${idCourse}`)
-          .then(async (rez) => {
-            setCurrentSectionIndex(rez.data.sectiuni[0].id_sectiune);
+      const sectRes = await axios.get(`http://localhost:8080/sectiuni/selectAll/${idCourse}`);
+      setCurrentSectionIndex(sectRes.data.sectiuni[0].id_sectiune);
 
-            const sectiuni = rez.data.sectiuni;
-            getIstoric(rez.data.sectiuni[0].id_sectiune);
+      const sectiuni = sectRes.data.sectiuni;
+      getIstoric(sectRes.data.sectiuni[0].id_sectiune);
 
-            setCourseChosen({ ...curs_data, sectiuni });
+      setCourseChosen({ ...curs_data, sectiuni });
 
-            await axios
-              .get(
-                `http://localhost:8080/cerinte/getAllCerinte/${sectiuni[0].id_sectiune}`
-              )
-              .then((rez) => {
-                setCerinte(rez.data.cerinte);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
+      const cerinteRes = await axios.get(`http://localhost:8080/cerinte/getAllCerinte/${sectiuni[0].id_sectiune}`);
+      setCerinte(cerinteRes.data.cerinte);
 
-            await axios
-              .get(
-                `http://localhost:8080/resurse/getResurseCursSection/${sectiuni[0].id_sectiune}`
-              )
-              .then((rez) => {
-                setResurse(rez.data.resurse);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      const resurseRes = await axios.get(`http://localhost:8080/resurse/getResurseCursSection/${sectiuni[0].id_sectiune}`);
+      setResurse(resurseRes.data.resurse);
+    } catch (err) {
+      console.log(err);
+    }
   };
-
-  // const handleFileChange = (e, index) => {
-  //   const selectedFile = e.target.files[0];
-  //   let updatedFiles = [...files];
-  //   updatedFiles[index] = selectedFile;
-  //   setFiles(updatedFiles);
-  // };
 
   const uploadFile = async (file, id) => {
     let formData = new FormData();
-
     formData.append("file", file);
 
-    console.log([...formData.entries()]);
-
-    console.log(id);
-    await axios
-      .post(
-        `http://localhost:8080/istoricCerinte/upload/${id}/${user.id_utilizator}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
-      .then(() => {
-        toast.current.show({
-          severity: "info",
-          summary: "Success",
-          detail: "File Uploaded",
-        });
-        fileUploadRefs.current[id].clear();
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.current.show({
-          severity: "error",
-          summary: "Failed",
-          detail: "File upload failed",
-        });
+    try {
+      await axios.post(`http://localhost:8080/istoricCerinte/upload/${id}/${user.id_utilizator}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
+      toast.current.show({ severity: "info", summary: "Success", detail: "File Uploaded" });
+      fileUploadRefs.current[id].clear();
+    } catch (err) {
+      console.log(err);
+      toast.current.show({ severity: "error", summary: "Failed", detail: "File upload failed" });
+    }
   };
 
   const onUpload = ({ files }, id) => {
@@ -166,23 +99,15 @@ function CoursePage() {
   };
 
   const updateInfo = async (index) => {
-    await axios
-      .get(`http://localhost:8080/cerinte/getAllCerinte/${index}`)
-      .then((rez) => {
-        setCerinte(rez.data.cerinte);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      const cerinteRes = await axios.get(`http://localhost:8080/cerinte/getAllCerinte/${index}`);
+      setCerinte(cerinteRes.data.cerinte);
 
-    await axios
-      .get(`http://localhost:8080/resurse/getResurseCursSection/${index}`)
-      .then((rez) => {
-        setResurse(rez.data.resurse);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      const resurseRes = await axios.get(`http://localhost:8080/resurse/getResurseCursSection/${index}`);
+      setResurse(resurseRes.data.resurse);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const downloadPDF = async (id) => {
@@ -190,13 +115,13 @@ function CoursePage() {
       const response = await axios({
         url: `http://localhost:8080/resurse/download/${id}`,
         method: "GET",
-        responseType: "blob", // important
+        responseType: "blob",
       });
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "file.pdf"); // you can specify a better file name here
+      link.setAttribute("download", "file.pdf");
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -213,15 +138,13 @@ function CoursePage() {
     setDialog(true);
     console.log(id);
     try {
-      const response = await axios.get(
-        `http://localhost:8080/istoricCerinte/getLastFeedback/${user.id_utilizator}/${id}`
-      );
+      const response = await axios.get(`http://localhost:8080/istoricCerinte/getLastFeedback/${user.id_utilizator}/${id}`);
       setFeedback(response.data.feedback);
     } catch (error) {
       console.error("Error fetching last feedback:", error);
-      throw error;
     }
   };
+
   return (
     <div className={style.mainContainer}>
       <Toast ref={toast} />
@@ -235,8 +158,7 @@ function CoursePage() {
               <h1>eroare</h1>
             )}
             <div className={style.mentor}>
-              Susținut de {courseChosen.mentor.nume} ({courseChosen.mentor.mail}
-              )
+              Susținut de {courseChosen.mentor.nume} ({courseChosen.mentor.mail})
             </div>
             <div className={style.description}>{courseChosen.descriere}</div>
           </div>
@@ -246,11 +168,8 @@ function CoursePage() {
             <div className={style.video}>
               <ReactPlayer
                 url={
-                  resurse != []
-                    ? resurse.filter((x) => x.tip_resursa === "video_link")[0]
-                      ? resurse.filter((x) => x.tip_resursa === "video_link")[0]
-                          .link_resursa
-                      : ""
+                  resurse.length > 0 && resurse.some((x) => x.tip_resursa === "video_link")
+                    ? resurse.find((x) => x.tip_resursa === "video_link").link_resursa
                     : "https://youtu.be/MTOiveIjRc0?si=jnIFMgnewLh8iose"
                 }
                 width={450}
@@ -262,18 +181,14 @@ function CoursePage() {
                 <div
                   key={index}
                   className={`${style.videoPlaylistRow} ${
-                    section.id_sectiune === currentSectionIndex
-                      ? style.selectedVideo
-                      : ""
+                    section.id_sectiune === currentSectionIndex ? style.selectedVideo : ""
                   }`}
                   onClick={() => {
                     playVideo(section.id_sectiune);
                     getIstoric(section.id_sectiune);
                   }}
                 >
-                  <h3 key={index} className={style.videoPlaylistRowTitle}>
-                    {section.denumire}
-                  </h3>
+                  <h3 className={style.videoPlaylistRowTitle}>{section.denumire}</h3>
                 </div>
               ))}
             </div>
@@ -281,71 +196,67 @@ function CoursePage() {
           <div className={style.containerPDFS}>
             <h2>Resurse PDF</h2>
             <div className={style.pdfs}>
-              {resurse.filter((x) => x.tip_resursa === "pdf_path").length >
-              0 ? (
+              {resurse.filter((x) => x.tip_resursa === "pdf_path").length > 0 ? (
                 resurse
                   .filter((x) => x.tip_resursa === "pdf_path")
-                  .map((x, index) => {
-                    return (
-                      <button
-                        key={index}
-                        className={style.btnPDFS}
-                        onClick={() => downloadPDF(x.id_resursa)}
-                      >
-                        <div>{x.titlu_resursa}</div>
-                        <div>
-                          <FontAwesomeIcon icon={faAnglesDown} />
-                        </div>
-                      </button>
-                    );
-                  })
+                  .map((x, index) => (
+                    <button
+                      key={index}
+                      className={style.btnPDFS}
+                      onClick={() => downloadPDF(x.id_resursa)}
+                    >
+                      <div>{x.titlu_resursa}</div>
+                      <div>
+                        <FontAwesomeIcon icon={faAnglesDown} />
+                      </div>
+                    </button>
+                  ))
               ) : (
                 <div>Nu sunt disponibile resurse PDF</div>
               )}
             </div>
           </div>
 
-          <div className={style.containerAssigments}>
-            <h2>Cerințe</h2>
-            {console.log("cerinte pe care le am din bd:", cerinte)}
-            {cerinte.map((x, index) => {
-              return (
-                <div className={style.assigment} key={index}>
-                  <h3>{x.titlu}</h3>
-                  <div className={style.assigmentRow}>
-                    <div>{x.cerinta}</div>
-                    <div className={style.btnZone}>
-                      <FileUpload
-                        ref={(el) =>
-                          (fileUploadRefs.current[x.id_cerinta] = el)
-                        }
-                        mode="basic"
-                        name="demo[]"
-                        accept="application/pdf"
-                        className={style.btnUpload}
-                        customUpload={true}
-                        uploadHandler={(e) =>
-                          onUpload(e, cerinte[index].id_cerinta)
-                        }
-                        auto
-                        chooseLabel={"Adaugă"}
-                      />
-                      <Button
-                        className={style.btnSeeFeedback}
-                        content={
-                          <FontAwesomeIcon
-                            icon={faComment}
-                            className={style.iconComm}
-                          />
-                        }
-                        onClick={() => getFeedbackAssig(x.id_cerinta)}
-                      ></Button>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <h2>Cerințe Tema</h2>
+          {cerinte.map((cerinta, index) => (
+            <div key={index} className={style.gridContainerCerinte}>
+              <p className={style.label}>
+                Cerința {index + 1} : {cerinta.denumire_cerinta}
+              </p>
+              <FileUpload
+                name="file"
+                accept="*"
+                customUpload
+                uploadHandler={(e) => onUpload(e, cerinta.id_cerinta)}
+                className={style.customFileUpload}
+                emptyTemplate={<p className="m-0">Glisează fișierul aici pentru a încărca.</p>}
+                ref={(el) => (fileUploadRefs.current[cerinta.id_cerinta] = el)}
+              />
+              <div className={`${style.commentIconContainer}${style.setFeedback}`}>
+                <FontAwesomeIcon
+                  className={style.commentIcon}
+                  icon={faComment}
+
+                  onClick={() => getFeedbackAssig(cerinta.id_cerinta)}
+                />
+              </div>
+            </div>
+          ))}
+
+          <Dialog
+            header="Header"
+            visible={dialog}
+            style={{ width: "50vw" }}
+            onHide={() => {setDialog(false)
+              setFeedback(null)
+            }}
+          >
+            {feedback ? (
+              <p>Feedback-ul mentorului: {feedback}</p>
+            ) : (
+              <p>Mentorul încă nu a acordat feedback</p>
+            )}
+          </Dialog>
 
           <div className={style.containerTest}>
             <h2>Test de verificare</h2>
@@ -353,60 +264,34 @@ function CoursePage() {
               stare.exists === false ? (
                 <Link
                   className={style.testBtnLink}
-                  to={`/test/${
-                    currentSectionIndex !== undefined ? currentSectionIndex : ""
-                  }/${idCourse}`}
-                  onClick={() => {
-                    console.log("Course chosen:", courseChosen);
-                    console.log("Current section index:", currentSectionIndex);
-                  }}
+                  to={`/test/${currentSectionIndex ?? ""}/${idCourse}`}
                 >
-                  <Button content={"Start"} className={style.testBtn}></Button>
+                  <Button content={"Start"} className={style.testBtn} />
                 </Link>
-              ) : stare.lastHistory ? (
-                stare.lastHistory.istoric ? (
-                  stare.lastHistory.istoric.punctaj_obtinut <
-                  stare.lastHistory.punctaj_minim_promovare ? (
-                    <div className={style.containerStatusUltimulTest}>
+              ) : (
+                stare.lastHistory && (
+                  <div className={style.containerStatusUltimulTest}>
+                    {stare.lastHistory.istoric && stare.lastHistory.istoric.punctaj_obtinut <
+                      stare.lastHistory.punctaj_minim_promovare ? (
                       <div className={style.failed}>
                         <div>
-                          Ultimul punctaj obținut:{" "}
-                          {stare.lastHistory.istoric.punctaj_obtinut} pct.
+                          Ultimul punctaj obținut: {stare.lastHistory.istoric.punctaj_obtinut} pct.
                         </div>
                         <div>
-                          Punctaj minim promovare:{" "}
-                          {stare.lastHistory.punctaj_minim_promovare} pct.
+                          Punctaj minim promovare: {stare.lastHistory.punctaj_minim_promovare} pct.
                         </div>
                       </div>
-                      <Link
-                        className={style.testBtnLink}
-                        to={`/test/${
-                          currentSectionIndex !== undefined
-                            ? currentSectionIndex
-                            : ""
-                        }/${idCourse}`}
-                        onClick={() => {
-                          console.log("Course chosen:", courseChosen);
-                          console.log(
-                            "Current section index:",
-                            currentSectionIndex
-                          );
-                        }}
-                      >
-                        <Button
-                          content={"Start"}
-                          className={style.testBtn}
-                        ></Button>
-                      </Link>
-                    </div>
-                  ) : (
-                    <div className={style.passed}>A fost trecut testul!</div>
-                  )
-                ) : (
-                  <div></div>
+                    ) : (
+                      <div className={style.passed}>A fost trecut testul!</div>
+                    )}
+                    <Link
+                      className={style.testBtnLink}
+                      to={`/test/${currentSectionIndex ?? ""}/${idCourse}`}
+                    >
+                      <Button content={"Start"} className={style.testBtn} />
+                    </Link>
+                  </div>
                 )
-              ) : (
-                <div></div>
               )
             ) : (
               <div>Nu s-a putut incarca istoricul testelor</div>
@@ -414,21 +299,8 @@ function CoursePage() {
           </div>
         </div>
       ) : (
-        <div>jnbfre</div>
+        <div>Nu există cursuri</div>
       )}
-
-      <Dialog
-        visible={dialog}
-        onHide={() => setDialog(false)}
-        className={style.modal}
-      >
-        <h2>Iată direcțiile acordate de către mentorul tău!/</h2>
-        {feedback == null ? (
-          <div>Mentorul încă nu a acordat feedback</div>
-        ) : (
-          feedback
-        )}
-      </Dialog>
     </div>
   );
 }

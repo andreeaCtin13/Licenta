@@ -38,7 +38,6 @@ function FormNewTest() {
             min={1}
             max={100000}
             onChange={(e) => {
-              setNoOfQuestions(e.target.value);
               setNewSection({
                 ...newSection,
                 punctaj_minim_promovare: Number(e.target.value),
