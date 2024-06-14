@@ -44,12 +44,12 @@ function PieChart({idCourse}) {
               date && date.nepromovate ? date.nepromovate : 40,
             ],
             backgroundColor: [
-              documentStyle.getPropertyValue("--pink-500"),
-              documentStyle.getPropertyValue("--purple-500"),
-            ],
-            hoverBackgroundColor: [
               documentStyle.getPropertyValue("--pink-300"),
               documentStyle.getPropertyValue("--purple-300"),
+            ],
+            hoverBackgroundColor: [
+              documentStyle.getPropertyValue("--pink-500"),
+              documentStyle.getPropertyValue("--purple-500"),
             ],
           },
         ],

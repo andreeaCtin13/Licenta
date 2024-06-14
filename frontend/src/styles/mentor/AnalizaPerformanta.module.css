@@ -5,7 +5,7 @@
 .btnBack {
   width: 3rem;
   height: 3rem;
-  background-color: var(--var--dark--purple);
+  background-color: var(--var--light--purple);
   color: white;
   border: none;
   border-radius: 50%;
@@ -13,10 +13,32 @@
   transition: 0.5s;
 }
 
+.btn {
+  height: 3rem;
+  width: 10rem;
+  font-size: 1.2rem;
+  border-radius: 2rem;
+  border: none;
+  color: var(--var--white);
+  cursor: pointer; 
+  transition: background-color 0.5s; 
+}
+
+
 .btnBack:hover {
   cursor: pointer;
   background-color: var(--var--light--pink);
   transition: 0.5s;
+}
+
+.btnHome:hover {
+  background-color: var(--var--light--purple);
+}
+
+.btnHome {
+  background-color: var(--var--light--pink);
+  position: absolute;
+  right:2rem;
 }
 
 .containerCharts{

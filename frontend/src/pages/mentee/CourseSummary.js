@@ -133,7 +133,7 @@ function CourseSummary() {
           <div className={style.rightContainerDesc}>{course.descriere}</div>
           {requestStatus === "accepted" ? (
             <Button
-              content={"Unenroll"} // Corrected typo
+              content={"Unenroll"} 
               className={`${style.unEnrollBtn} ${style.btn}`}
               onClick={handleEnroll}
             />

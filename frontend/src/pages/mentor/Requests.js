@@ -16,6 +16,9 @@ import { InputText } from "primereact/inputtext";
 import { Dialog } from "primereact/dialog";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
+import {
+  faHouse
+} from "@fortawesome/free-solid-svg-icons";
 
 function Requests() {
   const [globalFilter, setGlobalFilter] = useState(null);
@@ -166,12 +169,19 @@ function Requests() {
   return (
     <div className={style.mainContainer}>
       <div className={style.btnZone}>
+
         <Link to={`/mentor-homepage/${idCourse}`} >
           <Button
             className={style.btnBack}
             content={<FontAwesomeIcon icon={faArrowLeft} />}
           ></Button>
         </Link>
+        <Link to={`/mentor-homepage`}>
+        <Button
+          className={`${style.btn} ${style.btnHome}`}
+          content={<FontAwesomeIcon icon={faHouse} />}
+        ></Button>
+      </Link>
       </div>
       <h1>Cereri curs</h1>
 

@@ -19,6 +19,59 @@
   cursor: pointer;
 }
 
+.btnPagination {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 2rem;
+  background-color: var(--var--light--purple);
+  color: var(--var--white);
+  font-size: 1rem;
+  border: none;
+  transition: 0.5s;
+}
+
+.btnPagination:hover {
+  cursor: pointer;
+  transition: 0.5s;
+  box-shadow: 1px 1px 1px 1px var(--var--light--pink),
+    1px 1px 1px 1px var(--var--light--pink);
+}
+
+
+.paginationZone {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2rem;
+  align-items: center;
+  margin: 1rem;
+
+}
+
+.paginationZone span {
+  font-size: 1.3rem;
+  margin:2rem 0;
+}
+
+.btn {
+  height: 3rem;
+  width: 10rem;
+  font-size: 1.2rem;
+  border-radius: 2rem;
+  border: none;
+  color: var(--var--white);
+  cursor: pointer; /* Cursor change on hover */
+  transition: background-color 0.5s; /* Smooth transition for background color */
+}
+
+.btnHome:hover {
+  background-color: var(--var--light--purple);
+}
+
+.btnHome {
+  background-color: var(--var--light--pink);
+}
+
 .btnTrimitereFeedback {
   width: 10rem;
   font-size: 1.1rem;
@@ -27,6 +80,12 @@
   border: none;
   border-radius: 2rem;
   transition: 0.8s;
+}
+
+.buttonZone{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .btnTrimitereFeedback:hover {
@@ -46,9 +105,6 @@
   margin: 0 0 4rem 0;
 }
 
-.dock {
-  position: fixed;
-}
 
 .btnCancel {
   border: none;
@@ -66,4 +122,36 @@
   cursor: pointer;
   background-color: var(--var--light--pink);
   transition: 0.5s;
+}
+
+
+
+/* DockStyles.css */
+
+.dock {
+  background-color: var(--var--light--pink); /* Roz pal */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Umbre subtile */
+  padding: 10px; /* Spațiu interior */
+}
+
+.dock .p-dock-item {
+  transition: transform 0.3s, box-shadow 0.3s; /* Tranziții pentru animații */
+}
+
+.dock .p-dock-item:hover {
+  transform: scale(1.1); /* Efect de mărire la hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Umbre mai intense la hover */
+}
+
+.dock .p-dock-item-icon {
+  color: #ff69b4; /* Roz intens pentru iconițe */
+  background-color: #ffb6c1; /* Fundal roz pentru butoane */
+  border-radius: 50%; /* Colțuri rotunjite pentru iconițe */
+  padding: 10px; /* Spațiu interior pentru iconițe */
+  transition: background-color 0.3s; /* Tranziție pentru schimbarea culorii de fundal */
+}
+
+.dock .p-dock-item-icon:hover {
+  background-color: #ff69b4; /* Fundal mai intens la hover */
+  color: #fff; /* Schimbare de culoare la alb la hover */
 }

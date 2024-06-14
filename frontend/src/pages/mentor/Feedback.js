@@ -13,6 +13,7 @@ import {
   faArrowLeft,
   faChevronRight,
   faChevronLeft,
+  faHouse
 } from "@fortawesome/free-solid-svg-icons";
 import { UserContext } from "../../context/UserContext";
 import axios from "axios";
@@ -28,7 +29,7 @@ function Feedback() {
   const [assigmentsRows, setAssigmentsRows] = useState([]);
   const [globalFilter, setGlobalFilter] = useState(null);
   const [visible, setVisible] = useState(false);
-  const [items, setItems] = useState();
+  const [items, setItems] = useState([]);
   const [selectedScreen, setSelectedScreen] = useState();
   const [acordeonArray, setAcordeonArray] = useState([]);
   const [sectiuni, setSectiuni] = useState([]);
@@ -192,12 +193,20 @@ function Feedback() {
 
   return (
     <div className={style.mainContainer}>
+      <div className={style.buttonZone}>
       <Link to={`/mentor-homepage/${idCourse}`}>
         <Button
           className={`${style.btn} ${style.btnCancel}`}
           content={<FontAwesomeIcon icon={faArrowLeft} />}
         ></Button>
       </Link>
+      <Link to={`/mentor-homepage`}>
+        <Button
+          className={`${style.btn} ${style.btnHome}`}
+          content={<FontAwesomeIcon icon={faHouse} />}
+        ></Button>
+      </Link>
+      </div>
       <h1>Acordă direcții soluții</h1>
       <div className="dock-window">
         <Dock className={style.dock} model={items} position="bottom" />
@@ -231,7 +240,6 @@ function Feedback() {
               >
                 <h3>Cerința aferentă task-ului "{x.titlu}"</h3>
                 <p className="m-0"> {x.cerinta}</p>
-
                 <DataTable
                   className={style.dataTable}
                   value={assigmentsRows}
@@ -279,7 +287,7 @@ function Feedback() {
                     <FontAwesomeIcon icon={faChevronLeft} />
                   </button>
                   <span>
-                    Page {page} from {totalRec}
+                    Pagina {page} din {totalRec}
                   </span>
                   <button
                     className={style.btnPagination}

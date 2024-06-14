@@ -10,7 +10,9 @@
 }
 
 h1 {
-  color: var(--var--light--pink);
+  /* color: var(--var--light--pink); */
+  color:var(--var--white);
+  font-weight: 900;
   font-size: 2rem;
   margin-bottom: 2rem;
 }

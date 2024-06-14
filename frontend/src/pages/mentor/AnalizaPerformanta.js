@@ -7,6 +7,9 @@ import { useParams } from "react-router";
 import { faArrowLeft, faChampagneGlasses } from "@fortawesome/free-solid-svg-icons";
 import PieChart from "../../components/mentor/PieChart";
 import LineChart from "../../components/mentor/LineChart";
+import {
+  faHouse
+} from "@fortawesome/free-solid-svg-icons";
 
 function AnalizaPerformanta() {
   const { idCourse } = useParams();
@@ -18,6 +21,12 @@ function AnalizaPerformanta() {
         <Button
           className={style.btnBack}
           content={<FontAwesomeIcon icon={faArrowLeft} />}
+        ></Button>
+      </Link>
+      <Link to={`/mentor-homepage`}>
+        <Button
+          className={`${style.btn} ${style.btnHome}`}
+          content={<FontAwesomeIcon icon={faHouse} />}
         ></Button>
       </Link>
       <div className={style.containerCharts}>

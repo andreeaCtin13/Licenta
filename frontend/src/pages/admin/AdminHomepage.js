@@ -178,9 +178,9 @@ function AdminHomepage() {
   };
   const userDialogFooter = (
     <React.Fragment>
-      <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
+      <Button label="Anulează" icon="pi pi-times" outlined onClick={hideDialog} />
       <Button
-        label="Save"
+        label="Salvează"
         icon="pi pi-check"
         onClick={(e) => {
           if (
@@ -317,7 +317,7 @@ function AdminHomepage() {
           className={`${style.btn} ${style.btnLogout}`}
           onClick={handleLogout}
         >
-          Dezautentificare
+          Deconectare
         </button>
       </div>
 
@@ -399,7 +399,7 @@ function AdminHomepage() {
         onHide={() => setLogoutDialog(false)}
         className={style.modal}
       >
-        Sigur vrei să te dezautentifici?
+        Sigur vrei să te deconectezi?
         <div className={style.zoneOfBtns}>
           <Link to="/" className={style.link}>
             <button
@@ -425,13 +425,13 @@ function AdminHomepage() {
         visible={userDialog}
         style={{ width: "32rem" }}
         breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-        header="Product Details"
+        header="Adaugă un nou utilizator"
         modal
         className="p-fluid"
         footer={userDialogFooter}
         onHide={hideDialog}
       >
-        <div className="field">
+        <div  className={style.field}>
           <label htmlFor="nume" className="font-bold">
             Nume
           </label>
@@ -447,8 +447,8 @@ function AdminHomepage() {
             <small className="p-error">Numele este necesar.</small>
           )}
         </div>
-        <div className="field">
-          <label htmlFor="mail" className="font-bold">
+        <div className={style.field}>
+          <label htmlFor="mail" className={style.label}>
             Mail
           </label>
           <InputText
@@ -463,8 +463,8 @@ function AdminHomepage() {
             <small className="p-error">Mail-ul este necesar.</small>
           )}
         </div>
-        <div className="field">
-          <label htmlFor="password" className="font-bold">
+        <div className={style.field}>
+          <label htmlFor="password" className={style.label} >
             Password
           </label>
           <InputText
@@ -481,8 +481,8 @@ function AdminHomepage() {
             <small className="p-error">Parola este necesară.</small>
           )}
         </div>
-        <div className="field">
-          <label className="mb-3 font-bold">Status</label>
+        <div  className={style.field}>
+          <label className={style.label}>Status</label>
           <div className="formgrid grid">
             <div className="field-radiobutton col-6">
               <RadioButton

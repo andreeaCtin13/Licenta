@@ -31,7 +31,7 @@ function CoursePresentation({ description, id, title, image }) {
         />
         <h2 className={style.tooManyDetails}>{title}</h2>
         <h3>Despre acest curs</h3>
-        <div>{description}</div>
+        <div className={style.courseDescription}>{description}</div>
       </Link>
     </div>
   );

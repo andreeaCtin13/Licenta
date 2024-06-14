@@ -13,6 +13,12 @@
   width: 100%;
 }
 
+.flexContainer{
+  display: flex;
+  width:100%;
+  justify-content: space-between;
+}
+
 .containerStatusUltimulTest {
   display: flex;
   flex-direction: column;
@@ -145,8 +151,15 @@
 
 .pdfs {
   display: flex;
-  flex-direction: column;
+  flex-direction:column;
   gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.commentIcon{
+  width: 2rem;
+  height:3rem;
 }
 
 .btnPDFS {
@@ -177,6 +190,15 @@
   padding: 2rem;
 }
 
+.customFileUpload{
+  width:95%;
+}
+
+.setFeedback:hover{
+  cursor: pointer;
+  background-color: antiquewhite;
+}
+
 .testBtn {
   background-color: var(--var--light--pink);
   width: 10rem;
@@ -185,6 +207,7 @@
   transition: 1s;
   border: none;
   font-size: 1.5rem;
+  margin:2rem;
 }
 
 .testBtn:hover {

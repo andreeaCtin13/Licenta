@@ -58,7 +58,7 @@ function MentorHomepage() {
         <div className={style.btnCreateZone}>
           <Button
             className={style.btnCreate}
-            content="Dezautentificare"
+            content="Deconectare"
             onClick={handleLogout}
           ></Button>
         </div>

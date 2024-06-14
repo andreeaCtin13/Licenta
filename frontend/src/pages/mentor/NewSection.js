@@ -9,6 +9,11 @@ import { Toast } from "primereact/toast";
 import { useParams } from "react-router";
 import { FilesContext } from "../../context/FilesContext";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHouse
+} from "@fortawesome/free-solid-svg-icons";
 
 function NewSection() {
   const { idCourse } = useParams();
@@ -139,27 +144,30 @@ function NewSection() {
     <FilesContext.Provider value={{ fileToSend, setFileToSend }}>
       <SectionContext.Provider value={{ newSection, setNewSection }}>
         <Toast ref={toast} />
+        <Link to={`/mentor-homepage`}>
+        <Button
+          className={`${style.btn} ${style.btnHome}`}
+          content={<FontAwesomeIcon icon={faHouse} />}
+        ></Button>
+      </Link>
 
         <div className={style.mainContainer}>
           <h1>Salut, crează o nouă secțiune!</h1>
           <div className={style.formsContainer}>
-            <FormNewSection></FormNewSection>
-            <FormNewTest></FormNewTest>
+            <FormNewSection />
+            <FormNewTest />
           </div>
           <div className={style.btnSection}>
             <Button
               className={`${style.btn} ${style.btnCancel}`}
               content={"Back"}
               onClick={() => navigate(`/mentor-homepage/${idCourse}`)}
-            ></Button>
+            />
             <Button
               className={`${style.btn} ${style.btnCreate}`}
               content={"Create"}
               onClick={createSection}
-            ></Button>
-          </div>
-          <div>
-            hahah
+            />
           </div>
         </div>
       </SectionContext.Provider>

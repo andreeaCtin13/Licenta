@@ -34,7 +34,6 @@ function CoursePage() {
   const getIstoric = async (idSectiune) => {
     try {
       const rez = await axios.get(`http://localhost:8080/istoricuriPunctaje/getLastIstoricOfAUser/${user.id_utilizator}/${idSectiune}`);
-      console.log("istoric:", rez.data);
 
       if (rez.data.message === "nu exista istoric") {
         setStare({ exists: false });
@@ -225,6 +224,7 @@ function CoursePage() {
 
               </p>
               <p>{cerinta.cerinta}</p>
+              <div className={style.flexContainer}>
               <FileUpload
                 name="file"
                 accept="*"
@@ -238,9 +238,9 @@ function CoursePage() {
                 <FontAwesomeIcon
                   className={style.commentIcon}
                   icon={faComment}
-
                   onClick={() => getFeedbackAssig(cerinta.id_cerinta)}
                 />
+              </div>
               </div>
             </div>
           ))}
@@ -282,16 +282,17 @@ function CoursePage() {
                         <div>
                           Punctaj minim promovare: {stare.lastHistory.punctaj_minim_promovare} pct.
                         </div>
-                      </div>
-                    ) : (
-                      <div className={style.passed}>A fost trecut testul!</div>
-                    )}
-                    <Link
+                        <Link
                       className={style.testBtnLink}
                       to={`/test/${currentSectionIndex ?? ""}/${idCourse}`}
                     >
                       <Button content={"Start"} className={style.testBtn} />
                     </Link>
+                      </div>
+                    ) : (
+                      <div className={style.passed}>A fost trecut testul!</div>
+                    )}
+                   
                   </div>
                 )
               )

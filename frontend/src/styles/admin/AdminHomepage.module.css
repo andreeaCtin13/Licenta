@@ -83,6 +83,7 @@
   border-radius: 1rem;
   border: none;
   transition: 0.5s;
+
 }
 
 .btnLogout:hover {
@@ -96,12 +97,16 @@
   display: flex;
   align-items: center;
   height: 3rem;
-  width: 5rem;
+  width: 10rem;
   justify-content: center;
   color: var(--var--white);
   border-radius: 1rem;
   border: none;
   transition: 0.5s;
+}
+
+.modal{
+  min-width: 30rem;
 }
 
 .btnLogoutResponse:nth-child(odd) {
@@ -147,4 +152,12 @@
 
 .paginationZone span {
   font-size: 1.3rem;
+}
+
+.label{
+  margin:1rem 0;
+}
+
+.field{
+  margin:1rem;
 }

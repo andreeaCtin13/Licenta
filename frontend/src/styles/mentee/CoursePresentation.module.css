@@ -1,33 +1,38 @@
 .courseContainer {
-  width: 30rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  background-color: #ad82ad; /* White background for cards */
+  border-radius: 15px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for hover effects */
+  overflow: hidden; /* Ensures content stays within rounded corners */
+  max-width: 100%; /* Prevents cards from stretching too much */
+  text-align: center; /* Center align text */
+  padding: 1rem; 
 }
 
-.courseContainer :hover {
-  background-color: var(--var--dark--pink);
-  transition: 1s;
+.courseContainer:hover {
+  transform: translateY(-10px); 
+  box-shadow: rgb(54, 2, 54) 0px 8px 14px,rgb(54, 2, 54)  0px 14px 26px, rgb(54, 2, 54)  0px 14px 60px;
 }
 
 .courseImage {
-  width: 27rem;
-  max-height: 15rem;
-  border-radius: 1rem;
-}
-
-.tooManyDetails {
-  width: 20rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  width: 100%;
+  height: 200px; 
+  object-fit: cover; 
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
 }
 
 .link {
-  text-decoration: none;
-  color: var(--var--white);
-  padding: 1.3rem;
+  text-decoration: none; /* Remove underline from links */
+  color: inherit; /* Inherit color from parent */
 }
 
-@media screen and (max-width: 900px) {
+.tooManyDetails {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+.courseDescription {
+  font-size: 1rem;
 }
