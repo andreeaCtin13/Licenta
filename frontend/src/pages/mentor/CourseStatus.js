@@ -8,20 +8,34 @@ import {
   faPencil,
   faTrash,
   faArrowLeft,
+  faPlus
 } from "@fortawesome/free-solid-svg-icons";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import Button from "../../components/Button";
 import axios from "axios";
 import { Toast } from "primereact/toast";
 import { FileUpload } from "primereact/fileupload";
+import { Dialog } from "primereact/dialog";
 
 function CourseStatus() {
   const { user, setUser } = useContext(UserContext);
   const { idCourse } = useParams();
+  const [activeIndex, setActiveIndex] = useState(0);
   const [sectiuni, setSectiuni] = useState([]);
   const toast = useRef(null);
   const [curs, setCurs] = useState({});
   const fileUploadRefs = useRef({});
+  const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+  const [sectiuneToDelete, setSectiuneToDelete] = useState(null);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [currentSectionToEdit, setCurrentSectionToEdit] = useState(null);
+  const [editSectionData, setEditSectionData] = useState(false);
+  const [editModal2Visible, setEditModal2Visible] = useState(false);
+  const [addModalVisible, setAddModalVisible] = useState(false);
+  const [newAssignmentData, setNewAssignmentData] = useState({
+    titlu: "",
+    cerinta: "",
+  });
 
   const getCurs = async () => {
     await axios
@@ -34,7 +48,7 @@ function CourseStatus() {
         toast.current.show({
           severity: "fail",
           summary: "Failed",
-          detail: "Eroare la incarcarea cursului",
+          detail: "Eroare la încărcarea cursului",
           life: 3000,
         });
       });
@@ -71,7 +85,7 @@ function CourseStatus() {
                   toast.current.show({
                     severity: "fail",
                     summary: "Failed",
-                    detail: "Eroare la incarcarea cerintelor",
+                    detail: "Eroare la încărcarea cerințelor",
                     life: 3000,
                   });
                 });
@@ -81,7 +95,7 @@ function CourseStatus() {
               toast.current.show({
                 severity: "fail",
                 summary: "Failed",
-                detail: "Eroare la incarcarea resurselor",
+                detail: "Eroare la încărcarea resurselor",
                 life: 3000,
               });
             });
@@ -92,7 +106,7 @@ function CourseStatus() {
         toast.current.show({
           severity: "fail",
           summary: "Failed",
-          detail: "Eroare la incarcarea sectiunilor",
+          detail: "Eroare la încărcarea secțiunilor",
           life: 3000,
         });
       });
@@ -103,7 +117,39 @@ function CourseStatus() {
     getCurs();
   }, []);
 
-  const changeSomething = (whatDoIChange) => {};
+  console.log("uite cum se modifica: ", deleteConfirmationVisible)
+  const openAddModal = () => {
+    setNewAssignmentData({ titlu: "", cerinta: "" });
+    setAddModalVisible(true);
+  };
+
+  const closeAddModal = () => {
+    setAddModalVisible(false);
+  };
+
+  const handleAddAssignment = async() => {
+    console.log("ASTA STERG ", sectiuneToDelete)
+    await axios.post(`http://localhost:8080/cerinte/insert`, {...newAssignmentData, id_sectiune:sectiuneToDelete}).then((rez)=>{
+      console.log(rez.data)
+      getAllSectiuni()
+    }).catch(
+      err=>console.log(err)
+    )
+
+    closeAddModal();
+  };
+
+
+  const handleDelete= async(id_cerinta)=>{
+     console.log(id_cerinta)
+     await axios.delete(`http://localhost:8080/cerinte/delete/${id_cerinta}`).then((rezultat)=>{
+      console.log("a fost sters ce bine")
+      getAllSectiuni()
+
+     }).catch((err)=>{
+      console.log(err)
+     })
+  }
 
   const uploadFile = async (file, id) => {
     let formData = new FormData();
@@ -164,52 +210,88 @@ function CourseStatus() {
       });
   };
 
+  const deleteSectiune = async () => {
+    if (sectiuneToDelete) {
+      await axios
+        .delete(`http://localhost:8080/sectiuni/delete/${sectiuneToDelete.id_sectiune}`)
+        .then(async () => {
+          toast.current.show({
+            severity: "success",
+            summary: "Success",
+            detail: "Secțiune deleted successfully",
+          });
+          setDeleteConfirmationVisible(false);
+          await getAllSectiuni();
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.current.show({
+            severity: "error",
+            summary: "Failed",
+            detail: "Failed to delete secțiune",
+          });
+          setDeleteConfirmationVisible(false);
+        });
+    }
+  };
+  const updateSection = async () => {
+    if (currentSectionToEdit) {
+      await axios
+        .put(`http://localhost:8080/sectiuni/update/${currentSectionToEdit.id_sectiune}`, {
+          ...editSectionData
+        })
+        .then(async () => {
+          toast.current.show({
+            severity: "success",
+            summary: "Success",
+            detail: "Secțiune updated successfully",
+          });
+          setEditModalVisible(false);
+          await getAllSectiuni();
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.current.show({
+            severity: "error",
+            summary: "Failed",
+            detail: "Failed to update secțiune",
+          });
+        });
+    }
+  };
+  
+
+  const openEditModal = (sectiune) => {
+    setCurrentSectionToEdit(sectiune);
+    setEditSectionData({
+      denumire: sectiune.denumire,
+      descriere: sectiune.descriere,
+    });
+    setEditModalVisible(true);
+  };
+
+  const openEditModal2 = (sectiune) => {
+    setCurrentSectionToEdit(sectiune);
+    setEditSectionData({
+      video_link: sectiune.resurse.find((x) => x.tip_resursa === "video_link")?.link_resursa || ""
+    });
+    setEditModal2Visible(true);
+  };
+  
+
   return (
     <div className={style.mainContainer}>
       <Link to={`/mentor-homepage`}>
         <Button
           className={style.btnBack}
           content={<FontAwesomeIcon icon={faArrowLeft} />}
-        ></Button>
+        />
       </Link>
       <Toast ref={toast} />
       <h1>{curs.denumire}</h1>
-      <div className={style.buttonZone}>
-        <div>
-          <Link to={`/new-section/${idCourse}`}>
-            <Button
-              className={style.btnCreateSection}
-              content="Crează o nouă secțiune"
-            ></Button>
-          </Link>
-        </div>
-        <div>
-          <Link to={`/feedback/${idCourse}`}>
-            <Button
-              className={style.btnCreateSection}
-              content="Acordă direcții soluții"
-            ></Button>
-          </Link>
-        </div>
-        <div>
-          <Link to={`/requests/${idCourse}`}>
-            <Button
-              className={style.btnCreateSection}
-              content="See requests"
-            ></Button>
-          </Link>
-        </div>
-        <div>
-          <Link to={`/performanta/${idCourse}`}>
-            <Button
-              className={style.btnCreateSection}
-              content="Analizează performanța"
-            ></Button>
-          </Link>
-        </div>
-      </div>
-
-      <Accordion>
+      <div className={style.flexingContainer}>
+      
+      <Accordion activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)} className={style.accordionContainer}>
         {sectiuni.map((sectiune, i) => {
           return (
             <AccordionTab header={sectiune.denumire} key={i}>
@@ -219,25 +301,25 @@ function CourseStatus() {
                   Descrierea secțiunii: {sectiune.descriere}
                   <button
                     className={style.iconBtn}
-                    onClick={() => changeSomething("descriere")}
+                    onClick={() => openEditModal(sectiune)}
                   >
                     <FontAwesomeIcon icon={faPencil} className={style.icon} />
                   </button>
                 </div>
               </div>
               <div>
-                <h3>Resursa video: </h3>
+                <h3>Resursa video </h3>
                 <div>
                   <Link to={sectiune.resurse.linkVideo} className={style.link}>
                     {
-                      sectiuni[i].resurse.filter(
+                      sectiune.resurse.find(
                         (x) => x.tip_resursa === "video_link"
-                      )[0].titlu_resursa
+                      )?.titlu_resursa
                     }
                   </Link>
                   <button
                     className={style.iconBtn}
-                    onClick={() => changeSomething("video")}
+                    onClick={() => openEditModal2(sectiune)}
                   >
                     <FontAwesomeIcon icon={faPencil} className={style.icon} />
                   </button>
@@ -260,12 +342,17 @@ function CourseStatus() {
                 </div>
 
                 <div>
-                  {sectiuni[i].resurse
+                  {sectiune.resurse
                     .filter((x) => x.tip_resursa === "pdf_path")
                     .map((pdf) => {
                       return (
                         <div key={pdf.id_resursa}>
-                          {pdf.titlu_resursa}
+                          <a
+                            href={`http://localhost:8080/resurse/download/${pdf.id_resursa}`}
+                            className={style.link}
+                          >
+                            {pdf.titlu_resursa}
+                          </a>
                           <button
                             className={style.iconBtn}
                             onClick={() => deleteResource(pdf.id_resursa)}
@@ -280,35 +367,249 @@ function CourseStatus() {
                     })}
                 </div>
                 <div>
-                  <h3>Lista de cerințe:</h3>
+                  <div className={style.flexez}>
+                    <h3>Lista de cerințe</h3>
+                    <FontAwesomeIcon icon={faPlus} className={style.icon}  onClick={()=>{openAddModal()
+                      setSectiuneToDelete(sectiune.id_sectiune)
+                    }}
+                    />
+                  </div>
                   <div>
-                    {sectiune.cerinte.map((assigment) => {
+                    {sectiune.cerinte.map((assignment) => {
+                      console.log("vezi acilea ba", assignment)
                       return (
                         <div
-                          key={assigment.id_cerinta}
-                          className={style.assigment}
+
+                          key={assignment.id_cerinta}
+                          className={style.assignment}
                         >
-                          <h4>Titlul cerinței: {assigment.titlu}</h4>
-                          <div className={style.requirementRow}>
-                            <div>Cerința: {assigment.cerinta}</div>
-                            {
-                              //maybe pun functionalitate de delete + add, fara modificare
-                            }
-                          </div>
+                           <h4>Titlul cerinței - {assignment.titlu}</h4>
+                        <div className={style.requirementRow}>
+                            <div>Cerința - {assignment.cerinta}</div>
+                            <div>
+                                <FontAwesomeIcon
+                                    icon={faTrash}
+                                    className={style.deleteIcon}
+                                    onClick={() => handleDelete(assignment.id_cerinta)}
+                                />
+                            </div>
+                        </div>
                         </div>
                       );
                     })}
                   </div>
+
                 </div>
+                <Link to={`/edit-test/${sectiune.id_test}`}>
+                  <Button
+                    content={"Editează testul"}
+                    className={`${style.btn} ${style.btnEditTest}`}
+                  />
+                </Link>
                 <Button
-                  content={"Editează testul"}
-                  className={`${style.btn} ${style.btnEditTest}`}
-                ></Button>
+                  content={<FontAwesomeIcon icon={faTrash} className={style.icon} />}
+                  className={`${style.btn} ${style.btnDeleteSection}`}
+                  onClick={() => {
+                    setSectiuneToDelete(sectiune);
+                    setDeleteConfirmationVisible(true);
+                  }}
+                />
               </div>
             </AccordionTab>
           );
         })}
       </Accordion>
+      <div className={style.flexing}>
+      <div className={style.buttonZone}>
+        <div>
+          <Link to={`/new-section/${idCourse}`}>
+            <Button
+              className={style.btnCreateSection}
+              content="Crează o nouă secțiune"
+            />
+          </Link>
+        </div>
+        <div>
+          <Link to={`/feedback/${idCourse}`}>
+            <Button
+              className={style.btnCreateSection}
+              content="Acordă direcții soluții"
+            />
+          </Link>
+        </div>
+        <div>
+          <Link to={`/requests/${idCourse}`}>
+            <Button
+              className={style.btnCreateSection}
+              content="See requests"
+            />
+          </Link>
+        </div>
+        <div>
+          <Link to={`/performanta/${idCourse}`}>
+            <Button
+              className={style.btnCreateSection}
+              content="Analizează performanța"
+            />
+          </Link>
+        </div>
+      </div>
+</div>
+      <Dialog
+        visible={editModalVisible}
+        style={{ width: "50vw" }}
+        header="Editează secțiunea"
+        modal
+        onHide={() => setEditModalVisible(false)}
+        footer={
+          <div>
+            <Button
+              content="Anulează"
+              className="p-button-text"
+              onClick={() => setEditModalVisible(false)}
+            />
+            <Button
+              content="Salvează"
+              className="p-button-text"
+              onClick={() => updateSection()}
+            />
+          </div>
+        }
+      >
+        <div className={style.pField}>
+          <label htmlFor="denumire">Denumire</label>
+          <input
+            id="denumire"
+            type="text"
+            value={editSectionData.denumire}
+            onChange={(e) =>
+              setEditSectionData({ ...editSectionData, denumire: e.target.value })
+            }
+          />
+        </div>
+        <div className={style.pField}>
+          <label htmlFor="descriere">Descriere</label>
+          <textarea
+            id="descriere"
+            value={editSectionData.descriere}
+            onChange={(e) =>
+              setEditSectionData({ ...editSectionData, descriere: e.target.value })
+            }
+          />
+        </div>
+      </Dialog>
+
+      <Dialog
+        visible={addModalVisible}
+        style={{ width: "50vw" }}
+        header="Adaugă o nouă cerință"
+        modal
+        onHide={closeAddModal}
+        footer={
+          <div>
+            <Button
+              content="Anulează"
+              className="p-button-text"
+              onClick={closeAddModal}
+            />
+            <Button
+              content="Salvează"
+              className="p-button-text"
+              onClick={handleAddAssignment}
+            />
+          </div>
+        }
+      >
+       <div className={style.pField}>
+  <label htmlFor="inputTitle">Titlu cerință</label>
+  <input
+    id="inputTitle"
+    type="text"
+    value={newAssignmentData.titlu}
+    onChange={(e) =>
+      setNewAssignmentData({
+        ...newAssignmentData,
+        titlu: e.target.value,
+      })
+    }
+  />
+</div>
+<div className={style.pField}>
+  <label htmlFor="textareaRequirement">Cerință</label>
+  <textarea
+    id="textareaRequirement"
+    value={newAssignmentData.cerinta}
+    onChange={(e) =>
+      setNewAssignmentData({
+        ...newAssignmentData,
+        cerinta: e.target.value,
+      })
+    }
+  />
+</div>
+
+      </Dialog>
+      <Dialog
+  visible={editModal2Visible}
+  style={{ width: "50vw" }}
+  header="Editează resursa video"
+  modal
+  onHide={() => setEditModal2Visible(false)}
+  footer={
+    <div>
+      <Button
+        content="Anulează"
+        className="p-button-text"
+        onClick={() => setEditModal2Visible(false)}
+      />
+      <Button
+        content="Salvează"
+        className="p-button-text"
+        onClick={() => updateSection()}
+      />
+    </div>
+  }
+>
+  <div className={style.pField}>
+    <label htmlFor="video_link">Link Video</label>
+    <input
+      id="video_link"
+      type="text"
+      value={editSectionData.video_link}
+      onChange={(e) =>
+        setEditSectionData({ ...editSectionData, video_link: e.target.value })
+      }
+    />
+  </div>
+</Dialog>
+      <Dialog
+        visible={deleteConfirmationVisible}
+        style={{ width: "50vw" }}
+        header="Confirmare ștergere"
+        modal
+        onHide={() => setDeleteConfirmationVisible(false)}
+        footer={
+          <div>
+            <Button
+              content="Nu"
+              className="p-button-text"
+              onClick={() => setDeleteConfirmationVisible(false)}
+            />
+            <Button
+              content="Da"
+              className="p-button-text"
+              onClick={() => deleteSectiune()}
+            />
+          </div>
+        }
+      >
+        <p>
+          Ești sigur că vrei să ștergi secțiunea "{sectiuneToDelete?.denumire}"?
+          Această acțiune este ireversibilă.
+        </p>
+      </Dialog>
+      
+    </div>
     </div>
   );
 }

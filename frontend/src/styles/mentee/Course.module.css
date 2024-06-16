@@ -6,6 +6,7 @@
   color: var(--var--dark--pink);
   font-size: 4rem;
   text-shadow: 1px 3px 8px var(--var--dark--purple);
+  margin:0.5rem 0;
 }
 
 .description {
@@ -70,6 +71,7 @@
 
 .mentor {
   font-size: 1.3rem;
+  padding: 0 0 2rem 0;
   color: var(--var--light--pink);
 }
 
@@ -145,7 +147,7 @@
 }
 
 .containerPDFS {
-  padding: 2rem;
+  padding: 2rem 0;
   border-radius: 2rem;
 }
 
@@ -153,7 +155,6 @@
   display: flex;
   flex-direction:column;
   gap: 1rem;
-  align-items: center;
   justify-content: center;
 }
 

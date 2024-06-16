@@ -1,3 +1,4 @@
+const { Op, Sequelize } = require("sequelize");  // Import Sequelize operators and functions
 const ictoricCerinteModel = require("../models").istoricAssigments;
 const cerinteModel = require("../models").assigment;
 const sectiuniModel = require("../models").sectiuni;
@@ -9,57 +10,64 @@ const _ = require("lodash");
 const controller = {
   getAllIstoricCerinte: async (req, res) => {
     const { id_curs, id_cerinta } = req.params;
-    const { take, skip, feedback } = req.query;
 
-    const takeValue = take ? parseInt(take) : 10;
-    const skipValue = skip ? parseInt(skip) : 1;
-
-    let curs = await cursuriModel.findByPk(id_curs);
-
-    if (!curs) {
-      return res.status(400).json({
-        message: "Nu ai introdus un id_curs valid",
+    try {
+      // Găsim toți utilizatorii care au un istoric pentru cerința specificată
+      const utilizatoriCuIstoric = await ictoricCerinteModel.findAll({
+        attributes: ['id_utilizator'],
+        where: {
+          id_cerinta: id_cerinta
+        },
+        group: ['id_utilizator']
       });
-    }
 
-    const whereClause = {
-      id_cerinta: id_cerinta,
-    };
+      // Array pentru a stoca rezultatele finale
+      const result = [];
 
-    if (feedback === "null") {
-      whereClause.feedback = null;
-    }
+      // Iterăm prin fiecare utilizator găsit
+      for (let i = 0; i < utilizatoriCuIstoric.length; i++) {
+        const id_utilizator = utilizatoriCuIstoric[i].id_utilizator;
 
-    await ictoricCerinteModel
-      .findAndCountAll({
-        where: whereClause,
-        limit: takeValue,
-        offset: (skipValue - 1) * takeValue,
-      })
-      .then(async (rez) => {
-        let as = [];
-        for (let x of rez.rows) {
-          let user = await utilizatoriModel.findByPk(x.id_utilizator);
-          as.push({
-            id_cerinta_istoric: x.id_cerinta_istoric,
-            data_finalizare: x.data_finalizare,
-            rezolvare: x.rezolvare,
-            feedback: x.feedback,
-            id_utilizator: x.id_utilizator,
-            id_cerinta: x.id_cerinta,
-            mail: user.mail,
-            nume: user.nume,
-          });
-        }
-        return res.status(200).json({
-          istoric: as,
-          count: rez.count,
+        // Găsim cel mai recent istoric pentru utilizatorul curent și cerința specificată
+        const recentIstoric = await ictoricCerinteModel.findOne({
+          where: {
+            id_utilizator: id_utilizator,
+            id_cerinta: id_cerinta,
+          },
+          order: [["data_finalizare", "DESC"]],
         });
-      })
-      .catch((err) => {
-        console.error("Error fetching assignment history:", err);
-        return res.status(500).json({ message: "Server error", err: err });
+
+        if (recentIstoric) {
+          // Găsim detalii despre utilizator
+          const user = await utilizatoriModel.findByPk(id_utilizator);
+
+          // Construim un obiect pentru istoricul recent al utilizatorului curent
+          const istoricUtilizator = {
+            id_cerinta_istoric: recentIstoric.id_cerinta_istoric,
+            data_finalizare: recentIstoric.data_finalizare,
+            rezolvare: recentIstoric.rezolvare,
+            feedback: recentIstoric.feedback,
+            id_utilizator: recentIstoric.id_utilizator,
+            id_cerinta: recentIstoric.id_cerinta,
+            mail: user ? user.mail : null,
+            nume: user ? user.nume : null,
+          };
+
+          // Adăugăm obiectul în rezultatul final
+          result.push(istoricUtilizator);
+        }
+      }
+
+      // Returnăm rezultatele
+      return res.status(200).json({
+        istoric: result,
+        count: result.length,
       });
+
+    } catch (err) {
+      console.error("Eroare la preluarea istoricului de cerințe:", err);
+      return res.status(500).json({ message: "Eroare server", err: err });
+    }
   },
   getIstoricRezolvariPerUser: async (req, res) => {
     const { id_utilizator } = req.params;

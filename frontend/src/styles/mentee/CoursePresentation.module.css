@@ -1,11 +1,11 @@
 .courseContainer {
-  background-color: #ad82ad; /* White background for cards */
-  border-radius: 15px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for hover effects */
-  overflow: hidden; /* Ensures content stays within rounded corners */
-  max-width: 100%; /* Prevents cards from stretching too much */
-  text-align: center; /* Center align text */
+  background-color: #ad82ad; 
+  border-radius: 15px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  overflow: hidden; 
+  max-width: 100%;
+  text-align: center; 
   padding: 1rem; 
 }
 
@@ -16,6 +16,7 @@
 
 .courseImage {
   width: 100%;
+  max-width: 20rem;
   height: 200px; 
   object-fit: cover; 
   border-top-left-radius: 15px;
@@ -23,8 +24,8 @@
 }
 
 .link {
-  text-decoration: none; /* Remove underline from links */
-  color: inherit; /* Inherit color from parent */
+  text-decoration: none; 
+  color: inherit; 
 }
 
 .tooManyDetails {

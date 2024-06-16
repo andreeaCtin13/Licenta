@@ -134,7 +134,7 @@ function NewSection() {
         toast.current.show({
           severity: "error",
           summary: "Failed",
-          detail: "Eroare la incarcarea cursurilor",
+          detail: "Eroare la incarcarea sectiunii",
           life: 3000,
         });
       });

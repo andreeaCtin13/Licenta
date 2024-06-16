@@ -61,6 +61,11 @@
   background-color: aqua;
 }
 
+.courseImage {
+  width: 100%;
+  max-width: 80rem;
+}
+
 @media screen and (max-width: 900px) {
   .flexContainer {
     flex-direction: column;

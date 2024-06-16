@@ -27,7 +27,6 @@ function CoursePage() {
 
   const playVideo = (index) => {
     setCurrentSectionIndex(index);
-    console.log("PLAY VIDEO", index);
     updateInfo(index);
   };
 
@@ -269,6 +268,8 @@ function CoursePage() {
                   to={`/test/${currentSectionIndex ?? ""}/${idCourse}`}
                 >
                   <Button content={"Start"} className={style.testBtn} />
+                  {                console.log("intra pe acesta ramuna")
+                  }
                 </Link>
               ) : (
                 stare.lastHistory && (

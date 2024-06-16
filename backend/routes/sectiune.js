@@ -23,4 +23,6 @@ router.post(
   sectiuniController.insertSectiune
 );
 router.get("/getSectiuneById/:id_sectiune", sectiuniController.getSectiuneById);
+router.put("/update/:id_sectiune", sectiuniController.updateSectiune)
+
 module.exports = router;

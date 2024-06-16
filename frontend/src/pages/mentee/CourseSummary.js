@@ -129,7 +129,7 @@ function CourseSummary() {
           />
         </div>
         <div className={style.rightContainer}>
-          <h2>Why enroll in this course?</h2>
+          <h2>De ce să te înscrii la acest curs?</h2>
           <div className={style.rightContainerDesc}>{course.descriere}</div>
           {requestStatus === "accepted" ? (
             <Button

@@ -38,18 +38,37 @@ function Feedback() {
   const [feedback, setFeedback] = useState("");
   const [fileToDownload, setFileToDownload] = useState();
 
+  useEffect(() => {
+    // Încărcare inițială a secțiunilor și cerințelor
+    getSection();
+  }, []);
+  
+  useEffect(() => {
+    // Încărcare inițială a datelor pentru prima secțiune selectată
+    if (selectedScreen) {
+      changeView(selectedScreen);
+    }
+  }, [selectedScreen]);
+  
+  useEffect(() => {
+    // Încărcare inițială a datelor pentru idCerinta curent
+    setData(idCerinta);
+  }, [idCerinta, page]);
+  
   const setData = async (id_cerinta) => {
     try {
+      console.log("ii dau asta: curs, cerinta page - ", idCourse, id_cerinta, page )
       const rez = await axios.get(
-        `http://localhost:8080/istoricCerinte/getAll/${idCourse}/${idCerinta}/filter?&take=8&skip=${page}&feedback=null`
+        `http://localhost:8080/istoricCerinte/getAll/${idCourse}/${id_cerinta}/filter?&take=8&skip=${page}&feedback=null`
       );
       setAssigmentsRows(rez.data.istoric);
       setTotalRec(Math.ceil(rez.data.count / 8));
+      console.log("REZULTAT: ", rez.data)
     } catch (err) {
       console.error(err);
     }
   };
-
+  
   useEffect(() => {
     setPage(1);
     setData();
@@ -122,7 +141,6 @@ function Feedback() {
         `http://localhost:8080/istoricCerinte/updateIstoricAssigment/${selectedRow?.id_cerinta_istoric}`,
         { feedback }
       );
-      // Remove the row from the table
       setAssigmentsRows((prevRows) =>
         prevRows.filter(
           (row) => row.id_cerinta_istoric !== selectedRow.id_cerinta_istoric

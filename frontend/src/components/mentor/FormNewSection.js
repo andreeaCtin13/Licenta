@@ -11,12 +11,9 @@ function FormNewSection() {
   const assignmentDivs = [];
   const [files, setFiles] = useState([]);
 
-  const setAssig = (e, ind, field) => {
+  const setAssig = (e, ind) => {
     const { name, value } = e.target;
-    let updatedAssignments = [];
-    if (newSection.hasOwnProperty("cerinte")) {
-      updatedAssignments = [...newSection.cerinte];
-    }
+    let updatedAssignments = newSection.cerinte ? [...newSection.cerinte] : [];
     if (!updatedAssignments[ind]) {
       updatedAssignments[ind] = { titlu_cerinta: "", cerinta: "" };
     }
@@ -26,6 +23,7 @@ function FormNewSection() {
       cerinte: updatedAssignments,
     }));
   };
+
   for (let ind = 0; ind < noOfAssigments; ind++) {
     assignmentDivs.push(
       <div key={ind} className={style.formRow}>
@@ -36,9 +34,7 @@ function FormNewSection() {
           name="titlu_cerinta"
           type="text"
           required
-          onChange={(e) => {
-            setAssig(e, ind);
-          }}
+          onChange={(e) => setAssig(e, ind)}
         />
         <label htmlFor={ind + "_cerinta"}>Cerinta efectiva</label>
         <input
@@ -46,92 +42,58 @@ function FormNewSection() {
           name="cerinta"
           type="text"
           required
-          onChange={(e) => {
-            setAssig(e, ind);
-          }}
+          onChange={(e) => setAssig(e, ind)}
         />
       </div>
     );
   }
 
   const updateInput = (value, nameOfProperty) => {
-    if (nameOfProperty === "video_link") {
-      setNewSection({
-        ...newSection,
-        resurse: {
-          ...newSection.resurse,
-          video_link: value,
-        },
-      });
-    } else {
-      setNewSection({
-        ...newSection,
-        [nameOfProperty]: value,
-      });
-    }
+    setNewSection((prevSection) => ({
+      ...prevSection,
+      [nameOfProperty]: value,
+    }));
   };
+
   const handleFileChange = (event) => {
-    console.log("Handle file change called."); // Verificare dacă funcția este apelată
-
     const fileList = event.target.files;
-    console.log("filelist!!:", fileList);
-    const formData = new FormData();
-    for (let i = 0; i < fileList.length; i++) {
-      formData.append("files", fileList[i]);
-    }
-    setFileToSend(formData);
-    setFiles([...files, ...fileList]);
-
-    const updatedPdfs = [];
-    formData.getAll("file").forEach((file) => {
-      updatedPdfs.push({
-        denumire: file.name,
-        file_object: file,
-      });
-    });
-    console.log("vezi");
-    for (const file of formData.getAll("file")) {
-      console.log(file);
-    }
-
-    setNewSection({
-      ...newSection,
-      files: formData,
-      resurse: {
-        ...newSection.resurse,
-        pdfs: updatedPdfs,
-      },
-    });
-  };
-  console.log("FILES", fileToSend);
-
-  const handleRemoveFile = (index) => {
-    const updatedFiles = [...files];
-    updatedFiles.splice(index, 1);
+    const updatedFiles = [...files, ...fileList];
     setFiles(updatedFiles);
+    setFileToSend(updatedFiles);
 
     const updatedPdfs = updatedFiles.map((file) => ({
       denumire: file.name,
       file_object: file,
     }));
-    setNewSection({
-      ...newSection,
+
+    setNewSection((prevSection) => ({
+      ...prevSection,
       resurse: {
-        ...newSection.resurse,
+        ...prevSection.resurse,
         pdfs: updatedPdfs,
       },
-    });
+    }));
   };
 
-  // În afișarea fișierelor încărcate:
-  {
-    files.map((file, index) => (
-      <div key={index}>
-        <span>{file.name}</span>
-        <button onClick={() => handleRemoveFile(index)}>Undo</button>
-      </div>
-    ));
-  }
+  const handleRemoveFile = (index) => {
+    const updatedFiles = [...files];
+    updatedFiles.splice(index, 1);
+    setFiles(updatedFiles);
+    setFileToSend(updatedFiles);
+
+    const updatedPdfs = updatedFiles.map((file) => ({
+      denumire: file.name,
+      file_object: file,
+    }));
+
+    setNewSection((prevSection) => ({
+      ...prevSection,
+      resurse: {
+        ...prevSection.resurse,
+        pdfs: updatedPdfs,
+      },
+    }));
+  };
 
   return (
     <form className={style.mainForm}>
@@ -162,7 +124,6 @@ function FormNewSection() {
           onChange={(e) => updateInput(e.target.value, "video_link")}
         />
       </div>
-
       <h2>PDFS</h2>
       <div className={style.formRow}>
         <div>PDFs</div>
@@ -176,12 +137,13 @@ function FormNewSection() {
           {files.map((file, index) => (
             <div key={index}>
               <span>{file.name}</span>
-              <button onClick={() => handleRemoveFile(index)}>Undo</button>
+              <button type="button" onClick={() => handleRemoveFile(index)}>
+                Undo
+              </button>
             </div>
           ))}
         </div>
       </div>
-
       <div className={style.formRow}>
         <label htmlFor="">Number of assignments</label>
         <input

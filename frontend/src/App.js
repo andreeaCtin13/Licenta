@@ -17,6 +17,7 @@ import AdminHomepage from "./pages/admin/AdminHomepage";
 import Requests from "./pages/mentor/Requests.js";
 import Feedback from "./pages/mentor/Feedback.js";
 import AnalizaPerformanta from "./pages/mentor/AnalizaPerformanta.js";
+import EditTestPage from "./pages/mentor/EditTestPage.js";
 
 function App() {
   const [user, setUser] = useState(false);
@@ -46,9 +47,7 @@ function App() {
           <Route
             path="/topics"
             element={
-              // <PrivateRoute>
               <UserMarket />
-              // </PrivateRoute>
             }
           />
           <Route
@@ -59,6 +58,9 @@ function App() {
               // </PrivateRoute>
             }
           />
+          <Route path="/edit-test/:id_test"
+          element={<EditTestPage></EditTestPage>}>
+          </Route>
           <Route
             path="/mentor-homepage"
             element={
