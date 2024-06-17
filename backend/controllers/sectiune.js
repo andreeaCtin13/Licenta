@@ -1,3 +1,4 @@
+const sequelize = require("../config/db");
 const sectiuniModel = require("../models").sectiuni;
 const cursuriModel = require("../models").cursuri;
 const cerinteModel = require("../models").assigment;
@@ -5,6 +6,8 @@ const testeModel = require("../models").teste;
 const intrebariModel = require("../models").intrebari;
 const varianteModel = require("../models").varianteDeRaspuns;
 const resurseModel = require("../models").resurse;
+const istoricPunctajeModel = require("../models").istoricuriPunctaje
+const istoricCerinteModel = require("../models").istoricAssigments
 
 const controller = {
   insertFile: (req, res) => {
@@ -33,7 +36,6 @@ const controller = {
         return res.status(404).json({ message: "Secțiunea nu există în baza de date." });
       }
   
-      // Actualizăm denumirea și descrierea dacă sunt furnizate
       if (denumire) {
         existingSectiune.denumire = denumire;
       }
@@ -42,7 +44,6 @@ const controller = {
       }
       await existingSectiune.save();
   
-      // Căutăm resursa video asociată secțiunii
       let existingVideoResource = await resurseModel.findOne({
         where: {
           id_sectiune,
@@ -52,11 +53,9 @@ const controller = {
   
       if (video_link) {
         if (existingVideoResource) {
-          // Actualizăm link-ul resursei video
           existingVideoResource.link_resursa = video_link;
           await existingVideoResource.save();
         } else {
-          // Creăm o nouă resursă video dacă nu există
           await resurseModel.create({
             tip_resursa: "video_link",
             link_resursa: video_link,
@@ -158,6 +157,98 @@ const controller = {
     const sectiune = await sectiuniModel.findByPk(req.params.id_sectiune);
     return res.status(200).json({ sectiune: sectiune });
   },
+
+  deleteSectiuneOverall: async (req, res) => {
+    const { id_sectiune } = req.params;
+    const transaction = await sequelize.transaction();
+
+    try {
+        const teste = await testeModel.findAll({
+            where: { id_sectiune },
+            transaction
+        });
+
+        const testIds = teste.map(test => test.id_test);
+
+        const intrebari = await intrebariModel.findAll({
+            where: { id_test: testIds },
+            transaction
+        });
+
+        const intrebariIds = intrebari.map(intrebare => intrebare.id_intrebare);
+
+        await varianteModel.destroy({
+            where: { id_intrebare: intrebariIds },
+            transaction
+        });
+        console.log("a fost sters variante de rasp")
+
+        await intrebariModel.destroy({
+            where: { id_test: testIds },
+            transaction
+        });
+        console.log("a fost sters intrebari")
+
+        await istoricPunctajeModel.destroy({
+            where: { id_test: testIds },
+            transaction
+        });
+        console.log("a fost sters istoric punctaje")
+
+        await testeModel.destroy({
+            where: { id_test: testIds },
+            transaction
+        });
+        console.log("a fost sters teste")
+
+
+        await resurseModel.destroy({
+            where: { id_sectiune },
+            transaction
+        });
+        console.log("a fost sters resurse")
+
+        const cerinte = await cerinteModel.findAll({
+            where: { id_sectiune },
+            transaction
+        });
+
+        const cerinteIds = cerinte.map(cerinta => cerinta.id_cerinta);
+
+        await istoricPunctajeModel.destroy({
+          where: { id_test: testIds },
+          transaction
+        });
+        console.log("a fost sters istoricPunctaje")
+
+        await istoricCerinteModel.destroy({
+          where:{id_cerinta:cerinteIds},
+          transaction
+        })
+        console.log("au fost sterse istoricum de cerinte")
+
+        await cerinteModel.destroy({
+            where: { id_cerinta: cerinteIds },
+            transaction
+        });
+        console.log("a fost sters cerintele")
+
+        await sectiuniModel.destroy({
+            where: { id_sectiune },
+            transaction
+        });
+        console.log("a fost sters sectiunea")
+
+        await transaction.commit();
+
+        return res.status(200).send({ message: 'Secțiunea și toate datele asociate au fost șterse cu succes' });
+    } catch (error) {
+        await transaction.rollback();
+        return res.status(500).send({ error: 'A apărut o eroare la ștergerea secțiunii' });
+    }
+}
+
+
 };
 
 module.exports = controller;

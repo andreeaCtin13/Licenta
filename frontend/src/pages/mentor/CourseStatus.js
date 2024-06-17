@@ -55,62 +55,29 @@ function CourseStatus() {
   };
 
   const getAllSectiuni = async () => {
-    await axios
-      .get(`http://localhost:8080/sectiuni/selectAll/${idCourse}`)
-      .then(async (rez) => {
-        let sectiuni = rez.data.sectiuni;
-        let sectiuneNou = [];
-        for (let i = 0; i < sectiuni.length; i++) {
-          await axios
-            .get(
-              `http://localhost:8080/resurse/getResurseCursSection/${sectiuni[i].id_sectiune}`
-            )
-            .then(async (rez) => {
-              const resurse = rez.data.resurse;
-
-              await axios
-                .get(
-                  `http://localhost:8080/cerinte/getAllCerinte/${sectiuni[i].id_sectiune}`
-                )
-                .then(async (rez) => {
-                  sectiuneNou.push({
-                    ...sectiuni[i],
-                    resurse: [...resurse],
-                    cerinte: [...rez.data.cerinte],
-                  });
-                  setSectiuni(sectiuneNou);
-                })
-                .catch((err) => {
-                  console.log(err);
-                  toast.current.show({
-                    severity: "fail",
-                    summary: "Failed",
-                    detail: "Eroare la încărcarea cerințelor",
-                    life: 3000,
-                  });
-                });
-            })
-            .catch((err) => {
-              console.log(err);
-              toast.current.show({
-                severity: "fail",
-                summary: "Failed",
-                detail: "Eroare la încărcarea resurselor",
-                life: 3000,
-              });
-            });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.current.show({
-          severity: "fail",
-          summary: "Failed",
-          detail: "Eroare la încărcarea secțiunilor",
-          life: 3000,
-        });
+    try {
+      const { data: { sectiuni } } = await axios.get(`http://localhost:8080/sectiuni/selectAll/${idCourse}`);
+      const sectiuneNou = await Promise.all(sectiuni.map(async (sectiune) => {
+        const resurse = await axios.get(`http://localhost:8080/resurse/getResurseCursSection/${sectiune.id_sectiune}`);
+        const cerinte = await axios.get(`http://localhost:8080/cerinte/getAllCerinte/${sectiune.id_sectiune}`);
+        return {
+          ...sectiune,
+          resurse: resurse.data.resurse,
+          cerinte: cerinte.data.cerinte,
+        };
+      }));
+      setSectiuni(sectiuneNou);
+    } catch (err) {
+      console.log(err);
+      toast.current.show({
+        severity: "fail",
+        summary: "Failed",
+        detail: "Eroare la încărcarea secțiunilor",
+        life: 3000,
       });
+    }
   };
+  
 
   useEffect(() => {
     getAllSectiuni();
@@ -138,18 +105,6 @@ function CourseStatus() {
 
     closeAddModal();
   };
-
-
-  const handleDelete= async(id_cerinta)=>{
-     console.log(id_cerinta)
-     await axios.delete(`http://localhost:8080/cerinte/delete/${id_cerinta}`).then((rezultat)=>{
-      console.log("a fost sters ce bine")
-      getAllSectiuni()
-
-     }).catch((err)=>{
-      console.log(err)
-     })
-  }
 
   const uploadFile = async (file, id) => {
     let formData = new FormData();
@@ -210,30 +165,39 @@ function CourseStatus() {
       });
   };
 
-  const deleteSectiune = async () => {
-    if (sectiuneToDelete) {
-      await axios
-        .delete(`http://localhost:8080/sectiuni/delete/${sectiuneToDelete.id_sectiune}`)
-        .then(async () => {
-          toast.current.show({
-            severity: "success",
-            summary: "Success",
-            detail: "Secțiune deleted successfully",
-          });
-          setDeleteConfirmationVisible(false);
-          await getAllSectiuni();
-        })
-        .catch((err) => {
-          console.log(err);
-          toast.current.show({
-            severity: "error",
-            summary: "Failed",
-            detail: "Failed to delete secțiune",
-          });
-          setDeleteConfirmationVisible(false);
-        });
+  const handleDelete = async (id_cerinta) => {
+    try {
+      await axios.delete(`http://localhost:8080/cerinte/delete/${id_cerinta}`);
+      console.log("a fost sters ce bine");
+      await getAllSectiuni();
+    } catch (err) {
+      console.log(err);
     }
   };
+  
+  const deleteSectiune = async () => {
+    if (sectiuneToDelete) {
+      try {
+        await axios.delete(`http://localhost:8080/sectiuni/deleteSectiuneOverall/${sectiuneToDelete.id_sectiune}`);
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: "Secțiune deleted successfully",
+        });
+        setDeleteConfirmationVisible(false);
+        await getAllSectiuni();
+      } catch (err) {
+        console.log(err);
+        toast.current.show({
+          severity: "error",
+          summary: "Failed",
+          detail: "Failed to delete secțiune",
+        });
+        setDeleteConfirmationVisible(false);
+      }
+    }
+  };
+  
   const updateSection = async () => {
     if (currentSectionToEdit) {
       await axios

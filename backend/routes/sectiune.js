@@ -24,5 +24,6 @@ router.post(
 );
 router.get("/getSectiuneById/:id_sectiune", sectiuniController.getSectiuneById);
 router.put("/update/:id_sectiune", sectiuniController.updateSectiune)
+router.delete("/deleteSectiuneOverall/:id_sectiune", sectiuniController.deleteSectiuneOverall)
 
 module.exports = router;
