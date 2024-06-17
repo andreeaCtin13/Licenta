@@ -62,7 +62,7 @@ function Feedback() {
         `http://localhost:8080/istoricCerinte/getAll/${idCourse}/${id_cerinta}/filter?&take=8&skip=${page}&feedback=null`
       );
       setAssigmentsRows(rez.data.istoric);
-      setTotalRec(Math.ceil(rez.data.count / 8));
+      setTotalRec(Math.ceil(rez.data.count / 8)>0?Math.ceil(rez.data.count / 8):1);
       console.log("REZULTAT: ", rez.data)
     } catch (err) {
       console.error(err);

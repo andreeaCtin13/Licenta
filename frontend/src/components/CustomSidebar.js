@@ -19,14 +19,20 @@ import "primeicons/primeicons.css";
 import Logo from "../assets/logo.png";
 import style from "../styles/Sidebar.module.css";
 import axios from "axios";
+import { SectionContext } from "../context/SectionContext";
 
 function CustomSidebar() {
   const [logoutDialog, setLogoutDialog] = useState(false);
   const [visibleSidebar, setVisibleSidebar] = useState(false);
   const { user, setUser } = useContext(UserContext);
   const [coursesList, setCoursesList] = useState([]);
+  const {sectionContext, setSectionContext} = useContext(SectionContext) 
   const location = useLocation();
   console.log(location.pathname);
+
+  useEffect(() => {
+    setCoursesList([]);
+  }, [location.pathname]); 
 
   const callData = async () => {
     console.log("ID USER: ", user.id_utilizator);
@@ -36,7 +42,7 @@ function CustomSidebar() {
       );
       const cereri_accepted = rez.data.rezultat;
       console.log("cereri", cereri_accepted);
-  
+
       for (let i = 0; i < cereri_accepted.length; i++) {
         const courseResponse = await axios.get(
           `http://localhost:8080/curs/getById/${cereri_accepted[i].id_curs}`
@@ -47,14 +53,15 @@ function CustomSidebar() {
       console.log(err);
     }
   };
-  
 
   const handleLogout = () => {
     setLogoutDialog(true);
   };
+
   const closeSidebarEvent = () => {
+    setSectionContext(true)
     setVisibleSidebar(false);
-    setCoursesList([]); 
+    setCoursesList([]);
   };
 
   return (
@@ -66,7 +73,7 @@ function CustomSidebar() {
           <button
             onClick={() => {
               setVisibleSidebar(true);
-              setCoursesList([]); 
+              setCoursesList([]);
               callData();
             }}
             className={style.showButton}
@@ -111,23 +118,22 @@ function CustomSidebar() {
                 </Link>
               </li>
 
-              {coursesList.map((course, indx) => {
-                return (
-                  <li key={course.id_curs} className={style.courseListItem}>
-                    <Link
-                      className={style.courseLink}
-                      to={"/course/" + course.id_curs}
-                      onClick={closeSidebarEvent}
-                    >
-                      <FontAwesomeIcon
-                        className={style.iconListItem}
-                        icon={faGraduationCap}
-                      />
-                      {course.denumire}
-                    </Link>
-                  </li>
-                );
-              })}
+              {coursesList.map((course) => (
+                <li key={course.id_curs} className={style.courseListItem}>
+                  <Link
+                    className={style.courseLink}
+                    to={`/course/${course.id_curs}`}
+                    onClick={closeSidebarEvent}
+                  >
+                    <FontAwesomeIcon
+                      className={style.iconListItem}
+                      icon={faGraduationCap}
+                    />
+                    {course.denumire}
+                  </Link>
+                </li>
+              ))}
+
               <li className={style.courseListItem}>
                 <Button
                   onClick={handleLogout}
@@ -162,10 +168,7 @@ function CustomSidebar() {
                   content={"Da"}
                 ></Button>
               </Link>
-              <Button
-                onClick={() => setLogoutDialog(false)}
-                content={"Nu"}
-              ></Button>
+              <Button onClick={() => setLogoutDialog(false)} content={"Nu"}></Button>
             </div>
           </Dialog>
         </div>

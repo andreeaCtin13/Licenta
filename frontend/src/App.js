@@ -24,7 +24,7 @@ function App() {
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      <BrowserRouter>
+      <BrowserRouter >
         {user && user.status === "junior" && <Sidebar />}
         <Routes>
           <Route path="/" element={<LandingPage />} />

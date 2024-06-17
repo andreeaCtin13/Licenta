@@ -31,16 +31,7 @@ function NewSection() {
   const toast = useRef(null);
 
   const createSection = async () => {
-    console.log("NEW SECTION", newSection);
 
-    // Detailed logging for debugging
-    console.log("id_curs", newSection.id_curs);
-    console.log("denumire", newSection.denumire);
-    console.log("descriere", newSection.descriere);
-    console.log("resurse", newSection.resurse);
-    console.log("cerinte", newSection.cerinte);
-    console.log("intrebari", newSection.intrebari);
-    console.log("punctaj_minim", newSection.punctaj_minim);
 
     if (
       !newSection.id_curs ||
@@ -81,7 +72,7 @@ function NewSection() {
 
     if (!newSection.resurse.video_link) {
       toast.current.show({
-        severity: "error",
+        severity: "error", 
         summary: "Failed",
         detail: "Trebuie sa incluzi un link video",
         life: 3000,
@@ -99,13 +90,13 @@ function NewSection() {
       return;
     }
 
-    // Calculate the total score of all questions
-    const totalScore = newSection.intrebari.reduce((acc, intrebare) => {
-      return acc + intrebare.punctaj;
+    const totalScore = newSection.intrebari?.reduce((acc, intrebare) => {
+      return acc + Number(intrebare.requirement);
     }, 0);
-
-    // Check if the minimum passing score is at least the total score of the questions
-    if (newSection.punctaj_minim < totalScore) {
+    console.log("total score - ", totalScore)
+    console.log("punctaj minim - ", newSection.punctaj_minim_promovare)
+    if (newSection.punctaj_minim_promovare > totalScore) {
+      console.log("INTRU AICI BRO")
       toast.current.show({
         severity: "error",
         summary: "Failed",
@@ -116,8 +107,19 @@ function NewSection() {
       return;
     }
 
+
+ const formData = new FormData();
+    fileToSend.forEach((file) => {
+      formData.append('files', file);
+    });
+    formData.append('sectionData', JSON.stringify(newSection));
+
     await axios
-      .post(`http://localhost:8080/sectiuni/adaugare`, newSection, fileToSend)
+      .post(`http://localhost:8080/sectiuni/adaugare`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      })
       .then((rez) => {
         if (rez.message === "successful") {
           toast.current.show({

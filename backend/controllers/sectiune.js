@@ -8,6 +8,7 @@ const varianteModel = require("../models").varianteDeRaspuns;
 const resurseModel = require("../models").resurse;
 const istoricPunctajeModel = require("../models").istoricuriPunctaje
 const istoricCerinteModel = require("../models").istoricAssigments
+const path = require('path');
 
 const controller = {
   insertFile: (req, res) => {
@@ -82,76 +83,84 @@ const controller = {
       intrebari,
       cerinte,
       resurse,
+      video_link,
       punctaj_minim_promovare,
-    } = req.body; 
-
+    } = JSON.parse(req.body.sectionData);
+  
+    const transaction = await sequelize.transaction();
+  
     try {
-      let curs = await cursuriModel.findByPk(id_curs);
+      let curs = await cursuriModel.findByPk(id_curs, { transaction });
       if (!curs) {
+        await transaction.rollback();
         return res.status(400).json({ message: "nu exista curs cu id ul respectiv" });
       } else {
         let newSectiune = await sectiuniModel.create({
           denumire,
           descriere,
           id_curs,
-        });
-
+        }, { transaction });
+  
         let id_sectiune = newSectiune.id_sectiune;
-
+  
         for (let i = 0; i < cerinte?.length; i++) {
           await cerinteModel.create({
             titlu: cerinte[i].titlu_cerinta,
             cerinta: cerinte[i].cerinta,
             id_sectiune,
-          });
+          }, { transaction });
         }
-
+  
         let newTest = await testeModel.create({
           punctaj_minim_promovare,
           numar_intrebari: intrebari.length,
           id_sectiune,
-        });
-
+        }, { transaction });
+  
         for (let i = 0; i < intrebari?.length; i++) {
           let newIntrebare = await intrebariModel.create({
             text_intrebare: intrebari[i].requirement,
             punctaj_intrebare: intrebari[i].punctaj_intrebare,
             id_test: newTest.id_test,
-          });
-
+          }, { transaction });
+  
           for (let j = 0; j < intrebari[i].variante_de_raspuns?.length; j++) {
             await varianteModel.create({
               id_intrebare: newIntrebare.id_intrebare,
               text_varianta: intrebari[i].variante_de_raspuns[j].text_varianta,
               este_corecta: intrebari[i].variante_de_raspuns[j].este_corecta,
-            });
+            }, { transaction });
           }
         }
-
+  
         await resurseModel.create({
           tip_resursa: "video_link",
-          link_resursa: resurse.video_link,
+          link_resursa: video_link,
           titlu_resursa: denumire,
           id_sectiune,
-        });
-
+        }, { transaction });
+  
         for (let i = 0; i < req.files?.length; i++) {
+          const absolutePath = path.resolve(__dirname, '..', req.files[i].path);
           await resurseModel.create({
             id_sectiune,
             tip_resursa: "pdf_path",
-            link_resursa: req.files[i].path,
+            link_resursa: absolutePath,
             titlu_resursa: req.files[i].originalname,
-          });
+          }, { transaction });
         }
-
+  
+        await transaction.commit();
+  
         return res.status(200).json({ sectiune: newSectiune, message: "successful" });
       }
     } catch (err) {
+      await transaction.rollback();
       console.log(err);
       return res.status(500).json({ message: "server error" });
     }
   },
-
+  
   getSectiuneById: async (req, res) => {
     console.log(req.body.id_sectiune);
     const sectiune = await sectiuniModel.findByPk(req.params.id_sectiune);

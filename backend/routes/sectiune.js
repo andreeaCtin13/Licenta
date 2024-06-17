@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+const path = require("path");
 
 const sectiuniController = require("../controllers").sectiuni;
 
@@ -10,7 +11,9 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 19);
-    cb(null, `${file.originalname}-${uniqueSuffix}`);
+    const ext = path.extname(file.originalname);
+    const name = path.basename(file.originalname, ext);
+    cb(null, `${name}-${uniqueSuffix}${ext}`);
   },
 });
 
@@ -23,7 +26,7 @@ router.post(
   sectiuniController.insertSectiune
 );
 router.get("/getSectiuneById/:id_sectiune", sectiuniController.getSectiuneById);
-router.put("/update/:id_sectiune", sectiuniController.updateSectiune)
-router.delete("/deleteSectiuneOverall/:id_sectiune", sectiuniController.deleteSectiuneOverall)
+router.put("/update/:id_sectiune", sectiuniController.updateSectiune);
+router.delete("/deleteSectiuneOverall/:id_sectiune", sectiuniController.deleteSectiuneOverall);
 
 module.exports = router;

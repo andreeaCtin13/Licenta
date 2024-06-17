@@ -3,6 +3,7 @@ import { SectionContext } from "../../context/SectionContext";
 import style from "../../styles/mentor/FormNewSection.module.css";
 import Button from "../Button";
 import { FilesContext } from "../../context/FilesContext";
+import { FileUpload } from "primereact/fileupload";
 
 function FormNewSection() {
   const { fileToSend, setFileToSend } = useContext(FilesContext);
@@ -73,6 +74,48 @@ function FormNewSection() {
         pdfs: updatedPdfs,
       },
     }));
+  }
+
+  // const handleRemoveFile = (index) => {
+  //   const updatedFiles = [...files];
+  //   updatedFiles.splice(index, 1);
+  //   setFiles(updatedFiles);
+  //   setFileToSend(updatedFiles);
+
+  //   const updatedPdfs = updatedFiles.map((file) => ({
+  //     denumire: file.name,
+  //     file_object: file,
+  //   }));
+
+  //   setNewSection((prevSection) => ({
+  //     ...prevSection,
+  //     resurse: {
+  //       ...prevSection.resurse,
+  //       pdfs: updatedPdfs,
+  //     },
+  //   }));
+  // };
+
+  //file shit 
+
+  const handleFileUpload = (event) => {
+    const uploadedFiles = event.files;
+    const updatedFiles = [...files, ...uploadedFiles];
+    setFiles(updatedFiles);
+    setFileToSend(updatedFiles);
+
+    const updatedPdfs = updatedFiles.map((file) => ({
+      denumire: file.name,
+      file_object: file,
+    }));
+
+    setNewSection((prevSection) => ({
+      ...prevSection,
+      resurse: {
+        ...prevSection.resurse,
+        pdfs: updatedPdfs,
+      },
+    }));
   };
 
   const handleRemoveFile = (index) => {
@@ -99,7 +142,7 @@ function FormNewSection() {
     <form className={style.mainForm}>
       <h2>Section details</h2>
       <div className={style.formRow}>
-        <label htmlFor="denumire">Title of the section</label>
+        <label htmlFor="denumire">Titlul secțiunii</label>
         <input
           id="denumire"
           type="text"
@@ -108,7 +151,7 @@ function FormNewSection() {
         />
       </div>
       <div className={style.formRow}>
-        <label htmlFor="">Description of the section</label>
+        <label htmlFor="">Descrierea secțiunii</label>
         <input
           type="text"
           required
@@ -117,35 +160,36 @@ function FormNewSection() {
       </div>
       <h2>Resources</h2>
       <div className={style.formRow}>
-        <label htmlFor="">Video link</label>
+        <label htmlFor="">Link video</label>
         <input
           type="text"
           required
           onChange={(e) => updateInput(e.target.value, "video_link")}
         />
       </div>
-      <h2>PDFS</h2>
+      <h2>PDF-uri</h2>
       <div className={style.formRow}>
-        <div>PDFs</div>
-        <input
-          type="file"
+        <div>PDF-uri</div>
+        <FileUpload
+          mode="basic"
           accept="application/pdf"
           multiple
-          onChange={handleFileChange}
+          maxFileSize={10000000}
+          onSelect={handleFileUpload}
         />
         <div>
           {files.map((file, index) => (
             <div key={index}>
               <span>{file.name}</span>
               <button type="button" onClick={() => handleRemoveFile(index)}>
-                Undo
+                Șterge
               </button>
             </div>
           ))}
         </div>
       </div>
       <div className={style.formRow}>
-        <label htmlFor="">Number of assignments</label>
+        <label htmlFor="">Numărul de cerințe</label>
         <input
           type="number"
           min={0}
