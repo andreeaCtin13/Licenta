@@ -30,33 +30,31 @@ function CustomSidebar() {
 
   const callData = async () => {
     console.log("ID USER: ", user.id_utilizator);
-    await axios
-      .get(
+    try {
+      const rez = await axios.get(
         `http://localhost:8080/cereriCurs/getAllCursuriOfAUser/${user.id_utilizator}`
-      )
-      .then(async (rez) => {
-        const cereri_accepted = rez.data.rezultat;
-        console.log("cereri", cereri_accepted);
-        for (let i = 0; i < cereri_accepted.length; i++) {
-          await axios
-            .get(
-              `http://localhost:8080/curs/getById/${cereri_accepted[i].id_curs}`
-            )
-            .then((rez) => {
-              setCoursesList([rez.data.curs]);
-            });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      );
+      const cereri_accepted = rez.data.rezultat;
+      console.log("cereri", cereri_accepted);
+  
+      for (let i = 0; i < cereri_accepted.length; i++) {
+        const courseResponse = await axios.get(
+          `http://localhost:8080/curs/getById/${cereri_accepted[i].id_curs}`
+        );
+        setCoursesList((prevCourses) => [...prevCourses, courseResponse.data.curs]);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
+  
 
   const handleLogout = () => {
     setLogoutDialog(true);
   };
   const closeSidebarEvent = () => {
     setVisibleSidebar(false);
+    setCoursesList([]); 
   };
 
   return (
@@ -68,6 +66,7 @@ function CustomSidebar() {
           <button
             onClick={() => {
               setVisibleSidebar(true);
+              setCoursesList([]); 
               callData();
             }}
             className={style.showButton}

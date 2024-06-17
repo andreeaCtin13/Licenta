@@ -185,8 +185,7 @@ function Profile() {
   return (
     <div className={style.profileMain}>
       <div className={style.profileCard}>
-        <img src={ProfilePic} alt="profile" className={style.profilePic} />
-        <h1>{user ? user.nume : "no user"}</h1>
+        <h1>Bine ai venit, {user ? user.nume : "no user"}!!!</h1>
         <div>
           <Button
             content="Change Password"

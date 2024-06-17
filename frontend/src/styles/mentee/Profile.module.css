@@ -28,7 +28,6 @@
 }
 
 .profileCard {
-  background-color: var(--var--light--purple);
   padding: 3rem;
   width: 70%;
   display: flex;

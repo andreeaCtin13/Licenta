@@ -16,16 +16,16 @@
   gap: 2rem;
 }
 
-
 .btn {
-  width: 7rem;
+  width: 10rem;
   border: none;
   background-color: var(--var--dark--pink);
   cursor: pointer;
   height: 3rem;
   font-size: 1.5rem;
   border-radius: 2rem;
-  transition: 1s;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .enrollBtn {
@@ -40,9 +40,9 @@
   background-color: rgb(105, 5, 5);
 }
 
-.btnEnroll:hover {
+.btn:hover {
   background-color: var(--var--dark--purple);
-  transition: 1s;
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 .rightContainerDesc {

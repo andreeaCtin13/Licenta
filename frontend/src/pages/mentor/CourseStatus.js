@@ -405,7 +405,7 @@ function CourseStatus() {
           <Link to={`/requests/${idCourse}`}>
             <Button
               className={style.btnCreateSection}
-              content="See requests"
+              content="Gestionează cereri"
             />
           </Link>
         </div>
