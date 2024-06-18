@@ -1,10 +1,9 @@
 const testeModel = require("../models").teste;
 const sectiuniModel = require("../models").sectiuni;
-
+const intrebariModel = require("../models").intrebari
+const varianteRaspunsModel = require("../models").varianteDeRaspuns
 const controller = {
-  getAllIntrebari: (req, res) => {
-    res.status(200).send({ message: "totu ok la teste" });
-  },
+
   insertTest: async (req, res) => {
     const { punctaj_minim_promovare, numar_intrebari, id_sectiune } = req.body;
 
@@ -47,6 +46,65 @@ const controller = {
         return res.status(500).json({ message: "server error" });
       });
   },
+  getTestForEdit:async (req,res)=>{
+    const {id_test} = req.params;
+
+    try {
+      const test = await testeModel.findByPk(id_test);
+      console.log("testL - ", test)
+      if (!test) {
+        return res.status(404).json({ error: 'Testul nu a fost găsit.' });
+      }
+  
+      const intrebari = await intrebariModel.findAll({
+        where: { id_test },
+      });
+  
+      const intrebariWithVariante = await Promise.all(intrebari.map(async (intrebare) => {
+        const varianteRaspuns = await varianteRaspunsModel.findAll({
+          where: { id_intrebare: intrebare.id_intrebare },
+        });
+        return {
+          id_intrebare: intrebare.id_intrebare,
+          text_intrebare: intrebare.text_intrebare,
+          punctaj_intrebare: intrebare.punctaj_intrebare,
+          varianteRaspuns,
+        };
+      }));
+  
+      const responseData = {
+        id_test: test.id_test,
+        punctaj_minim_promovare: test.punctaj_minim_promovare,
+        numar_intrebari: intrebari.length,
+        intrebari: intrebariWithVariante,
+      };
+  
+      res.json(responseData);
+  
+    } catch (error) {
+      console.error('Error fetching test with questions and answers:', error);
+      res.status(500).json({ error: 'Eroare la preluarea testului.' });
+    }
+  
+  },
+  getTestIds:async(req,res)=>{
+    const { id_sectiune } = req.params;
+
+    try {
+      const test = await testeModel.findOne({
+        where: { id_sectiune }
+      });
+  
+      if (!test) {
+        return res.status(404).json({ message: 'Test not found for section' });
+      }
+  
+      res.json({ id_test: test.id_test });
+    } catch (error) {
+      console.error('Error fetching test for section:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  }
 };
 
 module.exports = controller;

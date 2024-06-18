@@ -12,7 +12,6 @@ const controller = {
     const { id_curs, id_cerinta } = req.params;
 
     try {
-      // Găsim toți utilizatorii care au un istoric pentru cerința specificată
       const utilizatoriCuIstoric = await ictoricCerinteModel.findAll({
         attributes: ['id_utilizator'],
         where: {
@@ -21,14 +20,11 @@ const controller = {
         group: ['id_utilizator']
       });
 
-      // Array pentru a stoca rezultatele finale
       const result = [];
 
-      // Iterăm prin fiecare utilizator găsit
       for (let i = 0; i < utilizatoriCuIstoric.length; i++) {
         const id_utilizator = utilizatoriCuIstoric[i].id_utilizator;
 
-        // Găsim cel mai recent istoric pentru utilizatorul curent și cerința specificată
         const recentIstoric = await ictoricCerinteModel.findOne({
           where: {
             id_utilizator: id_utilizator,
@@ -38,10 +34,8 @@ const controller = {
         });
 
         if (recentIstoric) {
-          // Găsim detalii despre utilizator
           const user = await utilizatoriModel.findByPk(id_utilizator);
 
-          // Construim un obiect pentru istoricul recent al utilizatorului curent
           const istoricUtilizator = {
             id_cerinta_istoric: recentIstoric.id_cerinta_istoric,
             data_finalizare: recentIstoric.data_finalizare,
@@ -53,12 +47,10 @@ const controller = {
             nume: user ? user.nume : null,
           };
 
-          // Adăugăm obiectul în rezultatul final
           result.push(istoricUtilizator);
         }
       }
 
-      // Returnăm rezultatele
       return res.status(200).json({
         istoric: result,
         count: result.length,

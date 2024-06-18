@@ -57,16 +57,22 @@ function CourseStatus() {
   const getAllSectiuni = async () => {
     try {
       const { data: { sectiuni } } = await axios.get(`http://localhost:8080/sectiuni/selectAll/${idCourse}`);
-      const sectiuneNou = await Promise.all(sectiuni.map(async (sectiune) => {
+  
+      const sectiuniCuTeste = await Promise.all(sectiuni.map(async (sectiune) => {
         const resurse = await axios.get(`http://localhost:8080/resurse/getResurseCursSection/${sectiune.id_sectiune}`);
         const cerinte = await axios.get(`http://localhost:8080/cerinte/getAllCerinte/${sectiune.id_sectiune}`);
+  
+        const testForSection = await axios.get(`http://localhost:8080/teste/getTestIds/${sectiune.id_sectiune}`);
+  
         return {
           ...sectiune,
           resurse: resurse.data.resurse,
           cerinte: cerinte.data.cerinte,
+          id_test: testForSection.data.test[0].id_test
         };
       }));
-      setSectiuni(sectiuneNou);
+  
+      setSectiuni(sectiuniCuTeste);
     } catch (err) {
       console.log(err);
       toast.current.show({
@@ -77,6 +83,7 @@ function CourseStatus() {
       });
     }
   };
+  
   
 
   useEffect(() => {
@@ -243,6 +250,19 @@ function CourseStatus() {
   };
   
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await Promise.all([
+        getAllSectiuni(),
+        getCurs()
+      ]);
+    };
+  
+    fetchData();
+  }, []);
+  
+
   return (
     <div className={style.mainContainer}>
       <Link to={`/mentor-homepage`}>
@@ -260,9 +280,9 @@ function CourseStatus() {
           return (
             <AccordionTab header={sectiune.denumire} key={i}>
               <div>
-                <h2>Numele secțiunii: {sectiune.denumire}</h2>
+                <h2>Numele secțiunii - {sectiune.denumire}</h2>
                 <div>
-                  Descrierea secțiunii: {sectiune.descriere}
+                  Descrierea secțiunii - {sectiune.descriere}
                   <button
                     className={style.iconBtn}
                     onClick={() => openEditModal(sectiune)}
@@ -340,7 +360,6 @@ function CourseStatus() {
                   </div>
                   <div>
                     {sectiune.cerinte.map((assignment) => {
-                      console.log("vezi acilea ba", assignment)
                       return (
                         <div
 
@@ -364,6 +383,7 @@ function CourseStatus() {
                   </div>
 
                 </div>
+                {console.log("editeaza testul ", sectiune)}
                 <Link to={`/edit-test/${sectiune.id_test}`}>
                   <Button
                     content={"Editează testul"}
@@ -426,15 +446,15 @@ function CourseStatus() {
         modal
         onHide={() => setEditModalVisible(false)}
         footer={
-          <div>
+          <div className={style.btnModalaZona}>
             <Button
               content="Anulează"
-              className="p-button-text"
+              className={`p-button-text ${style.btnModala}`}
               onClick={() => setEditModalVisible(false)}
             />
             <Button
               content="Salvează"
-              className="p-button-text"
+              className={`p-button-text ${style.btnModala}`}
               onClick={() => updateSection()}
             />
           </div>
@@ -470,15 +490,15 @@ function CourseStatus() {
         modal
         onHide={closeAddModal}
         footer={
-          <div>
+          <div className={style.btnModalaZona}>
             <Button
               content="Anulează"
-              className="p-button-text"
+              className={`p-button-text ${style.btnModala}`}
               onClick={closeAddModal}
             />
             <Button
               content="Salvează"
-              className="p-button-text"
+              className={`p-button-text ${style.btnModala}`}
               onClick={handleAddAssignment}
             />
           </div>
@@ -520,15 +540,15 @@ function CourseStatus() {
   modal
   onHide={() => setEditModal2Visible(false)}
   footer={
-    <div>
+    <div className={style.btnModalaZona}>
       <Button
         content="Anulează"
-        className="p-button-text"
+        className={`p-button-text ${style.btnModala}`}
         onClick={() => setEditModal2Visible(false)}
       />
       <Button
         content="Salvează"
-        className="p-button-text"
+        className={`p-button-text ${style.btnModala}`}
         onClick={() => updateSection()}
       />
     </div>
@@ -553,15 +573,15 @@ function CourseStatus() {
         modal
         onHide={() => setDeleteConfirmationVisible(false)}
         footer={
-          <div>
+          <div className={style.btnModalaZona}>
             <Button
               content="Nu"
-              className="p-button-text"
+              className={`p-button-text ${style.btnModala}`}
               onClick={() => setDeleteConfirmationVisible(false)}
             />
             <Button
               content="Da"
-              className="p-button-text"
+              className={`p-button-text ${style.btnModala}`}
               onClick={() => deleteSectiune()}
             />
           </div>

@@ -24,6 +24,7 @@ function CoursePage() {
   const [stare, setStare] = useState();
   const fileUploadRefs = useRef({});
   const [feedback, setFeedback] = useState(null);
+  const [refreshPlease, setRefreshPlease] =useState(0)
 
   const playVideo = (index) => {
     setCurrentSectionIndex(index);
@@ -43,8 +44,6 @@ function CoursePage() {
       console.log(err);
     }
   };
-
-
 
   const setData = async () => {
     console.log("INTRU AICI NICU STEFANUTA")
@@ -74,9 +73,13 @@ function CoursePage() {
     }
   };
 
+
+
+
+
   useEffect(()=>{
     setData()
-  },[idCourse])
+  }, [idCourse]);
 
   const uploadFile = async (file, id) => {
     let formData = new FormData();
@@ -130,10 +133,6 @@ function CoursePage() {
       console.error("Error downloading the file", error);
     }
   };
-
-  useEffect(() => {
-    setData();
-  }, []);
 
   const getFeedbackAssig = async (id) => {
     setDialog(true);
@@ -223,26 +222,25 @@ function CoursePage() {
             <div key={index} className={style.gridContainerCerinte}>
               <p className={style.label}>
                 Cerința {index + 1} : {cerinta.titlu}
-
               </p>
               <p>{cerinta.cerinta}</p>
               <div className={style.flexContainer}>
-              <FileUpload
-                name="file"
-                accept="*"
-                customUpload
-                uploadHandler={(e) => onUpload(e, cerinta.id_cerinta)}
-                className={style.customFileUpload}
-                emptyTemplate={<p className="m-0">Glisează fișierul aici pentru a încărca.</p>}
-                ref={(el) => (fileUploadRefs.current[cerinta.id_cerinta] = el)}
-              />
-              <div className={`${style.commentIconContainer}${style.setFeedback}`}>
-                <FontAwesomeIcon
-                  className={style.commentIcon}
-                  icon={faComment}
-                  onClick={() => getFeedbackAssig(cerinta.id_cerinta)}
+                <FileUpload
+                  name="file"
+                  accept="*"
+                  customUpload
+                  uploadHandler={(e) => onUpload(e, cerinta.id_cerinta)}
+                  className={style.customFileUpload}
+                  emptyTemplate={<p className="m-0">Glisează fișierul aici pentru a încărca.</p>}
+                  ref={(el) => (fileUploadRefs.current[cerinta.id_cerinta] = el)}
                 />
-              </div>
+                <div className={`${style.commentIconContainer} ${style.setFeedback}`}>
+                  <FontAwesomeIcon
+                    className={style.commentIcon}
+                    icon={faComment}
+                    onClick={() => getFeedbackAssig(cerinta.id_cerinta)}
+                  />
+                </div>
               </div>
             </div>
           ))}
@@ -251,8 +249,9 @@ function CoursePage() {
             header="Header"
             visible={dialog}
             style={{ width: "50vw" }}
-            onHide={() => {setDialog(false)
-              setFeedback(null)
+            onHide={() => {
+              setDialog(false);
+              setFeedback(null);
             }}
           >
             {feedback ? (
@@ -271,13 +270,12 @@ function CoursePage() {
                   to={`/test/${currentSectionIndex ?? ""}/${idCourse}`}
                 >
                   <Button content={"Start"} className={style.testBtn} />
-                  {                console.log("intra pe acesta ramuna")
-                  }
                 </Link>
               ) : (
                 stare.lastHistory && (
                   <div className={style.containerStatusUltimulTest}>
-                    {stare.lastHistory.istoric && stare.lastHistory.istoric.punctaj_obtinut <
+                    {stare.lastHistory.istoric &&
+                    stare.lastHistory.istoric.punctaj_obtinut <
                       stare.lastHistory.punctaj_minim_promovare ? (
                       <div className={style.failed}>
                         <div>
@@ -287,16 +285,15 @@ function CoursePage() {
                           Punctaj minim promovare: {stare.lastHistory.punctaj_minim_promovare} pct.
                         </div>
                         <Link
-                      className={style.testBtnLink}
-                      to={`/test/${currentSectionIndex ?? ""}/${idCourse}`}
-                    >
-                      <Button content={"Start"} className={style.testBtn} />
-                    </Link>
+                          className={style.testBtnLink}
+                          to={`/test/${currentSectionIndex ?? ""}/${idCourse}`}
+                        >
+                          <Button content={"Start"} className={style.testBtn} />
+                        </Link>
                       </div>
                     ) : (
                       <div className={style.passed}>A fost trecut testul!</div>
                     )}
-                   
                   </div>
                 )
               )

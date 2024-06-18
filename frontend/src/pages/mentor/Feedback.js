@@ -39,31 +39,26 @@ function Feedback() {
   const [fileToDownload, setFileToDownload] = useState();
 
   useEffect(() => {
-    // Încărcare inițială a secțiunilor și cerințelor
     getSection();
   }, []);
   
   useEffect(() => {
-    // Încărcare inițială a datelor pentru prima secțiune selectată
     if (selectedScreen) {
       changeView(selectedScreen);
     }
   }, [selectedScreen]);
   
   useEffect(() => {
-    // Încărcare inițială a datelor pentru idCerinta curent
     setData(idCerinta);
   }, [idCerinta, page]);
   
   const setData = async (id_cerinta) => {
     try {
-      console.log("ii dau asta: curs, cerinta page - ", idCourse, id_cerinta, page )
       const rez = await axios.get(
         `http://localhost:8080/istoricCerinte/getAll/${idCourse}/${id_cerinta}/filter?&take=8&skip=${page}&feedback=null`
       );
       setAssigmentsRows(rez.data.istoric);
-      setTotalRec(Math.ceil(rez.data.count / 8)>0?Math.ceil(rez.data.count / 8):1);
-      console.log("REZULTAT: ", rez.data)
+      setTotalRec(Math.ceil(rez.data.count / 8) > 0 ? Math.ceil(rez.data.count / 8) : 1);
     } catch (err) {
       console.error(err);
     }
@@ -100,39 +95,42 @@ function Feedback() {
     </div>
   );
 
-  const getTheLink = () => {
+  const getTheLink = (rowData) => {
     const backendFilesDirectory = "/files";
-    let file = selectedRow?.rezolvare;
+    let file = rowData?.rezolvare;
     const fileName = file?.split(`\\`).pop();
     const fileRelativePath = `${backendFilesDirectory}/${fileName}`;
     const backendBaseUrl = "http://localhost:8080";
     const fileUrl = `${backendBaseUrl}${fileRelativePath}`;
     setFileToDownload(fileUrl);
+    handleDownload(fileUrl);
   };
 
   const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
         <div className={style.btnZoneRequest}>
-          <Link
-            to={fileToDownload}
-            download="Example-PDF-document"
-            target="_blank"
-            rel="noreferrer"
+          <button
+            className={`${style.btnRequest}`}
+            onClick={() => {
+              setSelectedRow(rowData);
+              getTheLink(rowData);
+            }}
           >
-            <button
-              className={`${style.btnRequest}`}
-              onClick={() => {
-                setSelectedRow(rowData);
-                getTheLink();
-              }}
-            >
-              Descarcă
-            </button>
-          </Link>
+            Descarcă
+          </button>
         </div>
       </React.Fragment>
     );
+  };
+
+  const handleDownload = (fileDown) => {
+    window.open(fileDown, "_blank");
+    clearSelection();
+  };
+
+  const clearSelection = () => {
+    setSelectedRow(null);
   };
 
   const sendFeedback = async () => {
@@ -147,6 +145,8 @@ function Feedback() {
         )
       );
       setVisible(false);
+      clearSelection();
+
     } catch (err) {
       console.error(err);
     }
@@ -212,18 +212,18 @@ function Feedback() {
   return (
     <div className={style.mainContainer}>
       <div className={style.buttonZone}>
-      <Link to={`/mentor-homepage/${idCourse}`}>
-        <Button
-          className={`${style.btn} ${style.btnCancel}`}
-          content={<FontAwesomeIcon icon={faArrowLeft} />}
-        ></Button>
-      </Link>
-      <Link to={`/mentor-homepage`}>
-        <Button
-          className={`${style.btn} ${style.btnHome}`}
-          content={<FontAwesomeIcon icon={faHouse} />}
-        ></Button>
-      </Link>
+        <Link to={`/mentor-homepage/${idCourse}`}>
+          <Button
+            className={`${style.btn} ${style.btnCancel}`}
+            content={<FontAwesomeIcon icon={faArrowLeft} />}
+          ></Button>
+        </Link>
+        <Link to={`/mentor-homepage`}>
+          <Button
+            className={`${style.btn} ${style.btnHome}`}
+            content={<FontAwesomeIcon icon={faHouse} />}
+          ></Button>
+        </Link>
       </div>
       <h1>Acordă direcții soluții</h1>
       <div className="dock-window">
@@ -268,12 +268,15 @@ function Feedback() {
                     setSelectedRow(e.value);
                     setVisible(true);
                   }}
-                  checked={metaKey}
                   selectionMode="single"
                   selection={selectedRow}
-                  metaKeySelection={metaKey}
                   globalFilter={globalFilter}
                   header={header}
+                  onRowClick={(e) => {
+                   
+                      setSelectedRow(e.data);
+                    
+                  }}
                 >
                   <Column
                     field="nume"
@@ -340,7 +343,10 @@ function Feedback() {
               setFeedback(e.target.value);
             }}
           ></textarea>
-          <button className={style.btnTrimitereFeedback} onClick={sendFeedback}>
+          <button
+            className={style.btnTrimitereFeedback}
+            onClick={sendFeedback}
+          >
             Trimite feedback
           </button>
         </p>

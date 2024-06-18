@@ -10,5 +10,6 @@ router.delete("/stergere", useriController.deleteUser);
 router.put("/actualizare", useriController.actualizareUser);
 router.get("/selectAll/filter", useriController.getAllUsers);
 router.get("/getUserNameById/:id_user", useriController.getUserNameById);
-
+router.get("/generateCSVconturi", useriController.generateUsersCSV)
+router.get("/generatePerformanceReport", useriController.generatePerformanceReport)
 module.exports = router;

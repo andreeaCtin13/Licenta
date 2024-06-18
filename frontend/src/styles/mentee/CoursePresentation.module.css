@@ -11,7 +11,6 @@
 
 .courseContainer:hover {
   transform: translateY(-10px); 
-  box-shadow: rgb(54, 2, 54) 0px 8px 14px,rgb(54, 2, 54)  0px 14px 26px, rgb(54, 2, 54)  0px 14px 60px;
 }
 
 .courseImage {

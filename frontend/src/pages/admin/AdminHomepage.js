@@ -128,6 +128,23 @@ function AdminHomepage() {
     setDeleteUserDialog(true);
   };
 
+  const downloadCSVRaport = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/useri/generateCSVconturi', {
+        responseType: 'blob',
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'users.csv');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error('Eroare la descărcarea CSV-ului:', error);
+    }
+  };
+  
   const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -152,6 +169,7 @@ function AdminHomepage() {
         let _users = usersRows.filter((val) => val.mail !== rowUser.mail);
         setUsersRows(_users);
         setDeleteUserDialog(false);
+        loadData()
         setRowUser({
           mail: "",
           nume: "",
@@ -249,6 +267,29 @@ function AdminHomepage() {
     </div>
   );
 
+  const downloadRaportPerformanta = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/useri/generatePerformanceReport', {
+        responseType: 'blob',
+      });
+  
+      if (response.status !== 200) {
+        throw new Error('Eroare la generarea raportului');
+      }
+  
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'Performance_Report.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error('Eroare la descărcarea raportului:', error);
+    }
+  };
+  
+
   const leftToolbarTemplate = () => {
     return (
       <div className="flex flex-wrap gap-2">
@@ -263,12 +304,21 @@ function AdminHomepage() {
   };
   const rightToolbarTemplate = () => {
     return (
-      <Button
-        label="Export"
+      <div className={style.flexing}>
+        <Button
+          label="Export conturi Utilizatori"
+          icon="pi pi-upload"
+          className="p-button-help"
+          onClick={downloadCSVRaport}
+        />
+        
+        <Button
+        label="Export raport performanta"
         icon="pi pi-upload"
-        className="p-button-help"
-        onClick={exportCSV}
-      />
+          className="p-button-help"
+        onClick={downloadRaportPerformanta}
+        />
+      </div>
     );
   };
   console.log(usersRows);
@@ -292,7 +342,7 @@ function AdminHomepage() {
             ...stud,
           });
           console.log("count", response.data);
-          setTotalRec(Math.ceil(response.data.requests.count / 8));
+          setTotalRec(Math.ceil(response.data.requests.count / 8)>0?Math.ceil(response.data.requests.count / 8):1);
         }
         setUsersRows(req);
       })

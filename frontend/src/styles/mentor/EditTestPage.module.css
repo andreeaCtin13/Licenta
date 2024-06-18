@@ -1,0 +1,108 @@
+.editTestContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--var--dark--purple);
+    border-radius: 8px;
+  }
+  
+  .editTestHeading {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--var--white);
+    margin-bottom: 20px;
+  }
+  
+  .editTestDetails {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: var(--var--white);
+    border: 1px solid var(--var--light--purple);
+    border-radius: 8px;
+    
+  }
+  
+  .editTestDetails p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: var(--var--dark--purple);
+  }
+  
+  .editTestQuestions {
+    margin-bottom: 20px;
+  }
+  
+  .editTestQuestion {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: var(--var--white);
+    border: 1px solid var(--var--light--purple);
+    border-radius: 8px;
+  }
+  
+  .editTestQuestion h3 {
+    font-size: 1.2rem;
+    color: var(--var--dark--purple);
+    margin-bottom: 10px;
+  }
+  
+  .editTestInput {
+    width: calc(100% - 40px);
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid var(--var--light--purple);
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  
+  .editTestButton {
+    background-color: var(--var--btn--color);
+    color: var(--var--white);
+    border: none;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  .editTestButton.deleteQuestion,
+  .editTestButton.deleteAnswer {
+    background-color: var(--var--dark--pink);
+  }
+  
+  .editTestButton:hover {
+    opacity: 0.8;
+  }
+  
+  .editTestAnswerList {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .editTestAnswerItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .editTestAnswerItem input {
+    margin-right: 10px;
+    flex-grow: 1;
+  }
+
+  .editTestSelect {
+    margin-right: 10px;
+    padding: 8px;
+    font-size: 1rem;
+    border-radius: 4px;
+    background-color: var(--var--light--purple);
+    border: 1px solid #ccc;
+  }
+  
+  
+  .editTestAnswerItem span {
+    flex-shrink: 0;
+    margin-right: 10px;
+    color: var(--var--dark--purple);
+  }

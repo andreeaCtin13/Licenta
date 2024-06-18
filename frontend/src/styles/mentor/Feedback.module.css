@@ -48,6 +48,22 @@
 
 }
 
+.btnRequest{
+  background-color: var(--var--light--purple);
+  border:none;
+  color:var(--var--dark--purple);
+  padding: 1rem;
+  font-weight: 700;
+  border-radius: 2rem;
+  transition: 0.5s;
+}
+
+.btnRequest:hover{
+  background-color: var(--var--dark--purple);
+  color:var(--var--light--pink);
+  transition: 0.5s;
+}
+
 .paginationZone span {
   font-size: 1.3rem;
   margin:2rem 0;
