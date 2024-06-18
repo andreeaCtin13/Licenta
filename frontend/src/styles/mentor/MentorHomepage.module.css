@@ -74,8 +74,8 @@
   padding: 1rem;
   width: 10rem;
   justify-content: center;
-  background-color: var(--var--light--purple);
-  color: var(--var--white);
+  background-color: var(--var--btn--color);
+  color: var(--var--dark--purple);
   border-radius: 1rem;
   border: none;
   transition: 0.5s;

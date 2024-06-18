@@ -29,7 +29,7 @@
 .flexez .icon{
   width:1.5rem;
   height:1.5rem;
-  background-color: #f48fb1;
+  background-color: #ce93d8;
   color: #563f4b;
   padding:0.3rem;
   border-radius: 50%;
@@ -39,7 +39,6 @@
 
 .flexez .icon:hover{
   cursor: pointer;
-  box-shadow: 0 8px 10px 0 var(--var--light--purple);
   transition: 0.5s;
 
 }

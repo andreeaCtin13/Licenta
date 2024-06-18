@@ -8,7 +8,7 @@
   left:30%;
   padding: 2rem;
   min-width: 50rem;
-  box-shadow: pink 0px 8px 14px, pink 0px 14px 26px, pink 0px 14px 60px;
+  box-shadow:  var(--var--light--pink) 0px 8px 14px, var(--var--light--pink) 0px 14px 26px,  var(--var--light--pink) 0px 14px 60px;
 }
 
 form {

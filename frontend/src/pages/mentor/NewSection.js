@@ -51,15 +51,7 @@ function NewSection() {
       return;
     }
 
-    if (!newSection.files) {
-      toast.current.show({
-        severity: "error",
-        summary: "Failed",
-        detail: "Nu ai furnizat pdf urile",
-        life: 3000,
-      });
-      return;
-    }
+
     if (newSection.cerinte.length < 1) {
       toast.current.show({
         severity: "error",
@@ -70,7 +62,7 @@ function NewSection() {
       return;
     }
 
-    if (!newSection.resurse.video_link) {
+    if (!newSection.video_link) {
       toast.current.show({
         severity: "error", 
         summary: "Failed",
@@ -113,6 +105,8 @@ function NewSection() {
       formData.append('files', file);
     });
     formData.append('sectionData', JSON.stringify(newSection));
+
+  
 
     await axios
       .post(`http://localhost:8080/sectiuni/adaugare`, formData, {

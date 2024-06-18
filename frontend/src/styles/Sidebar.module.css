@@ -3,7 +3,7 @@
 }
 
 .showButton {
-  background-color: var(--var--light--purple);
+  background-color: var(--var--dark--pink);
   color: white;
   padding: 10px;
   border: none;
@@ -71,17 +71,18 @@
 .buttonsLogout button {
   width: 7rem;
   height: 3rem;
-  background-color: var(--var--light--pink);
+  background-color: var(--var--light--purple);
   color: var(--var--dark--purple);
   border: none;
   padding: 1.2rem;
   border-radius: 2rem;
-  transition: 0.2s;
+  transition: 0.5s;
 }
 
 .buttonsLogout button:hover {
+  transition: 0.5s;
+  background-color: var(--var--light--pink);
   cursor: pointer;
-  transition: 0.2s;
   box-shadow: 5px 5px 5px var(--var--black);
 }
 
@@ -92,8 +93,8 @@
 .logoutButton {
   background-color: var(--var--light--purple);
   border: none;
-  color: var(--var--white);
   display: flex;
+  color: var(--var--dark--purple);
   justify-content: center;
   gap: 1rem;
   font-size: large;
@@ -107,8 +108,9 @@
 .logoutButton:hover {
   transition: 0.5s;
   background-color: var(--var--light--pink);
-  color: var(--var--dark--purple);
   cursor: pointer;
+  box-shadow: 5px 5px 5px var(--var--black);
+
 }
 
 @media screen and (max-width: 900px) {

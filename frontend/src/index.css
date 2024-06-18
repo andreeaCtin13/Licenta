@@ -21,8 +21,9 @@ code {
 :root {
   --var--white: rgb(250, 246, 246);
   --var--black: black;
-  --var--dark--purple: #392932;
-  --var--light--purple: #674951;
-  --var--dark--pink: #9d7279;
-  --var--light--pink: #d7aaab;
+  --var--dark--purple:#3e364a ;
+  --var--light--purple: #a492ae;
+  --var--dark--pink: #6d5775;
+  --var--light--pink: #b1a3bb;
+  --var--btn--color:#a088b3;
 }

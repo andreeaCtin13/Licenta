@@ -22,7 +22,7 @@ function VerticalBarChart() {
                             {
                                 label: 'Număr de cereri',
                                 data: requestCounts,
-                                backgroundColor: '#e2b8cb',
+                                backgroundColor: '#b1a3bb',
                                 borderColor: '#9d3e74',
                                 borderWidth: 1
                             }

@@ -13,8 +13,8 @@
   border-radius: 2rem;
   border: none;
   color: var(--var--white);
-  cursor: pointer; /* Cursor change on hover */
-  transition: background-color 0.5s; /* Smooth transition for background color */
+  cursor: pointer; 
+  transition: background-color 0.5s; 
 }
 
 .btnSection {
@@ -42,8 +42,8 @@
   border-radius: 2rem;
   border: none;
   color: var(--var--white);
-  cursor: pointer; /* Cursor change on hover */
-  transition: background-color 0.5s; /* Smooth transition for background color */
+  cursor: pointer; 
+  transition: background-color 0.5s; 
 }
 
 .btnHome:hover {
