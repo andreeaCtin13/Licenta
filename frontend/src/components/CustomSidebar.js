@@ -19,14 +19,14 @@ import "primeicons/primeicons.css";
 import Logo from "../assets/logo.png";
 import style from "../styles/Sidebar.module.css";
 import axios from "axios";
-import { SectionContext } from "../context/SectionContext";
+// import { SectionContext } from "../context/SectionContext";
 
 function CustomSidebar() {
   const [logoutDialog, setLogoutDialog] = useState(false);
   const [visibleSidebar, setVisibleSidebar] = useState(false);
   const { user, setUser } = useContext(UserContext);
   const [coursesList, setCoursesList] = useState([]);
-  const {sectionContext, setSectionContext} = useContext(SectionContext) 
+  // const {sectionContext, setSectionContext} = useContext(SectionContext) 
   const location = useLocation();
   console.log(location.pathname);
 
@@ -59,7 +59,7 @@ function CustomSidebar() {
   };
 
   const closeSidebarEvent = () => {
-    setSectionContext(true)
+    // setSectionContext(true)
     setVisibleSidebar(false);
     setCoursesList([]);
   };

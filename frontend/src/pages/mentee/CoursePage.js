@@ -10,7 +10,6 @@ import { UserContext } from "../../context/UserContext";
 import { Toast } from "primereact/toast";
 import { FileUpload } from "primereact/fileupload";
 import { Dialog } from "primereact/dialog";
-import { SectionContext } from "../../context/SectionContext";
 
 function CoursePage() {
   const [dialog, setDialog] = useState(false);
@@ -25,7 +24,6 @@ function CoursePage() {
   const [stare, setStare] = useState();
   const fileUploadRefs = useRef({});
   const [feedback, setFeedback] = useState(null);
-  const {sectionContext, setSectionContext} = useContext(SectionContext) 
 
   const playVideo = (index) => {
     setCurrentSectionIndex(index);
@@ -35,6 +33,7 @@ function CoursePage() {
   const getIstoric = async (idSectiune) => {
     try {
       const rez = await axios.get(`http://localhost:8080/istoricuriPunctaje/getLastIstoricOfAUser/${user.id_utilizator}/${idSectiune}`);
+
       if (rez.data.message === "nu exista istoric") {
         setStare({ exists: false });
       } else if (rez.data.message === "ok") {
@@ -44,61 +43,40 @@ function CoursePage() {
       console.log(err);
     }
   };
-  const setData = async (id) => {
+
+
+
+  const setData = async () => {
+    console.log("INTRU AICI NICU STEFANUTA")
     try {
-      // Fetching course data
-      const rez = await fetch(`http://localhost:8080/curs/getById/${id}`);
-      if (!rez.ok) {
-        throw new Error('Failed to fetch course data');
-      }
-      const curs_data = await rez.json();
-  
-      // Fetching mentor data
-      const userRes = await fetch(`http://localhost:8080/useri/getUserNameById/${curs_data.id_utilizator}`);
-      if (!userRes.ok) {
-        throw new Error('Failed to fetch mentor data');
-      }
-      const mentor_data = await userRes.json();
-      const updated_curs_data = { ...curs_data, mentor: mentor_data };
-  
-      // Fetching sections data
-      const sectRes = await fetch(`http://localhost:8080/sectiuni/selectAll/${idCourse}`);
-      if (!sectRes.ok) {
-        throw new Error('Failed to fetch sections data');
-      }
-      const sectiuniData = await sectRes.json();
-      const sectiuni = sectiuniData.sectiuni;
-      setCurrentSectionIndex(sectiuni[0].id_sectiune);
-  
-      // Fetching requirements data
-      const cerinteRes = await fetch(`http://localhost:8080/cerinte/getAllCerinte/${sectiuni[0].id_sectiune}`);
-      if (!cerinteRes.ok) {
-        throw new Error('Failed to fetch requirements data');
-      }
-      const cerinteData = await cerinteRes.json();
-      setCerinte(cerinteData.cerinte);
-  
-      // Fetching resources data
-      const resurseRes = await fetch(`http://localhost:8080/resurse/getResurseCursSection/${sectiuni[0].id_sectiune}`);
-      if (!resurseRes.ok) {
-        throw new Error('Failed to fetch resources data');
-      }
-      const resurseData = await resurseRes.json();
-      setResurse(resurseData.resurse);
-  
-      // Setting the chosen course data state
-      setCourseChosen({ ...updated_curs_data, sectiuni });
-  
-      // Optionally call additional functions like getIstoric if needed
-      getIstoric(sectiuni[0].id_sectiune);
+      const rez = await axios.get(`http://localhost:8080/curs/getById/${idCourse}`);
+      let curs_data = rez.data.curs;
+      console.log(curs_data);
+
+      const userRes = await axios.get(`http://localhost:8080/useri/getUserNameById/${curs_data.id_utilizator}`);
+      curs_data = { ...curs_data, mentor: userRes.data };
+
+      const sectRes = await axios.get(`http://localhost:8080/sectiuni/selectAll/${idCourse}`);
+      setCurrentSectionIndex(sectRes.data.sectiuni[0].id_sectiune);
+
+      const sectiuni = sectRes.data.sectiuni;
+      getIstoric(sectRes.data.sectiuni[0].id_sectiune);
+
+      setCourseChosen({ ...curs_data, sectiuni });
+
+      const cerinteRes = await axios.get(`http://localhost:8080/cerinte/getAllCerinte/${sectiuni[0].id_sectiune}`);
+      setCerinte(cerinteRes.data.cerinte);
+
+      const resurseRes = await axios.get(`http://localhost:8080/resurse/getResurseCursSection/${sectiuni[0].id_sectiune}`);
+      setResurse(resurseRes.data.resurse);
     } catch (err) {
       console.log(err);
     }
   };
-  
-  useEffect(() => {
-    setData(idCourse);
-  }, [idCourse]); 
+
+  useEffect(()=>{
+    setData()
+  },[idCourse])
 
   const uploadFile = async (file, id) => {
     let formData = new FormData();
@@ -154,11 +132,12 @@ function CoursePage() {
   };
 
   useEffect(() => {
-    setData(idCourse);
+    setData();
   }, []);
 
   const getFeedbackAssig = async (id) => {
     setDialog(true);
+    console.log(id);
     try {
       const response = await axios.get(`http://localhost:8080/istoricCerinte/getLastFeedback/${user.id_utilizator}/${id}`);
       setFeedback(response.data.feedback);
@@ -244,25 +223,26 @@ function CoursePage() {
             <div key={index} className={style.gridContainerCerinte}>
               <p className={style.label}>
                 Cerința {index + 1} : {cerinta.titlu}
+
               </p>
               <p>{cerinta.cerinta}</p>
               <div className={style.flexContainer}>
-                <FileUpload
-                  name="file"
-                  accept="*"
-                  customUpload
-                  uploadHandler={(e) => onUpload(e, cerinta.id_cerinta)}
-                  className={style.customFileUpload}
-                  emptyTemplate={<p className="m-0">Glisează fișierul aici pentru a încărca.</p>}
-                  ref={(el) => (fileUploadRefs.current[cerinta.id_cerinta] = el)}
+              <FileUpload
+                name="file"
+                accept="*"
+                customUpload
+                uploadHandler={(e) => onUpload(e, cerinta.id_cerinta)}
+                className={style.customFileUpload}
+                emptyTemplate={<p className="m-0">Glisează fișierul aici pentru a încărca.</p>}
+                ref={(el) => (fileUploadRefs.current[cerinta.id_cerinta] = el)}
+              />
+              <div className={`${style.commentIconContainer}${style.setFeedback}`}>
+                <FontAwesomeIcon
+                  className={style.commentIcon}
+                  icon={faComment}
+                  onClick={() => getFeedbackAssig(cerinta.id_cerinta)}
                 />
-                <div className={`${style.commentIconContainer}${style.setFeedback}`}>
-                  <FontAwesomeIcon
-                    className={style.commentIcon}
-                    icon={faComment}
-                    onClick={() => getFeedbackAssig(cerinta.id_cerinta)}
-                  />
-                </div>
+              </div>
               </div>
             </div>
           ))}
@@ -271,9 +251,8 @@ function CoursePage() {
             header="Header"
             visible={dialog}
             style={{ width: "50vw" }}
-            onHide={() => {
-              setDialog(false);
-              setFeedback(null);
+            onHide={() => {setDialog(false)
+              setFeedback(null)
             }}
           >
             {feedback ? (
@@ -292,6 +271,8 @@ function CoursePage() {
                   to={`/test/${currentSectionIndex ?? ""}/${idCourse}`}
                 >
                   <Button content={"Start"} className={style.testBtn} />
+                  {                console.log("intra pe acesta ramuna")
+                  }
                 </Link>
               ) : (
                 stare.lastHistory && (
@@ -306,15 +287,16 @@ function CoursePage() {
                           Punctaj minim promovare: {stare.lastHistory.punctaj_minim_promovare} pct.
                         </div>
                         <Link
-                          className={style.testBtnLink}
-                          to={`/test/${currentSectionIndex ?? ""}/${idCourse}`}
-                        >
-                          <Button content={"Start"} className={style.testBtn} />
-                        </Link>
+                      className={style.testBtnLink}
+                      to={`/test/${currentSectionIndex ?? ""}/${idCourse}`}
+                    >
+                      <Button content={"Start"} className={style.testBtn} />
+                    </Link>
                       </div>
                     ) : (
                       <div className={style.passed}>A fost trecut testul!</div>
                     )}
+                   
                   </div>
                 )
               )
