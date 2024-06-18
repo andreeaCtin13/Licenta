@@ -31,17 +31,13 @@ function App() {
           <Route
             path="/profile"
             element={
-              // <PrivateRoute>
               <Profile />
-              // </PrivateRoute>
             }
           />
           <Route
             path="/course/:idCourse"
             element={
-              // <PrivateRoute>
               <CoursePage />
-              // </PrivateRoute>
             }
           />
           <Route
@@ -53,84 +49,64 @@ function App() {
           <Route
             path="/course-summary/:idCourse"
             element={
-              // <PrivateRoute>
               <CourseSummary />
-              // </PrivateRoute>
             }
           />
-          <Route path="/edit-test/:id_test"
+          <Route path="/edit-test/:idCourse/:id_test"
           element={<EditTestPage></EditTestPage>}>
           </Route>
           <Route
             path="/mentor-homepage"
             element={
-              // <PrivateRoute>
               <MentorHomepage />
-              // </PrivateRoute>
             }
           />{" "}
           <Route
             path="/mentor-homepage/:idCourse"
             element={
-              // <PrivateRoute>
               <CourseStatus />
-              // </PrivateRoute>
             }
           />
           <Route
             path="/performanta/:idCourse"
             element={
-              // <PrivateRoute>
               <AnalizaPerformanta />
-              // </PrivateRoute>
             }
           />
           <Route
             path="/new-course"
             element={
-              // <PrivateRoute>
               <NewCourse />
-              // </PrivateRoute>
             }
           />
           <Route
             path="/new-section/:idCourse"
             element={
-              // <PrivateRoute>
               <NewSection />
-              // </PrivateRoute>
             }
           />
           <Route
             path="/admin"
             element={
-              // <PrivateRoute>
               <AdminHomepage />
-              // </PrivateRoute>
             }
           />
           <Route
             path="/requests/:idCourse"
             element={
-              // <PrivateRoute>
               <Requests />
-              // </PrivateRoute>
             }
           />
           <Route
             path="/feedback/:idCourse"
             element={
-              // <PrivateRoute>
               <Feedback />
-              // </PrivateRoute>
             }
           />
           <Route
             path="/test/:idSectiune/:idCourse"
             element={
-              // <PrivateRoute>
               <Test />
-              // </PrivateRoute>
             }
           />
         </Routes>

@@ -4,11 +4,13 @@ import { useParams } from 'react-router';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
 import style from "../../styles/mentor/EditTestPage.module.css";
+import Button from '../../components/Button';
+import { Link } from 'react-router-dom';
 
 const EditTestPage = () => {
   const [test, setTest] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { id_test } = useParams();
+  const { idCourse, id_test } = useParams();
 
   useEffect(() => {
     const fetchTest = async () => {
@@ -119,6 +121,13 @@ const EditTestPage = () => {
     });
   };
 
+  const submitInfo = async() =>{
+    await axios.post(`http://localhost:8080/teste/editareTest/${test.id_test}`, test).then((rez)=>{
+      console.log(rez)
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }
   const handleDeleteQuestion = (questionId) => {
     const updatedQuestions = test.intrebari.filter(intrebare => intrebare.id_intrebare !== questionId);
     setTest({
@@ -126,14 +135,22 @@ const EditTestPage = () => {
       intrebari: updatedQuestions
     });
   };
-
   const handleAddAnswer = (questionId) => {
+    // Find the question object
+    const question = test.intrebari.find(intrebare => intrebare.id_intrebare === questionId);
+  
+    // Calculate the new answer ID based on the maximum existing ID
+    const newAnswerId = question.varianteRaspuns.reduce((maxId, varianta) => {
+      return varianta.id_varianta > maxId ? varianta.id_varianta : maxId;
+    }, 0) + 1;
+  
+    // Create the new answer object
     const newAnswer = {
-      id_varianta: test.intrebari.find(intrebare => intrebare.id_intrebare === questionId).varianteRaspuns.length + 1,
+      id_varianta: newAnswerId,
       text_varianta: '',
       este_corecta: false
     };
-
+  
     const updatedQuestions = test.intrebari.map(intrebare => {
       if (intrebare.id_intrebare === questionId) {
         return {
@@ -143,13 +160,13 @@ const EditTestPage = () => {
       }
       return intrebare;
     });
-
+  
     setTest({
       ...test,
       intrebari: updatedQuestions
     });
   };
-
+  
   const handleDeleteAnswer = (questionId, answerId) => {
     const updatedQuestions = test.intrebari.map(intrebare => {
       if (intrebare.id_intrebare === questionId) {
@@ -183,6 +200,8 @@ const EditTestPage = () => {
     return <div className={style.editTestContainer}>Test not found</div>;
   }
 
+  console.log("test", test)
+
   return (
     <div className={style.editTestContainer}>
       <h1 className={style.editTestHeading}>Editare Test</h1>
@@ -212,7 +231,7 @@ const EditTestPage = () => {
             />
             <input
               type="number"
-              value={intrebare.punctaj}
+              value={intrebare.punctaj_intrebare}
               onChange={(e) => handleScoreChange(e, intrebare.id_intrebare)}
               className={style.editTestInput}
             />
@@ -249,6 +268,9 @@ const EditTestPage = () => {
         ))}
         <button onClick={handleAddQuestion} className={`${style.editTestButton} ${style.addQuestion}`}>Adaugă întrebare</button>
       </div>
+      <Link to={`/mentor-homepage/${idCourse}`}>
+        <Button content ="Submit" onClick={submitInfo}  className={`${style.editTestButton}`}></Button>
+      </Link>
     </div>
   );
 };

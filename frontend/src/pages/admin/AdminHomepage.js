@@ -267,6 +267,27 @@ function AdminHomepage() {
     </div>
   );
 
+  const downloadExcelPreferinteCursuri = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/curs/getRaportCerereCurs', {
+        responseType: 'blob', 
+      });
+  
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'raport_preferinte_cursuri.xlsx');
+      document.body.appendChild(link);
+      link.click();
+  
+      window.URL.revokeObjectURL(url);
+  
+      console.log('Descărcare completă a raportului de preferințe ale cursurilor.');
+    } catch (error) {
+      console.error('Eroare la descărcarea raportului:', error);
+    }
+  };
+
   const downloadRaportPerformanta = async () => {
     try {
       const response = await axios.get('http://localhost:8080/useri/generatePerformanceReport', {
@@ -317,6 +338,13 @@ function AdminHomepage() {
         icon="pi pi-upload"
           className="p-button-help"
         onClick={downloadRaportPerformanta}
+        />
+
+        <Button
+          label="Export Preferinte Cursuri"
+          icon="pi pi-upload"
+          className="p-button-help"
+          onClick={downloadExcelPreferinteCursuri}
         />
       </div>
     );

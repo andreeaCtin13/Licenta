@@ -2,6 +2,7 @@ const cursuriModel = require("../models").cursuri;
 const usersModel = require("../models").users;
 const multer = require("multer");
 const path = require("path");
+const ExcelJS = require('exceljs'); 
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -98,6 +99,44 @@ const controller = {
       res.status(500).json({ message: "server error" });
     }
   },
+  getRaportCerereCurs:async(req,res)=>{
+    try {
+      const raportPreferinte = await cursuriModel.findAll({
+        attributes: ['id_curs', 'denumire', [
+          sequelize.literal('(SELECT COUNT(*) FROM cereri_cursuri WHERE cereri_cursuri.id_curs = cursuri.id_curs)'),
+          'numar_cereri'
+        ]],
+        order: [[sequelize.literal('numar_cereri'), 'DESC']]
+      });
+  
+   
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Preferinte Cursuri');
+
+    worksheet.columns = [
+      { header: 'ID Curs', key: 'id_curs', width: 10 },
+      { header: 'Nume Curs', key: 'nume_curs', width: 30 },
+      { header: 'Număr Cereri', key: 'numar_cereri', width: 15 }
+    ];
+
+    raportPreferinte.forEach(curs => {
+      worksheet.addRow({
+        id_curs: curs.id_curs,
+        nume_curs: curs.nume_curs,
+        numar_cereri: curs.dataValues.numar_cereri
+      });
+    });
+
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=raport_preferinte_cursuri.xlsx');
+
+    await workbook.xlsx.write(res);
+    res.end();
+  } catch (error) {
+    console.error('Error generating preferences report:', error);
+    res.status(500).json({ error: 'Could not generate preferences report' });
+  }
+  }
 };
 
 module.exports = controller;

@@ -384,7 +384,7 @@ function CourseStatus() {
 
                 </div>
                 {console.log("editeaza testul ", sectiune)}
-                <Link to={`/edit-test/${sectiune.id_test}`}>
+                <Link to={`/edit-test/${idCourse}/${sectiune.id_test}`}>
                   <Button
                     content={"Editează testul"}
                     className={`${style.btn} ${style.btnEditTest}`}
