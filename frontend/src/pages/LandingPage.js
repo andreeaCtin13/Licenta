@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import style from "../styles/LandingPage.module.css";
 import Form from "../components/mentee/Form";
 import Logo from "../assets/logo.png";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
-function LandingPage() {
-  const [register, setRegister] = useState(false);
+function LandingPage({ setToken }) {
+  const { user, setUser } = useContext(UserContext);
 
   return (
     <div className={style.container}>
@@ -14,7 +16,7 @@ function LandingPage() {
             <img src={Logo} alt="logo" className={style.logo} />
           </h1>
           <div className={style.formLogin}>
-            <Form></Form>
+            <Form setToken={setToken} setUser={setUser} user={user}></Form>
           </div>
         </div>
       </div>

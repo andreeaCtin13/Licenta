@@ -1,18 +1,16 @@
-import axios from "axios";
+import axios from 'axios';
 
-const axiosInstance = axios.create();
 
-axiosInstance.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+// Get the token from localStorage
+const token = localStorage.getItem('token');
 
-export default axiosInstance;
+// Set up Axios interceptor to include the token in all requests
+axios.interceptors.request.use((config) => {
+  config.headers.Authorization = token ? `Bearer ${token}` : '';
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
+
+export default axios;

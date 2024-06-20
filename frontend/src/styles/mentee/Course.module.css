@@ -3,7 +3,7 @@
 }
 
 .mainContainer h1 {
-  color: var(--var--dark--pink);
+  color: var(--var--light--pink);
   font-size: 4rem;
   text-shadow: 1px 3px 8px var(--var--dark--purple);
   margin:0.5rem 0;

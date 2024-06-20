@@ -269,7 +269,7 @@ function AdminHomepage() {
 
   const downloadExcelPreferinteCursuri = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/curs/getRaportCerereCurs', {
+      const response = await axios.get('http://localhost:8080/curs/getInfoRaportCereriCursuri', {
         responseType: 'blob', 
       });
   
@@ -287,6 +287,27 @@ function AdminHomepage() {
       console.error('Eroare la descărcarea raportului:', error);
     }
   };
+  
+  const downloadExcelPondereFeedback = async() =>{
+    try {
+      const response = await axios.get('http://localhost:8080/istoricCerinte/getRaportFeedback', {
+        responseType: 'blob',
+      });
+  
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'raport_feedback_cursuri.xlsx');
+      document.body.appendChild(link);
+      link.click();
+  
+      window.URL.revokeObjectURL(url);
+  
+      console.log('Descărcare completă a raportului de feedback pentru cursuri.');
+    } catch (error) {
+      console.error('Eroare la descărcarea raportului:', error);
+    }
+  }
 
   const downloadRaportPerformanta = async () => {
     try {
@@ -332,7 +353,12 @@ function AdminHomepage() {
           className="p-button-help"
           onClick={downloadCSVRaport}
         />
-        
+        <Button
+          label="Export raport pondere feedback"
+          icon="pi pi-upload"
+          className="p-button-help"
+          onClick={downloadExcelPondereFeedback}
+        />
         <Button
         label="Export raport performanta"
         icon="pi pi-upload"

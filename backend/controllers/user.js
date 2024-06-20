@@ -1,5 +1,6 @@
 const usersModel = require("../models").users;
 const cereriCursuriModel = require("../models").cereriCurs
+const sectiuniModel = require("../models").sectiuni
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
@@ -14,6 +15,8 @@ const path = require('path');
 const generateAccessToken = (user) => {
   return jwt.sign({ user }, process.env.SECRET_KEY, { expiresIn: "2h" });
 };
+
+
 
 const controller = {
   generateUsersCSV: async (req, res) => {
@@ -53,23 +56,31 @@ const controller = {
       });
   
       const punctaje = await istoricuriPunctajeModel.findAll();
-  
       const testeList = await testeModel.findAll();
+      const sectiuniList = await sectiuniModel.findAll();
   
       let reportData = [];
   
       users.forEach(user => {
         const userScores = punctaje.filter(p => p.id_utilizator === user.id_utilizator);
-        userScores.forEach(punctaj => {
+        const latestScores = userScores.reduce((acc, cur) => {
+          if (!acc[cur.id_test] || new Date(acc[cur.id_test].data_sustinere) < new Date(cur.data_sustinere)) {
+            acc[cur.id_test] = cur;
+          }
+          return acc;
+        }, {});
+  
+        Object.values(latestScores).forEach(punctaj => {
           const testDetails = testeList.find(test => test.id_test === punctaj.id_test);
           if (testDetails) {
+            const sectionDetails = sectiuniList.find(sectiune => sectiune.id_sectiune === testDetails.id_sectiune);
             reportData.push({
               userId: user.id_utilizator,
               userName: user.nume,
               testId: punctaj.id_test,
-              testName: testDetails.denumire,
+              sectionName: sectionDetails ? sectionDetails.denumire : 'N/A',
               score: punctaj.punctaj_obtinut,
-              passDate: punctaj.data_test,
+              passDate: punctaj.data_sustinere,
               status: punctaj.punctaj_obtinut >= testDetails.punctaj_minim_promovare ? 'Promovat' : 'Nepromovat'
             });
           }
@@ -83,7 +94,7 @@ const controller = {
         { header: 'User ID', key: 'userId', width: 10 },
         { header: 'User Name', key: 'userName', width: 30 },
         { header: 'Test ID', key: 'testId', width: 10 },
-        { header: 'Test Name', key: 'testName', width: 30 },
+        { header: 'Section Name', key: 'sectionName', width: 30 },
         { header: 'Score', key: 'score', width: 10 },
         { header: 'Pass Date', key: 'passDate', width: 20 },
         { header: 'Status', key: 'status', width: 15 },
@@ -92,22 +103,22 @@ const controller = {
       worksheet.addRows(reportData);
   
       const chartData = reportData.reduce((acc, cur) => {
-        const testName = cur.testName;
-        if (!acc[testName]) {
-          acc[testName] = { promovat: 0, nepromovat: 0 };
+        const testId = cur.testId;
+        if (!acc[testId]) {
+          acc[testId] = { promovat: 0, nepromovat: 0 };
         }
         if (cur.status === 'Promovat') {
-          acc[testName].promovat++;
+          acc[testId].promovat++;
         } else {
-          acc[testName].nepromovat++;
+          acc[testId].nepromovat++;
         }
         return acc;
       }, {});
   
       const chartWorksheet = workbook.addWorksheet('Pie Chart Data');
-      chartWorksheet.addRow(['Test Name', 'Promovat', 'Nepromovat']);
-      Object.entries(chartData).forEach(([testName, data]) => {
-        chartWorksheet.addRow([testName, data.promovat, data.nepromovat]);
+      chartWorksheet.addRow(['Test id', 'Promovat', 'Nepromovat']);
+      Object.entries(chartData).forEach(([testId, data]) => {
+        chartWorksheet.addRow([testId, data.promovat, data.nepromovat]);
       });
   
       const filePath = path.join(__dirname, '..', 'reports', 'performance_report.xlsx');
@@ -126,7 +137,7 @@ const controller = {
       console.error('Error generating performance report:', error);
       res.status(500).send('Error generating performance report');
     }
-  },
+  },  
   getAllUsers: async (req, res) => {
     console.log("ajunge unde trebuie");
     const filter = req.query;
@@ -167,6 +178,7 @@ const controller = {
     }
 
     const jwtToken = generateAccessToken(user);
+   
     return res.status(200).json({
       user: {
         id_utilizator: user.id_utilizator,

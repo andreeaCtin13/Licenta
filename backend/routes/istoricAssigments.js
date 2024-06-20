@@ -18,6 +18,7 @@ router.get(
   "/getAll/:id_curs/:id_cerinta/filter",
   istoricAssigments.getAllIstoricCerinte
 );
+router.get("/getRaportFeedback", istoricAssigments.getRaportFeedback)
 
 router.get(
   "/getIstoricRezolvariPerUser/:id_utilizator",
