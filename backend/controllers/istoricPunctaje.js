@@ -206,8 +206,61 @@ const controller = {
         console.error("Error fetching promoted tests per month:", error);
         res.status(500).json({ message: "Server error" });
     }
-},
 
+  },
+  getChartUserPunctajeObtinute : async (req, res) => {
+    try {
+      const userId = req.params.id_utilizator;
+  
+      const punctaje = await istoricuriPunctajeModel.findAll({
+        where: { id_utilizator: userId },
+        order: [['data_sustinere', 'ASC']]
+      });
+  
+      const latestPunctajeMap = new Map();
+      punctaje.forEach(p => {
+        if (!latestPunctajeMap.has(p.id_test) || latestPunctajeMap.get(p.id_test).data_sustinere < p.data_sustinere) {
+          latestPunctajeMap.set(p.id_test, p);
+        }
+        else{
+          latestPunctaje.set(p.id_test, p)
+        }
+      });
+      const latestPunctaje = Array.from(latestPunctajeMap.values());
+  
+      // Extrage id-urile testelor din ultimul istoric
+      const testeIds = latestPunctaje.map(p => p.id_test);
+  
+      // Obține detaliile testelor pentru id-urile extrase
+      const teste = await testeModel.findAll({
+        where: { id_test: testeIds }
+      });
+  
+      // Extrage id-urile secțiunilor din teste
+      const sectiuniIds = teste.map(t => t.id_sectiune);
+  
+      // Obține detaliile secțiunilor pentru id-urile extrase
+      const sectiuni = await sectiuniModel.findAll({
+        where: { id_sectiune: sectiuniIds }
+      });
+  
+      // Construiește rezultatul final combinând datele din cele trei interogări
+      const result = latestPunctaje.map(p => {
+        const test = teste.find(t => t.id_test === p.id_test);
+        const sectiune = sectiuni.find(s => s.id_sectiune === test.id_sectiune);
+        return {
+          data_sustinere: p.data_sustinere,
+          punctaj_obtinut: p.punctaj_obtinut,
+          sectiune: sectiune.denumire
+        };
+      });
+  
+      res.json(result);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Server Error');
+    }
+  }
 
 };
 

@@ -18,4 +18,6 @@ router.get(
   istoricPunctajeController.getNoPromovateOrNepromovate
 );
 router.get(`/getPunctajeLunare/:id_curs`, istoricPunctajeController.getTestsPromotedPerMonth)
+router.get("/getChartUserPunctajeObtinute/:id_utilizator", istoricPunctajeController.getChartUserPunctajeObtinute)
+
 module.exports = router;

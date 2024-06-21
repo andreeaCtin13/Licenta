@@ -10,6 +10,7 @@ import { UserContext } from "../../context/UserContext";
 import { Toast } from "primereact/toast";
 import { FileUpload } from "primereact/fileupload";
 import { Dialog } from "primereact/dialog";
+import { Chart } from 'primereact/chart';
 
 function CoursePage() {
   const [dialog, setDialog] = useState(false);
@@ -25,11 +26,66 @@ function CoursePage() {
   const fileUploadRefs = useRef({});
   const [feedback, setFeedback] = useState(null);
   const [refreshPlease, setRefreshPlease] =useState(0)
+  const [chartData, setChartData] = useState({});
+  const [chartOptions, setChartOptions] = useState({});
 
   const playVideo = (index) => {
     setCurrentSectionIndex(index);
     updateInfo(index);
   };
+
+  useEffect(() => {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+    const data = {
+        labels: [], 
+        datasets: [
+            {
+                type: 'line',
+                label: 'Punctaj Obținut',
+                borderColor: documentStyle.getPropertyValue('--purple-200'),
+                borderWidth: 2,
+                fill: false,
+                tension: 0.4,
+                data: []
+            }
+        ]
+    };
+    const options = {
+        maintainAspectRatio: false,
+        aspectRatio: 0.6,
+        plugins: {
+            legend: {
+                labels: {
+                    color: textColor
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: textColorSecondary
+                },
+                grid: {
+                    color: surfaceBorder
+                }
+            },
+            y: {
+                ticks: {
+                    color: textColorSecondary
+                },
+                grid: {
+                    color: surfaceBorder
+                }
+            }
+        }
+    };
+
+    setChartData(data);
+    setChartOptions(options);
+  }, []);
 
   const getIstoric = async (idSectiune) => {
     try {
@@ -46,37 +102,48 @@ function CoursePage() {
   };
 
   const setData = async () => {
-    console.log("INTRU AICI NICU STEFANUTA")
     try {
       const rez = await axios.get(`http://localhost:8080/curs/getById/${idCourse}`);
       let curs_data = rez.data.curs;
-      console.log(curs_data);
-
+  
       const userRes = await axios.get(`http://localhost:8080/useri/getUserNameById/${curs_data.id_utilizator}`);
       curs_data = { ...curs_data, mentor: userRes.data };
-
+  
       const sectRes = await axios.get(`http://localhost:8080/sectiuni/selectAll/${idCourse}`);
-      setCurrentSectionIndex(sectRes.data.sectiuni[0].id_sectiune);
-
       const sectiuni = sectRes.data.sectiuni;
-      getIstoric(sectRes.data.sectiuni[0].id_sectiune);
-
+      setCurrentSectionIndex(sectiuni[0].id_sectiune);
+  
+      getIstoric(sectiuni[0].id_sectiune);
+  
       setCourseChosen({ ...curs_data, sectiuni });
-
+  
       const cerinteRes = await axios.get(`http://localhost:8080/cerinte/getAllCerinte/${sectiuni[0].id_sectiune}`);
       setCerinte(cerinteRes.data.cerinte);
-
+  
       const resurseRes = await axios.get(`http://localhost:8080/resurse/getResurseCursSection/${sectiuni[0].id_sectiune}`);
       setResurse(resurseRes.data.resurse);
+  
+      const scoresRes = await axios.get(`http://localhost:8080/istoricuriPunctaje/getChartUserPunctajeObtinute/${user.id_utilizator}`);
+      const scoresData = scoresRes.data;
+  
+      const labels = scoresData.map(scores => scores.denumire); 
+      const scores = scoresData.map(score => score.punctaj_obtinut);
+  
+      setChartData(prevData => ({
+        ...prevData,
+        labels: labels,
+        datasets: [
+          {
+            ...prevData.datasets[0],
+            data: scores
+          }
+        ]
+      }));
     } catch (err) {
       console.log(err);
     }
   };
-
-
-
-
-
+  
   useEffect(()=>{
     setData()
   }, [idCourse]);
@@ -162,6 +229,8 @@ function CoursePage() {
             </div>
             <div className={style.description}>{courseChosen.descriere}</div>
           </div>
+          <div>
+            <div>
           <h2>Resurse Video</h2>
 
           <div className={style.containerVideo}>
@@ -193,6 +262,13 @@ function CoursePage() {
               ))}
             </div>
           </div>
+          </div>
+          <div>
+          <h2>Evoluția Punctajelor</h2>
+          <Chart type="line" data={chartData} options={chartOptions} />
+
+            </div>
+            </div>
           <div className={style.containerPDFS}>
             <h2>Resurse PDF</h2>
             <div className={style.pdfs}>

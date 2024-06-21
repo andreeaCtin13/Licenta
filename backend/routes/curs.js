@@ -23,7 +23,4 @@ router.get("/getById/:id_curs", cursController.getCursById);
 router.get("/getAllCursuriOfAMentor/:id_user", cursController.getCursuriOfAMentor);
 router.get("/getInfoRaportCereriCursuri", cursController.getRaportCerereCurs);
 
-
-
-
 module.exports = router;
