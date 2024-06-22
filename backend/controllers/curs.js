@@ -3,6 +3,7 @@ const usersModel = require("../models").users;
 const multer = require("multer");
 const path = require("path");
 const ExcelJS = require('exceljs'); 
+const sequelize = require("../config/db");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

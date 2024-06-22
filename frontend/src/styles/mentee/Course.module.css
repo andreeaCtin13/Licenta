@@ -66,9 +66,7 @@
 .btnSeeFeedback:hover {
   cursor: pointer;
   transition: 0.5s;
-  background-color: var(--var--dark--purple);
-  box-shadow: 0 4px 8px 0 var(--var--dark--purple),
-    0 6px 20px 0 var(--var--dark--purple);
+
 }
 
 .passed {
@@ -202,9 +200,12 @@
   width:95%;
 }
 
+.setFeedback{
+  max-height: 5rem;
+}
+
 .setFeedback:hover{
   cursor: pointer;
-  background-color: antiquewhite;
 }
 
 .testBtn {

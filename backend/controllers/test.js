@@ -107,17 +107,10 @@ const controller = {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
-  editareTest:async(req,res)=>{
+  editareTest: async (req, res) => {
     const { id_test } = req.params;
-    const {
-      punctaj_minim_promovare,
-      numar_intrebari,
-      intrebari
-    } = req.body;
+    const { punctaj_minim_promovare, numar_intrebari, intrebari } = req.body;
   
-    console.log("punctaj minim:", punctaj_minim_promovare)
-    console.log("numar_intrebari", numar_intrebari)
-    console.log("intrebari", intrebari)
     let transaction;
   
     try {
@@ -145,12 +138,10 @@ const controller = {
           await intrebare.save({ transaction });
         } else {
           intrebare = await intrebariModel.create({
-            id_test:test.id_test,
+            id_test: test.id_test,
             text_intrebare: intrebareData.text_intrebare,
             punctaj_intrebare: intrebareData.punctaj_intrebare
           }, { transaction });
-  
-          // await intrebare.setTest(test, { transaction });
         }
   
         for (const variantaData of intrebareData.varianteRaspuns) {
@@ -166,30 +157,26 @@ const controller = {
             varianta.este_corecta = variantaData.este_corecta;
             await varianta.save({ transaction });
           } else {
-            varianta = await VariantaRaspuns.create({
+            varianta = await varianteRaspunsModel.create({
               text_varianta: variantaData.text_varianta,
               este_corecta: variantaData.este_corecta,
-              id_intrebare:intrebareData.id_intrebare
+              id_intrebare: intrebare.id_intrebare
             }, { transaction });
-  
-            // await varianta.setIntrebare(intrebare, { transaction });
           }
         }
       }
   
-      // Finalizăm tranzacția
       await transaction.commit();
   
-      // Returnăm răspunsul de succes
       res.json({ message: 'Test updated successfully' });
     } catch (error) {
-      // Rollback tranzacția în caz de eroare
       if (transaction) await transaction.rollback();
   
       console.error('Error updating test:', error);
       return res.status(500).json({ error: 'Could not update test' });
     }
-  },
+  }
+  
   
 
 };

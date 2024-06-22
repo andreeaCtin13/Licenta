@@ -8,6 +8,7 @@ const multer = require("multer");
 const _ = require("lodash");
 const { istoricAssigments } = require("../models");
 const ExcelJS = require('exceljs');
+const sequelize = require("../config/db");
 
 const controller = {
   getAllIstoricCerinte: async (req, res) => {
@@ -207,75 +208,64 @@ const controller = {
       return res.status(500).json({ message: "Server error", err: err });
     }
   },
-  getRaportFeedback:async(req,res)=>{
+  getRaportFeedback: async (req, res) => {
     try {
-      const cursuri = await cursuriModel.findAll({
-        attributes: ['id_curs', 'denumire', 'id_utilizator']
-      });
-  
-      // Fetch all cerinte entries
-      const cerinte = await cerinteModel.findAll({
-        attributes: ['id_cerinta', 'id_curs']
-      });
-  
-      // Fetch all cerinte_istoric entries
+      const cursuri = await cursuriModel.findAll({ attributes: ['id_curs', 'denumire', 'id_utilizator'] });
+      const cerinte = await cerinteModel.findAll({ attributes: ['id_cerinta', 'id_curs'] });
       const cerinteIstoric = await istoricAssigments.findAll();
-  
-      // Fetch all users
-      const utilizatori = await utilizatoriModel.findAll({
-        attributes: ['id_utilizator', 'nume']
-      });
-  
+      const utilizatori = await utilizatoriModel.findAll({ attributes: ['id_utilizator', 'nume'] });
+
       let reportData = [];
-  
+
       cursuri.forEach(curs => {
-        const cerinteForCurs = cerinte.filter(cerinta => cerinta.id_curs === curs.id_curs);
-  
-        const cerinteIstoricForCurs = cerinteIstoric.filter(ci =>
-          cerinteForCurs.some(cerinta => cerinta.id_cerinta === ci.idCerinta)
-        );
-  
-        const totalCerinte = cerinteIstoricForCurs.length;
-        const feedbackGiven = cerinteIstoricForCurs.filter(ci => ci.feedback !== null).length;
-        const feedbackGivenPercentage = totalCerinte ? (feedbackGiven / totalCerinte) * 100 : 0;
-        const feedbackMissingPercentage = totalCerinte ? ((totalCerinte - feedbackGiven) / totalCerinte) * 100 : 0;
-  
-        const mentor = utilizatori.find(u => u.id_utilizator === curs.id_utilizator);
-  
-        reportData.push({
-          idCurs: curs.id_curs,
-          numeCurs: curs.denumire,
-          numeMentor: mentor ? mentor.nume : 'N/A',
-          feedbackGivenPercentage: feedbackGivenPercentage.toFixed(2),
-          feedbackMissingPercentage: feedbackMissingPercentage.toFixed(2)
-        });
+          const cerinteForCurs = cerinte.filter(cerinta => cerinta.id_curs === curs.id_curs);
+          const cerinteIstoricForCurs = cerinteIstoric.filter(ci =>
+              cerinteForCurs.some(cerinta => cerinta.id_cerinta === ci.idCerinta)
+          );
+
+          const totalCerinte = cerinteIstoricForCurs.length;
+          const feedbackGiven = cerinteIstoricForCurs.filter(ci => ci.feedback !== null).length;
+          const feedbackGivenPercentage = totalCerinte ? (feedbackGiven / totalCerinte) * 100 : 0;
+          const feedbackMissingPercentage = totalCerinte ? ((totalCerinte - feedbackGiven) / totalCerinte) * 100 : 0;
+
+          const mentor = utilizatori.find(u => u.id_utilizator === curs.id_utilizator);
+
+          reportData.push({
+              idCurs: curs.id_curs,
+              numeCurs: curs.denumire,
+              numeMentor: mentor ? mentor.nume : 'N/A',
+              feedbackGivenPercentage: feedbackGivenPercentage.toFixed(2),
+              feedbackMissingPercentage: feedbackMissingPercentage.toFixed(2)
+          });
       });
-  
+
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet('Feedback Report');
-  
+
       worksheet.columns = [
-        { header: 'ID Curs', key: 'idCurs', width: 10 },
-        { header: 'Nume Curs', key: 'numeCurs', width: 30 },
-        { header: 'Nume Mentor', key: 'numeMentor', width: 30 },
-        { header: 'Procent Feedback Dat', key: 'feedbackGivenPercentage', width: 20 },
-        { header: 'Procent Feedback Lipsă', key: 'feedbackMissingPercentage', width: 20 }
+          { header: 'ID Curs', key: 'idCurs', width: 10 },
+          { header: 'Nume Curs', key: 'numeCurs', width: 30 },
+          { header: 'Nume Mentor', key: 'numeMentor', width: 30 },
+          { header: 'Procent Feedback Dat', key: 'feedbackGivenPercentage', width: 20 },
+          { header: 'Procent Feedback Lipsă', key: 'feedbackMissingPercentage', width: 20 }
       ];
-  
+
       reportData.forEach(data => {
-        worksheet.addRow(data);
+          worksheet.addRow(data);
       });
-  
+
       res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
       res.setHeader('Content-Disposition', 'attachment; filename=raport_feedback_cursuri.xlsx');
-  
+
       await workbook.xlsx.write(res);
       res.end();
-    } catch (error) {
+  } catch (error) {
       console.error('Error generating feedback report:', error);
       res.status(500).json({ error: 'Could not generate feedback report' });
-    }
+  }
   }
 };
 
+
 module.exports = controller;
+

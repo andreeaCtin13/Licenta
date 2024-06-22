@@ -178,8 +178,8 @@ function AdminHomepage() {
         });
         toast.current.show({
           severity: "success",
-          summary: "Successful",
-          detail: "User Deleted",
+          summary: "Succes",
+          detail: "Utilizator șters cu succes",
           life: 3000,
         });
       });
@@ -269,45 +269,52 @@ function AdminHomepage() {
 
   const downloadExcelPreferinteCursuri = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/curs/getInfoRaportCereriCursuri', {
-        responseType: 'blob', 
-      });
-  
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'raport_preferinte_cursuri.xlsx');
-      document.body.appendChild(link);
-      link.click();
-  
-      window.URL.revokeObjectURL(url);
-  
-      console.log('Descărcare completă a raportului de preferințe ale cursurilor.');
+        const response = await axios.get('http://localhost:8080/curs/getInfoRaportCereriCursuri', {
+            responseType: 'blob', 
+        });
+
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'raport_preferinte_cursuri.xlsx');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        console.log('Descărcare completă a raportului de preferințe ale cursurilor.');
     } catch (error) {
-      console.error('Eroare la descărcarea raportului:', error);
+        console.error('Eroare la descărcarea raportului:', error);
+        if (error.response) {
+            console.error('Data:', error.response.data);
+            console.error('Status:', error.response.status);
+            console.error('Headers:', error.response.headers);
+        }
     }
-  };
-  
-  const downloadExcelPondereFeedback = async() =>{
-    try {
+};
+const downloadExcelPondereFeedback = async () => {
+  try {
       const response = await axios.get('http://localhost:8080/istoricCerinte/getRaportFeedback', {
-        responseType: 'blob',
+          responseType: 'blob',
       });
-  
+
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
       link.setAttribute('download', 'raport_feedback_cursuri.xlsx');
       document.body.appendChild(link);
       link.click();
-  
-      window.URL.revokeObjectURL(url);
-  
+      document.body.removeChild(link);
+
       console.log('Descărcare completă a raportului de feedback pentru cursuri.');
-    } catch (error) {
+  } catch (error) {
       console.error('Eroare la descărcarea raportului:', error);
-    }
+      if (error.response) {
+          console.error('Data:', error.response.data);
+          console.error('Status:', error.response.status);
+          console.error('Headers:', error.response.headers);
+      }
   }
+};
 
   const downloadRaportPerformanta = async () => {
     try {
@@ -336,7 +343,7 @@ function AdminHomepage() {
     return (
       <div className="flex flex-wrap gap-2">
         <Button
-          label="New"
+          label="Utilizator Nou"
           icon="pi pi-plus"
           severity="success"
           onClick={openNew}
@@ -569,7 +576,7 @@ function AdminHomepage() {
         </div>
         <div className={style.field}>
           <label htmlFor="password" className={style.label} >
-            Password
+            Parola
           </label>
           <InputText
             id="password"

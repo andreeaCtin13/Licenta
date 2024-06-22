@@ -21,6 +21,26 @@
     border-radius: 8px;
     
   }
+
+  .iconStergereIntrebare{
+    background-color: var(--var--dark--purple);
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 1.2rem;
+    border: 1px solid var(--var--dark--purple);
+    border-radius: 8px;
+  }
+
+  .iconStergereIntrebare:hover{
+    cursor: pointer;
+    opacity: 0.8;
+  }
+
+  .flexing{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   
   .editTestDetails p {
     margin: 5px 0;

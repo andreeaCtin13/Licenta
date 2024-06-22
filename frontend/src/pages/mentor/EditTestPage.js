@@ -11,21 +11,31 @@ const EditTestPage = () => {
   const [test, setTest] = useState(null);
   const [loading, setLoading] = useState(true);
   const { idCourse, id_test } = useParams();
-
   useEffect(() => {
     const fetchTest = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/teste/getAllTestForEdit/${id_test}`);
-        setTest(response.data);
+        const testWithTempIds = {
+          ...response.data,
+          intrebari: response.data.intrebari.map(intrebare => ({
+            ...intrebare,
+            tempId: Date.now() + Math.random(),  // ID unic temporar pentru întrebări
+            varianteRaspuns: intrebare.varianteRaspuns.map(varianta => ({
+              ...varianta,
+              tempVarId: Date.now() + Math.random()  // ID unic temporar pentru variantele de răspuns
+            }))
+          }))
+        };
+        setTest(testWithTempIds);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching test:', error);
       }
     };
-
+  
     fetchTest();
   }, [id_test]);
-
+  
   const handleQuestionChange = (event, questionId) => {
     const updatedQuestions = test.intrebari.map(intrebare => {
       if (intrebare.id_intrebare === questionId) {
@@ -42,11 +52,11 @@ const EditTestPage = () => {
     });
   };
 
-  const handleAnswerChange = (event, questionId, answerId) => {
+  const handleAnswerChange = (event, questionTempId, answerTempVarId) => {
     const updatedQuestions = test.intrebari.map(intrebare => {
-      if (intrebare.id_intrebare === questionId) {
+      if (intrebare.tempId === questionTempId) {
         const updatedVarianteRaspuns = intrebare.varianteRaspuns.map(varianta => {
-          if (varianta.id_varianta === answerId) {
+          if (varianta.tempVarId === answerTempVarId) {
             return {
               ...varianta,
               text_varianta: event.target.value
@@ -66,13 +76,14 @@ const EditTestPage = () => {
       intrebari: updatedQuestions
     });
   };
+  
 
   const handleScoreChange = (event, questionId) => {
     const updatedQuestions = test.intrebari.map(intrebare => {
       if (intrebare.id_intrebare === questionId) {
         return {
           ...intrebare,
-          punctaj: event.target.value
+          punctaj_intrebare: event.target.value
         };
       }
       return intrebare;
@@ -83,11 +94,11 @@ const EditTestPage = () => {
     });
   };
 
-  const handleCorrectnessChange = (event, questionId, answerId) => {
+  const handleCorrectnessChange = (event, questionTempId, answerTempVarId) => {
     const updatedQuestions = test.intrebari.map(intrebare => {
-      if (intrebare.id_intrebare === questionId) {
+      if (intrebare.tempId === questionTempId) {
         const updatedVarianteRaspuns = intrebare.varianteRaspuns.map(varianta => {
-          if (varianta.id_varianta === answerId) {
+          if (varianta.tempVarId === answerTempVarId) {
             return {
               ...varianta,
               este_corecta: event.target.value === 'corecta'
@@ -110,9 +121,10 @@ const EditTestPage = () => {
 
   const handleAddQuestion = () => {
     const newQuestion = {
-      id_intrebare: test.intrebari.length + 1,
+      id_intrebare: null,  // id-ul va fi generat de baza de date
+      tempId: Date.now() + Math.random(),  // ID unic temporar
       text_intrebare: '',
-      punctaj: 0,
+      punctaj_intrebare: 0,
       varianteRaspuns: []
     };
     setTest({
@@ -120,14 +132,16 @@ const EditTestPage = () => {
       intrebari: [...test.intrebari, newQuestion]
     });
   };
-
-  const submitInfo = async() =>{
-    await axios.post(`http://localhost:8080/teste/editareTest/${test.id_test}`, test).then((rez)=>{
-      console.log(rez)
-    }).catch((err)=>{
-      console.log(err)
-    })
+  const submitInfo = async () => {
+    console.log("Submitting test data:", test); 
+    await axios.post(`http://localhost:8080/teste/editareTest/${test.id_test}`, test)
+      .then((rez) => {
+        console.log(rez);
+      }).catch((err) => {
+        console.log(err);
+      });
   }
+  
   const handleDeleteQuestion = (questionId) => {
     const updatedQuestions = test.intrebari.filter(intrebare => intrebare.id_intrebare !== questionId);
     setTest({
@@ -135,24 +149,15 @@ const EditTestPage = () => {
       intrebari: updatedQuestions
     });
   };
-  const handleAddAnswer = (questionId) => {
-    // Find the question object
-    const question = test.intrebari.find(intrebare => intrebare.id_intrebare === questionId);
-  
-    // Calculate the new answer ID based on the maximum existing ID
-    const newAnswerId = question.varianteRaspuns.reduce((maxId, varianta) => {
-      return varianta.id_varianta > maxId ? varianta.id_varianta : maxId;
-    }, 0) + 1;
-  
-    // Create the new answer object
-    const newAnswer = {
-      id_varianta: newAnswerId,
-      text_varianta: '',
-      este_corecta: false
-    };
-  
+  const handleAddAnswer = (questionTempId) => {
     const updatedQuestions = test.intrebari.map(intrebare => {
-      if (intrebare.id_intrebare === questionId) {
+      if (intrebare.tempId === questionTempId) {
+        const newAnswer = {
+          id_varianta: null,  // id-ul va fi generat de baza de date
+          tempVarId: Date.now() + Math.random(),  // ID unic temporar
+          text_varianta: '',
+          este_corecta: false
+        };
         return {
           ...intrebare,
           varianteRaspuns: [...intrebare.varianteRaspuns, newAnswer]
@@ -167,10 +172,11 @@ const EditTestPage = () => {
     });
   };
   
-  const handleDeleteAnswer = (questionId, answerId) => {
+  
+  const handleDeleteAnswer = (questionTempId, answerTempVarId) => {
     const updatedQuestions = test.intrebari.map(intrebare => {
-      if (intrebare.id_intrebare === questionId) {
-        const updatedVarianteRaspuns = intrebare.varianteRaspuns.filter(varianta => varianta.id_varianta !== answerId);
+      if (intrebare.tempId === questionTempId) {
+        const updatedVarianteRaspuns = intrebare.varianteRaspuns.filter(varianta => varianta.tempVarId !== answerTempVarId);
         return {
           ...intrebare,
           varianteRaspuns: updatedVarianteRaspuns
@@ -178,7 +184,7 @@ const EditTestPage = () => {
       }
       return intrebare;
     });
-
+  
     setTest({
       ...test,
       intrebari: updatedQuestions
@@ -220,9 +226,14 @@ const EditTestPage = () => {
       </div>
       <div className={style.editTestQuestions}>
         <h2>Întrebări</h2>
-        {test.intrebari.map(intrebare => (
-          <div key={intrebare.id_intrebare} className={style.editTestQuestion}>
-            <h3>Întrebare {intrebare.id_intrebare}</h3>
+        {test.intrebari.map((intrebare,index) => (
+          <div key={intrebare.tempId} className={style.editTestQuestion}>
+            <div className={style.flexing}>
+            <h3>Întrebare {index+1}</h3>
+            <button onClick={() => handleDeleteQuestion(intrebare.id_intrebare)} className={`${style.iconStergereIntrebare}`}>
+              <FontAwesomeIcon  icon={faTrash} />
+            </button>
+            </div>
             <input
               type="text"
               value={intrebare.text_intrebare}
@@ -235,44 +246,47 @@ const EditTestPage = () => {
               onChange={(e) => handleScoreChange(e, intrebare.id_intrebare)}
               className={style.editTestInput}
             />
-            <button onClick={() => handleDeleteQuestion(intrebare.id_intrebare)} className={`${style.editTestButton} ${style.deleteQuestion}`}>
-              <FontAwesomeIcon icon={faTrash} />
-            </button>
+           
             <ul className={style.editTestAnswerList}>
               {intrebare.varianteRaspuns.map(varianta => (
-                <li key={varianta.id_varianta} className={style.editTestAnswerItem}>
+                <li key={varianta.tempVarId} className={style.editTestAnswerItem}>
                   <input
                     type="text"
                     value={varianta.text_varianta}
-                    onChange={(e) => handleAnswerChange(e, intrebare.id_intrebare, varianta.id_varianta)}
+                    onChange={(e) => handleAnswerChange(e, intrebare.tempId, varianta.tempVarId)}
                     className={style.editTestInput}
                   />
                   <select
                     value={varianta.este_corecta ? 'corecta' : 'incorecta'}
-                    onChange={(e) => handleCorrectnessChange(e, intrebare.id_intrebare, varianta.id_varianta)}
+                    onChange={(e) => handleCorrectnessChange(e, intrebare.tempId, varianta.tempVarId)}
                     className={style.editTestSelect}
                   >
                     <option value="corecta">Corectă</option>
                     <option value="incorecta">Incorectă</option>
                   </select>
-                  <button onClick={() => handleDeleteAnswer(intrebare.id_intrebare, varianta.id_varianta)} className={`${style.editTestButton} ${style.deleteAnswer}`}>
+                  <button onClick={() => handleDeleteAnswer(intrebare.tempId, varianta.tempVarId)} className={`${style.editTestButton} ${style.deleteAnswer}`}>
                     <FontAwesomeIcon icon={faTrash} />
                   </button>
                 </li>
               ))}
             </ul>
-            <button onClick={() => handleAddAnswer(intrebare.id_intrebare)} className={`${style.editTestButton} ${style.addAnswer}`}>
+            <button onClick={() => handleAddAnswer(intrebare.tempId)} className={`${style.editTestButton} ${style.addAnswer}`}>
               <FontAwesomeIcon icon={faPlus} />
             </button>
           </div>
         ))}
         <button onClick={handleAddQuestion} className={`${style.editTestButton} ${style.addQuestion}`}>Adaugă întrebare</button>
       </div>
+      <div className={style.flexing}>
       <Link to={`/mentor-homepage/${idCourse}`}>
-        <Button content ="Submit" onClick={submitInfo}  className={`${style.editTestButton}`}></Button>
+        <Button content="Submit" onClick={submitInfo} className={`${style.editTestButton}`}></Button>
       </Link>
+      <Link to={`/mentor-homepage/${idCourse}`}>
+      <Button content="Anulează" className={`${style.editTestButton}`}></Button>
+      </Link>
+      </div>
     </div>
-  );
-};
+  );  
+}  
 
 export default EditTestPage;

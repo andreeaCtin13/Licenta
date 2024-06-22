@@ -322,7 +322,7 @@ function CoursePage() {
           ))}
 
           <Dialog
-            header="Header"
+            header="Direcțiile acordate de către mentor"
             visible={dialog}
             style={{ width: "50vw" }}
             onHide={() => {
@@ -331,9 +331,9 @@ function CoursePage() {
             }}
           >
             {feedback ? (
-              <p>Feedback-ul mentorului: {feedback}</p>
+              <p>{feedback}</p>
             ) : (
-              <p>Mentorul încă nu a acordat feedback</p>
+              <p>Nu există momentan.</p>
             )}
           </Dialog>
 
