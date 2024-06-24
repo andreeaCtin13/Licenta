@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,11 +6,17 @@ import { faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
 import style from "../../styles/mentor/EditTestPage.module.css";
 import Button from '../../components/Button';
 import { Link } from 'react-router-dom';
+import { Toast } from "primereact/toast";
+import { useNavigate } from 'react-router-dom';
 
 const EditTestPage = () => {
   const [test, setTest] = useState(null);
   const [loading, setLoading] = useState(true);
   const { idCourse, id_test } = useParams();
+  const toast = useRef(null);
+  const navigate = useNavigate();
+
+
   useEffect(() => {
     const fetchTest = async () => {
       try {
@@ -19,10 +25,10 @@ const EditTestPage = () => {
           ...response.data,
           intrebari: response.data.intrebari.map(intrebare => ({
             ...intrebare,
-            tempId: Date.now() + Math.random(),  // ID unic temporar pentru întrebări
+            tempId: Date.now() + Math.random(), 
             varianteRaspuns: intrebare.varianteRaspuns.map(varianta => ({
               ...varianta,
-              tempVarId: Date.now() + Math.random()  // ID unic temporar pentru variantele de răspuns
+              tempVarId: Date.now() + Math.random()  
             }))
           }))
         };
@@ -121,8 +127,8 @@ const EditTestPage = () => {
 
   const handleAddQuestion = () => {
     const newQuestion = {
-      id_intrebare: null,  // id-ul va fi generat de baza de date
-      tempId: Date.now() + Math.random(),  // ID unic temporar
+      id_intrebare: null, 
+      tempId: Date.now() + Math.random(),  
       text_intrebare: '',
       punctaj_intrebare: 0,
       varianteRaspuns: []
@@ -133,14 +139,69 @@ const EditTestPage = () => {
     });
   };
   const submitInfo = async () => {
-    console.log("Submitting test data:", test); 
-    await axios.post(`http://localhost:8080/teste/editareTest/${test.id_test}`, test)
-      .then((rez) => {
-        console.log(rez);
-      }).catch((err) => {
-        console.log(err);
+    // Verificarea datelor testului
+    if (
+      !test.id_test ||
+      !test.punctaj_minim_promovare ||
+      !test.intrebari ||
+      test.intrebari.length < 1
+    ) {
+      toast.current.show({
+        severity: "error",
+        summary: "Failed",
+        detail: "Nu ai furnizat toate informațiile necesare",
+        life: 3000,
       });
-  }
+      return;
+    }
+  
+    // Verificarea numărului minim de întrebări
+    if (test.intrebari.length < 1) {
+      toast.current.show({
+        severity: "error",
+        summary: "Failed",
+        detail: "Trebuie să incluzi minim o întrebare",
+        life: 3000,
+      });
+      return;
+    }
+  
+    // Verificarea punctajului minim de promovare
+    const totalScore = test.intrebari.reduce((acc, intrebare) => {
+      return acc + Number(intrebare.punctaj_intrebare);
+    }, 0);
+    
+    if (test.punctaj_minim_promovare > totalScore) {
+      toast.current.show({
+        severity: "error",
+        summary: "Failed",
+        detail: "Punctajul minim de promovare trebuie să fie cel puțin egal cu suma punctajelor întrebărilor",
+        life: 3000,
+      });
+      return;
+    }
+  
+    // Trimiterea datelor
+    try {
+      const response = await axios.post(`http://localhost:8080/teste/editareTest/${test.id_test}`, test);
+      toast.current.show({
+        severity: "success",
+        summary: "Succes",
+        detail: "Testul a fost actualizat cu succes",
+        life: 3000,
+      });
+      navigate(`/mentor-homepage/${idCourse}`);
+    } catch (error) {
+      console.log(error);
+      toast.current.show({
+        severity: "error",
+        summary: "Failed",
+        detail: "Eroare la actualizarea testului",
+        life: 3000,
+      });
+    }
+  };
+  
   
   const handleDeleteQuestion = (questionId) => {
     const updatedQuestions = test.intrebari.filter(intrebare => intrebare.id_intrebare !== questionId);
@@ -208,8 +269,10 @@ const EditTestPage = () => {
 
   console.log("test", test)
 
+  
   return (
     <div className={style.editTestContainer}>
+      <Toast ref={toast} />
       <h1 className={style.editTestHeading}>Editare Test</h1>
       <div className={style.editTestDetails}>
         <h2>Detalii</h2>
@@ -226,13 +289,13 @@ const EditTestPage = () => {
       </div>
       <div className={style.editTestQuestions}>
         <h2>Întrebări</h2>
-        {test.intrebari.map((intrebare,index) => (
+        {test.intrebari.map((intrebare, index) => (
           <div key={intrebare.tempId} className={style.editTestQuestion}>
             <div className={style.flexing}>
-            <h3>Întrebare {index+1}</h3>
-            <button onClick={() => handleDeleteQuestion(intrebare.id_intrebare)} className={`${style.iconStergereIntrebare}`}>
-              <FontAwesomeIcon  icon={faTrash} />
-            </button>
+              <h3>Întrebare {index+1}</h3>
+              <button onClick={() => handleDeleteQuestion(intrebare.id_intrebare)} className={`${style.iconStergereIntrebare}`}>
+                <FontAwesomeIcon icon={faTrash} />
+              </button>
             </div>
             <input
               type="text"
@@ -246,7 +309,6 @@ const EditTestPage = () => {
               onChange={(e) => handleScoreChange(e, intrebare.id_intrebare)}
               className={style.editTestInput}
             />
-           
             <ul className={style.editTestAnswerList}>
               {intrebare.varianteRaspuns.map(varianta => (
                 <li key={varianta.tempVarId} className={style.editTestAnswerItem}>
@@ -278,15 +340,15 @@ const EditTestPage = () => {
         <button onClick={handleAddQuestion} className={`${style.editTestButton} ${style.addQuestion}`}>Adaugă întrebare</button>
       </div>
       <div className={style.flexing}>
-      <Link to={`/mentor-homepage/${idCourse}`}>
-        <Button content="Submit" onClick={submitInfo} className={`${style.editTestButton}`}></Button>
-      </Link>
-      <Link to={`/mentor-homepage/${idCourse}`}>
-      <Button content="Anulează" className={`${style.editTestButton}`}></Button>
-      </Link>
+        <Link to={`/mentor-homepage/${idCourse}`}>
+          <Button content="Submit" onClick={submitInfo} className={`${style.editTestButton}`}></Button>
+        </Link>
+        <Link to={`/mentor-homepage/${idCourse}`}>
+          <Button content="Anulează" className={`${style.editTestButton}`}></Button>
+        </Link>
       </div>
     </div>
-  );  
+  );
 }  
 
 export default EditTestPage;
