@@ -116,14 +116,15 @@ const controller = {
 
     worksheet.columns = [
       { header: 'ID Curs', key: 'id_curs', width: 10 },
-      { header: 'Nume Curs', key: 'nume_curs', width: 30 },
+      { header: 'Denumire Curs', key: 'denumire', width: 30 },
       { header: 'Număr Cereri', key: 'numar_cereri', width: 15 }
     ];
 
     raportPreferinte.forEach(curs => {
+      console.log("curs:", curs.denumire)
       worksheet.addRow({
         id_curs: curs.id_curs,
-        nume_curs: curs.nume_curs,
+        denumire: curs.denumire,
         numar_cereri: curs.dataValues.numar_cereri
       });
     });

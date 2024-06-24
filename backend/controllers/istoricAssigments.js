@@ -32,6 +32,7 @@ const controller = {
           where: {
             id_utilizator: id_utilizator,
             id_cerinta: id_cerinta,
+            feedback: null 
           },
           order: [["data_finalizare", "DESC"]],
         });
@@ -49,7 +50,6 @@ const controller = {
             mail: user ? user.mail : null,
             nume: user ? user.nume : null,
           };
-
           result.push(istoricUtilizator);
         }
       }
@@ -211,24 +211,38 @@ const controller = {
   getRaportFeedback: async (req, res) => {
     try {
       const cursuri = await cursuriModel.findAll({ attributes: ['id_curs', 'denumire', 'id_utilizator'] });
-      const cerinte = await cerinteModel.findAll({ attributes: ['id_cerinta', 'id_curs'] });
-      const cerinteIstoric = await istoricAssigments.findAll();
+      console.log('Cursuri:', cursuri);
+
+      const sectiuni = await sectiuniModel.findAll({ attributes: ['id_sectiune', 'id_curs'] });
+      console.log('Secțiuni:', sectiuni);
+
+      const cerinte = await cerinteModel.findAll({ attributes: ['id_cerinta', 'id_sectiune'] });
+      console.log('Cerințe:', cerinte);
+
+      const cerinteIstoric = await ictoricCerinteModel.findAll();
+      console.log('Istoric cerințe:', cerinteIstoric);
+
       const utilizatori = await utilizatoriModel.findAll({ attributes: ['id_utilizator', 'nume'] });
+      console.log('Utilizatori:', utilizatori);
 
       let reportData = [];
 
       cursuri.forEach(curs => {
-          const cerinteForCurs = cerinte.filter(cerinta => cerinta.id_curs === curs.id_curs);
-          const cerinteIstoricForCurs = cerinteIstoric.filter(ci =>
-              cerinteForCurs.some(cerinta => cerinta.id_cerinta === ci.idCerinta)
-          );
+          const sectiuniForCurs = sectiuni.filter(sectiune => sectiune.id_curs === curs.id_curs);
+          const cerinteForCurs = cerinte.filter(cerinta => sectiuniForCurs.some(sectiune => sectiune.id_sectiune === cerinta.id_sectiune));
+          const cerinteIstoricForCurs = cerinteIstoric.filter(ci => cerinteForCurs.some(cerinta => cerinta.id_cerinta === ci.id_cerinta));
 
           const totalCerinte = cerinteIstoricForCurs.length;
+          console.log("total cerinte:",totalCerinte)
           const feedbackGiven = cerinteIstoricForCurs.filter(ci => ci.feedback !== null).length;
           const feedbackGivenPercentage = totalCerinte ? (feedbackGiven / totalCerinte) * 100 : 0;
           const feedbackMissingPercentage = totalCerinte ? ((totalCerinte - feedbackGiven) / totalCerinte) * 100 : 0;
 
           const mentor = utilizatori.find(u => u.id_utilizator === curs.id_utilizator);
+
+          console.log("feedback given:",feedbackGivenPercentage.toFixed(2))
+
+          console.log("feedback missing:", feedbackMissingPercentage.toFixed(2))
 
           reportData.push({
               idCurs: curs.id_curs,
@@ -238,6 +252,8 @@ const controller = {
               feedbackMissingPercentage: feedbackMissingPercentage.toFixed(2)
           });
       });
+
+      console.log('Report Data:', reportData);
 
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet('Feedback Report');

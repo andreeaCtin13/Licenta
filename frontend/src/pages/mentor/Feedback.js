@@ -64,6 +64,8 @@ function Feedback() {
     }
   };
   
+  
+  
   useEffect(() => {
     setPage(1);
     setData();
