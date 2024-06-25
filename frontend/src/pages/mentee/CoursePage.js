@@ -184,6 +184,11 @@ function CoursePage() {
     }
   };
 
+  const closeModal = ()=>{
+    setDialog(false);
+    setFeedback(null);
+  }
+
   const downloadPDF = async (id) => {
     try {
       const response = await axios({
@@ -328,10 +333,7 @@ function CoursePage() {
             header="Direcțiile acordate de către mentor"
             visible={dialog}
             style={{ width: "50vw" }}
-            onHide={() => {
-              setDialog(false);
-              setFeedback(null);
-            }}
+            onHide={closeModal}
           >
             {feedback ? (
               <p>{feedback}</p>
