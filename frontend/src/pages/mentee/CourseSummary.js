@@ -9,7 +9,7 @@ import { Toast } from "primereact/toast";
 
 function CourseSummary() {
   const { idCourse } = useParams();
-  const [requestStatus, setRequestStatus] = useState("unenrolled");
+  const [requestStatus, setRequestStatus] = useState("Neînscris");
   const [requestId, setRequestId] = useState(null);
   const { user } = useContext(UserContext);
   const toast = useRef(null);
@@ -24,7 +24,7 @@ function CourseSummary() {
         (x) => x.id_curs === Number(idCourse)
       );
       if (!request) {
-        setRequestStatus("unenrolled");
+        setRequestStatus("Neînscris");
       } else {
         setRequestStatus(request.status);
         setRequestId(request.id_cerere);
@@ -66,7 +66,7 @@ function CourseSummary() {
 
   const handleEnroll = async () => {
     try {
-      if (requestStatus === "unenrolled" || requestStatus === "declined") {
+      if (requestStatus === "Neînscris" || requestStatus === "declined") {
         const response = await axios.post(
           "http://localhost:8080/cereriCurs/exists",
 
@@ -114,7 +114,8 @@ function CourseSummary() {
     const fileName = path.split('\\').pop();
     return `http://localhost:8080/images/${fileName}`;
   };
-
+  //==="pending"?("În așteptare"):(requestStatus==="Neînscris"?"Neînscris":"jdjj")
+{console.log("hei: ", requestStatus)}
   return (
     <div className={style.mainContainer}>
       <Toast ref={toast} />
@@ -133,7 +134,7 @@ function CourseSummary() {
           <div className={style.rightContainerDesc}>{course.descriere}</div>
           {requestStatus === "accepted" ? (
             <Button
-              content={"Unenroll"} 
+              content={"Retrage-te din cadrul cursului"} 
               className={`${style.unEnrollBtn} ${style.btn}`}
               onClick={handleEnroll}
             />
@@ -147,7 +148,7 @@ function CourseSummary() {
                   : style.unEnrollBtn
               }`}
               onClick={handleEnroll}
-              content={requestStatus}
+              content={requestStatus==="pending"?("În așteptare"):(requestStatus==="Neînscris"?"Neînscris":(requestStatus==="accepted"?"Retrage-te din cadrul cursului":"Înscrie-te"))}
             />
           )}
         </div>

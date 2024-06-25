@@ -15,7 +15,7 @@ function CoursePresentation({ description, id, title, image }) {
 
   if (description.length > 50) {
     let new_description = description.slice(0, 30);
-    new_description += "... see more";
+    new_description += "... vezi mai multe";
     description = new_description;
   }
 

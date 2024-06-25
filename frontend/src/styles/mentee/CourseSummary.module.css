@@ -17,11 +17,11 @@
 }
 
 .btn {
-  width: 10rem;
+  min-width: 10rem;
+  padding: 1rem;
   border: none;
   background-color: var(--var--dark--pink);
   cursor: pointer;
-  height: 3rem;
   font-size: 1.5rem;
   border-radius: 2rem;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;

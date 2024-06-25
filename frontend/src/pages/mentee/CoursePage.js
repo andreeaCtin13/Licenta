@@ -145,6 +145,9 @@ function CoursePage() {
   };
   
   useEffect(()=>{
+    setCerinte([])
+    setResurse([])
+    setCourseChosen(0)
     setData()
   }, [idCourse]);
 
@@ -264,8 +267,8 @@ function CoursePage() {
           </div>
           </div>
           <div>
-          <h2>Evoluția Punctajelor</h2>
-          <Chart type="line" data={chartData} options={chartOptions} />
+          {/* <h2>Evoluția Punctajelor</h2>
+          <Chart type="line" data={chartData} options={chartOptions} /> */}
 
             </div>
             </div>
@@ -379,7 +382,7 @@ function CoursePage() {
           </div>
         </div>
       ) : (
-        <div>Nu există cursuri</div>
+        <div>Nu există materiale aferente cursului.</div>
       )}
     </div>
   );

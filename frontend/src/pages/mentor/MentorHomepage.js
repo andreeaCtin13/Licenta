@@ -77,7 +77,7 @@ function MentorHomepage() {
           />
         </div>
       </div>
-      <h1>Hei, {user ? user.nume : 'Nume utilizator'}</h1>
+      <h1>Salut, {user ? user.nume : 'Nume utilizator'}</h1>
       <VerticalBarChart />
       <div>
         <h2>Cursurile susținute de dvs.</h2>

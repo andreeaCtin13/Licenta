@@ -35,7 +35,7 @@ function UserMarket() {
     <div className={style.mainContainer}>
       <Toast ref={toast} />
 
-      <h1>Courses</h1>
+      <h1>Cursuri</h1>
       <div className={style.coursesArea}>
         {cursuri.map((c) => {
           return (
