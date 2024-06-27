@@ -83,10 +83,9 @@ function NewSection() {
     }
 
     const totalScore = newSection.intrebari?.reduce((acc, intrebare) => {
-      return acc + Number(intrebare.requirement);
+      return acc + Number(intrebare.punctaj_intrebare);
     }, 0);
-    console.log("total score - ", totalScore)
-    console.log("punctaj minim - ", newSection.punctaj_minim_promovare)
+
     if (newSection.punctaj_minim_promovare > totalScore) {
       console.log("INTRU AICI BRO")
       toast.current.show({

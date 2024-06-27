@@ -138,8 +138,8 @@ const EditTestPage = () => {
       intrebari: [...test.intrebari, newQuestion]
     });
   };
+
   const submitInfo = async () => {
-    // Verificarea datelor testului
     if (
       !test.id_test ||
       !test.punctaj_minim_promovare ||
@@ -167,17 +167,24 @@ const EditTestPage = () => {
     }
   
     // Verificarea punctajului minim de promovare
-    const totalScore = test.intrebari.reduce((acc, intrebare) => {
+    const totalScore = test.intrebari?.reduce((acc, intrebare) => {
       return acc + Number(intrebare.punctaj_intrebare);
     }, 0);
-    
-    if (test.punctaj_minim_promovare > totalScore) {
+  
+    const minimumPassingScore = Number(test.punctaj_minim_promovare);
+  
+    console.log("total score:", totalScore);
+    console.log("punctaj minim:", minimumPassingScore);
+  
+    if (minimumPassingScore > totalScore) {
       toast.current.show({
         severity: "error",
         summary: "Failed",
-        detail: "Punctajul minim de promovare trebuie să fie cel puțin egal cu suma punctajelor întrebărilor",
+        detail:
+          "Punctajul minim de promovare trebuie sa fie cel putin egal cu suma punctajelor intrebarilor",
         life: 3000,
       });
+      console.log("vine aici");
       return;
     }
   
@@ -253,12 +260,15 @@ const EditTestPage = () => {
   };
 
   const handleMinimPromovareChange = (event) => {
-    setTest({
-      ...test,
-      punctaj_minim_promovare: event.target.value
-    });
+    const value = event.target.value;
+    if (!isNaN(value) && value.trim() !== '') {
+      setTest({
+        ...test,
+        punctaj_minim_promovare: Number(value)
+      });
+    }
   };
-
+  
   if (loading) {
     return <div className={style.editTestContainer}>Loading...</div>;
   }
@@ -341,7 +351,7 @@ const EditTestPage = () => {
       </div>
       <div className={style.flexing}>
         <Link to={`/mentor-homepage/${idCourse}`}>
-          <Button content="Submit" onClick={submitInfo} className={`${style.editTestButton}`}></Button>
+        <Button content="Submit" onClick={(e) => { e.preventDefault(); submitInfo(); }} className={`${style.editTestButton}`}></Button>
         </Link>
         <Link to={`/mentor-homepage/${idCourse}`}>
           <Button content="Anulează" className={`${style.editTestButton}`}></Button>
