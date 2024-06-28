@@ -11,12 +11,31 @@ const { Parser } = require('json2csv');
 const ExcelJS = require('exceljs');
 const fs = require('fs');
 const path = require('path');
+const nodemailer = require("nodemailer")
 
 const generateAccessToken = (user) => {
   return jwt.sign({ user }, process.env.SECRET_KEY, { expiresIn: "2h" });
 };
 
+const transporter = nodemailer.createTransport({
+  service:"gmail",
+  host:"stmp.gmail.com",
+  port:465,
+  secure:true,
+  auth:{
+    user:process.env.USERNAME_MAIL,
+    pass: process.env.PASS_USERNAME_MAIL
+  }
+})
 
+
+const sendMail = async(transporter, mailOptions)=>{
+  try{
+    await transporter.sendMail(mailOptions);
+  }catch(err){
+  console.log("hahaha")
+  }
+}
 
 const controller = {
   generateUsersCSV: async (req, res) => {
@@ -196,6 +215,18 @@ const controller = {
     const nume = req.body.nume;
     const status = req.body.status;
 
+    const mailOptions = {
+      from:{
+        name:"hahah",
+        address:process.env.USERNAME_MAIL
+      }
+      ,to:"andreeactin13@gmail.com",
+      subject:"heiiiii",
+      text:"HEI?",
+      html:"<b>HEI?</b>"
+    }
+
+    sendMail(transporter, mailOptions)
     try {
       let user = usersModel.findOne({ where: { mail: mail } });
       if (user) {

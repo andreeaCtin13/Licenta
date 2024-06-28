@@ -91,7 +91,6 @@ function CourseStatus() {
     getCurs();
   }, []);
 
-  console.log("uite cum se modifica: ", deleteConfirmationVisible)
   const openAddModal = () => {
     setNewAssignmentData({ titlu: "", cerinta: "" });
     setAddModalVisible(true);
@@ -102,9 +101,7 @@ function CourseStatus() {
   };
 
   const handleAddAssignment = async() => {
-    console.log("ASTA STERG ", sectiuneToDelete)
     await axios.post(`http://localhost:8080/cerinte/insert`, {...newAssignmentData, id_sectiune:sectiuneToDelete}).then((rez)=>{
-      console.log(rez.data)
       getAllSectiuni()
     }).catch(
       err=>console.log(err)
@@ -119,7 +116,6 @@ function CourseStatus() {
     formData.append("id_sectiune", id);
     formData.append("files", file);
 
-    console.log([...formData.entries()]);
 
     await axios
       .post(`http://localhost:8080/resurse/insert`, formData, {
@@ -175,7 +171,6 @@ function CourseStatus() {
   const handleDelete = async (id_cerinta) => {
     try {
       await axios.delete(`http://localhost:8080/cerinte/delete/${id_cerinta}`);
-      console.log("a fost sters ce bine");
       await getAllSectiuni();
     } catch (err) {
       console.log(err);
@@ -383,7 +378,6 @@ function CourseStatus() {
                   </div>
 
                 </div>
-                {console.log("editeaza testul ", sectiune)}
                 <Link to={`/edit-test/${idCourse}/${sectiune.id_test}`}>
                   <Button
                     content={"Editează testul"}
