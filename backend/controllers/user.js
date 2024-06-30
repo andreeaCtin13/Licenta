@@ -217,16 +217,15 @@ const controller = {
 
     const mailOptions = {
       from:{
-        name:"hahah",
+        name:"LearnIT",
         address:process.env.USERNAME_MAIL
       }
-      ,to:"andreeactin13@gmail.com",
-      subject:"heiiiii",
-      text:"HEI?",
-      html:"<b>HEI?</b>"
+      ,to:mail,
+      subject:"Cont LearnIT",
+      text:`Salut, ai cont pe LearnIT. \nMail-ul cu care te poți autentifica: ${mail}\nParola asignată: ${password}`,
+      html:`<p>Salut, ai cont pe <b>LearnIT</b>. \nMail-ul cu care te poți autentifica: ${mail}\nParola asignată: ${password}</p>`
     }
 
-    sendMail(transporter, mailOptions)
     try {
       let user = usersModel.findOne({ where: { mail: mail } });
       if (user) {
@@ -236,6 +235,8 @@ const controller = {
           mail,
           status,
           password: hashedPassword,
+        }).then(()=>{
+          sendMail(transporter, mailOptions)
         });
         const jwtToken = generateAccessToken(user);
         console.log(user);
@@ -292,6 +293,24 @@ const controller = {
       new_user = { ...req.body };
     }
 
+    const user = await usersModel.findByPk(id_utilizator)
+    if(!user){
+      return res.status(400).json({
+        message:"Nu eixsta utilizatorul cu id-ul dat"
+      })
+    }
+    const mailOptions = {
+      from:{
+        name:"LearnIT",
+        address:process.env.USERNAME_MAIL
+      }
+      ,to:user.mail,
+      subject:"Schimbare parolă LearnIT",
+      text:`Salut, ai resetat parola aferentă contului LearnIT înregistrat cu mail-ul: ${user.mail}`,
+      html:`<p>Salut, ai resetat parola aferentă contului <b>LearnIT</b> înregistrat cu mail-ul: ${user.mail}</p>`
+    }
+
+
     await usersModel
       .update(
         {
@@ -304,6 +323,8 @@ const controller = {
         }
       )
       .then((rez) => {
+        sendMail(transporter, mailOptions)
+
         return res
           .status(200)
           .send({ message: "A fost actualizat utilizatorul" });
