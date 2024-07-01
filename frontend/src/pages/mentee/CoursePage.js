@@ -34,6 +34,13 @@ function CoursePage() {
     updateInfo(index);
   };
 
+  const getSecureYouTubeLink = (link) => {
+    const url = new URL(link);
+    url.searchParams.set('rel', '0');  
+    url.searchParams.set('modestbranding', '1');  
+    return url.toString();
+  };
+  
   useEffect(() => {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
@@ -220,6 +227,18 @@ function CoursePage() {
     }
   };
 
+  const options = {
+    height: 'auto',
+    width: '100%',
+    playerVars: {
+      // https://developers.google.com/youtube/player_parameters
+      controls: 0,
+      enablejsapi: 1,
+      modestbranding: 1,
+      showinfo: 0
+    }
+  }
+
   return (
     <div className={style.mainContainer}>
       <Toast ref={toast} />
@@ -241,17 +260,30 @@ function CoursePage() {
             <div>
           <h2>Resurse Video</h2>
 
-          <div className={style.containerVideo}>
+          <div className={`${style.containerVideo}`}>
             <div className={style.video}>
-              <ReactPlayer
-                url={
-                  resurse.length > 0 && resurse.some((x) => x.tip_resursa === "video_link")
-                    ? resurse.find((x) => x.tip_resursa === "video_link").link_resursa
-                    : "https://youtu.be/MTOiveIjRc0?si=jnIFMgnewLh8iose"
-                }
-                width={450}
-                controls={true}
-              />
+            <ReactPlayer
+            className={style.reactPlayerVideo}
+  url={
+    resurse.length > 0 && resurse.some((x) => x.tip_resursa === "video_link")
+      ? getSecureYouTubeLink(resurse.find((x) => x.tip_resursa === "video_link").link_resursa)
+      : getSecureYouTubeLink("https://youtu.be/MTOiveIjRc0?si=jnIFMgnewLh8iose")
+  }
+  width={450}
+  controls={true}
+  config={{
+    youtube: {
+      playerVars: {
+        rel: 0,  // Nu arată videoclipuri similare la sfârșit
+        modestbranding: 1,  // Ascunde logo-ul YouTube
+        reload:false
+      }
+    }
+  }}
+  onContextMenu={e => e.preventDefault()}  // Dezactivează meniul contextual
+/>
+<div className={style.letmecheck}></div>
+
             </div>
             <div className={style.videoPlaylistContainer}>
               {courseChosen.sectiuni.map((section, index) => (
