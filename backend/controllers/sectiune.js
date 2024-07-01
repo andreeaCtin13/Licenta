@@ -26,6 +26,36 @@ const controller = {
     }
   },
 
+  getAllSectiuniDetails:async(req,res)=>{
+    const { id_curs } = req.params;
+
+    try {
+      let sectiuni = await sectiuniModel.findAll({ where: { id_curs } });
+  
+      const sectiuniCuDetalii = await Promise.all(
+        sectiuni.map(async (sectiune) => {
+          const [resurse, cerinte, teste] = await Promise.all([
+            resurseModel.findAll({ where: { id_sectiune: sectiune.id_sectiune } }),
+            cerinteModel.findAll({ where: { id_sectiune: sectiune.id_sectiune } }),
+            testeModel.findAll({ where: { id_sectiune: sectiune.id_sectiune } }),
+          ]);
+  
+          return {
+            ...sectiune.dataValues,
+            resurse,
+            cerinte,
+            teste,
+          };
+        })
+      );
+  
+      return res.status(200).json({ sectiuni: sectiuniCuDetalii, message: "success" });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ message: "server error", err: err });
+    }
+  },
+
   updateSectiune : async (req, res) => {
     const { id_sectiune } = req.params;
     const { denumire, descriere, video_link } = req.body;

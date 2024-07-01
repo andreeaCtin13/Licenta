@@ -25,6 +25,7 @@ router.post(
   upload.array("files", 20),
   sectiuniController.insertSectiune
 );
+router.get("/getAllSectiuniDetalii/:id_curs", sectiuniController.getAllSectiuniDetails)
 router.get("/getSectiuneById/:id_sectiune", sectiuniController.getSectiuneById);
 router.put("/update/:id_sectiune", sectiuniController.updateSectiune);
 router.delete("/deleteSectiuneOverall/:id_sectiune", sectiuniController.deleteSectiuneOverall);

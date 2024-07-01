@@ -56,35 +56,23 @@ function CourseStatus() {
 
   const getAllSectiuni = async () => {
     try {
-      const { data: { sectiuni } } = await axios.get(`http://localhost:8080/sectiuni/selectAll/${idCourse}`);
-  
-      const sectiuniCuTeste = await Promise.all(sectiuni.map(async (sectiune) => {
-        const resurse = await axios.get(`http://localhost:8080/resurse/getResurseCursSection/${sectiune.id_sectiune}`);
-        const cerinte = await axios.get(`http://localhost:8080/cerinte/getAllCerinte/${sectiune.id_sectiune}`);
-  
-        const testForSection = await axios.get(`http://localhost:8080/teste/getTestIds/${sectiune.id_sectiune}`);
-  
-        return {
-          ...sectiune,
-          resurse: resurse.data.resurse,
-          cerinte: cerinte.data.cerinte,
-          id_test: testForSection.data.test[0].id_test
-        };
-      }));
-  
-      setSectiuni(sectiuniCuTeste);
+      const { data } = await axios.get(`http://localhost:8080/sectiuni/getAllSectiuniDetalii/${idCourse}`);
+      setSectiuni(data.sectiuni);
     } catch (err) {
       console.log(err);
       toast.current.show({
-        severity: "fail",
-        summary: "Failed",
-        detail: "Eroare la încărcarea secțiunilor",
+        severity: 'fail',
+        summary: 'Failed',
+        detail: 'Eroare la încărcarea secțiunilor',
         life: 3000,
       });
     }
   };
-  
-  
+
+  useEffect(() => {
+    getAllSectiuni();
+    getCurs();
+  }, []);
 
   useEffect(() => {
     getAllSectiuni();
@@ -361,17 +349,20 @@ function CourseStatus() {
                           key={assignment.id_cerinta}
                           className={style.assignment}
                         >
+                          <div className={style.requirementRow}>
+
                            <h4>Titlul cerinței - {assignment.titlu}</h4>
-                        <div className={style.requirementRow}>
-                            <div>Cerința - {assignment.cerinta}</div>
-                            <div>
+                           <div>
                                 <FontAwesomeIcon
                                     icon={faTrash}
                                     className={style.deleteIcon}
                                     onClick={() => handleDelete(assignment.id_cerinta)}
                                 />
                             </div>
-                        </div>
+                            </div>
+
+                            <div>Cerința - {assignment.cerinta}</div>
+                            
                         </div>
                       );
                     })}
