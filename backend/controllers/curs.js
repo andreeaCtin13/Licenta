@@ -39,7 +39,9 @@ const controller = {
 
   insertCurs: async (req, res) => {
     let { denumire, descriere, id_utilizator } = req.body;
-
+    console.log("denumire:", denumire)
+    console.log("descriere:", descriere)
+    console.log("id_utilizator:", id_utilizator)
     try {
       let user = await usersModel.findByPk(id_utilizator);
 
@@ -65,8 +67,11 @@ const controller = {
         .then((rez) =>
           res.status(200).json({ user: rez, message: "course created" })
         )
-        .catch((err) =>  res.status(500).json({ message: "server error", err }));
+        .catch((err) => { 
+          console.log(err)
+          res.status(500).json({ message: "server error", err })})
     } catch (err) {
+      console.log(err)
       return res.status(500).json({ message: "server error", err });
     }
   },

@@ -236,7 +236,7 @@ const controller = {
           status,
           password: hashedPassword,
         }).then(()=>{
-          sendMail(transporter, mailOptions)
+          // sendMail(transporter, mailOptions)
         });
         const jwtToken = generateAccessToken(user);
         console.log(user);

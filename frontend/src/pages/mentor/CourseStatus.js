@@ -245,7 +245,7 @@ function CourseStatus() {
     fetchData();
   }, []);
   
-
+  console.log(sectiuni)
   return (
     <div className={style.mainContainer}>
       <Link to={`/mentor-homepage`}>
@@ -369,7 +369,9 @@ function CourseStatus() {
                   </div>
 
                 </div>
-                <Link to={`/edit-test/${idCourse}/${sectiune.id_test}`}>
+                {console.log("what do i transfer:", sectiune.teste[0].id_test)}
+                {/* <Link> */}
+                <Link to={`/edit-test/${idCourse}/${sectiune?.teste?sectiune?.teste[0].id_test:0}`}>
                   <Button
                     content={"Editează testul"}
                     className={`${style.btn} ${style.btnEditTest}`}

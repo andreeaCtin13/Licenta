@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           min: 0,
-          max: 100,
+          max: 500,
         },
       },
       numar_intrebari: {

@@ -240,7 +240,7 @@ const EditTestPage = () => {
     });
   };
   
-  
+  console.log(id_test)
   const handleDeleteAnswer = (questionTempId, answerTempVarId) => {
     const updatedQuestions = test.intrebari.map(intrebare => {
       if (intrebare.tempId === questionTempId) {

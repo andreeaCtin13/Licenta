@@ -11,13 +11,13 @@ module.exports = (sequelize, DataTypes) => {
       denumire: {
         type: DataTypes.STRING,
         validate: {
-          len: [3, 30],
+          len: [3, 255],
         },
       },
       descriere: {
         type: DataTypes.STRING,
         validate: {
-          len: [3, 30],
+          len: [3, 1000],
         },
       },
       nr_sectiuni: {
