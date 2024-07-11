@@ -369,9 +369,8 @@ function CourseStatus() {
                   </div>
 
                 </div>
-                {console.log("what do i transfer:", sectiune.teste[0].id_test)}
                 {/* <Link> */}
-                <Link to={`/edit-test/${idCourse}/${sectiune?.teste?sectiune?.teste[0].id_test:0}`}>
+                <Link to={`/edit-test/${idCourse}/${sectiune?(sectiune.teste?((sectiune.teste[0])?sectiune.teste[0].id_test:0):0):0}`}>
                   <Button
                     content={"Editează testul"}
                     className={`${style.btn} ${style.btnEditTest}`}

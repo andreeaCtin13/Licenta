@@ -4,6 +4,7 @@ const varianteModel = require("../models").varianteDeRaspuns;
 const controller = {
   getAllIntrebariByTestId: async (req, res) => {
     const { id_test } = req.params;
+    console.log("id_test",id_test)
     const test = await testModel.findByPk(id_test);
     if (!test) {
       return res
@@ -24,6 +25,7 @@ const controller = {
         ],
       })
       .then((rez) => {
+        console.log("REZULTAT: ", rez)
         if (rez && rez.length > 0) {
           return res.status(200).json({ message: "success", intrebari: rez });
         } else {

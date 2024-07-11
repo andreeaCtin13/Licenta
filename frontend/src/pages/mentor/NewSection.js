@@ -100,6 +100,16 @@ function NewSection() {
 
 
  const formData = new FormData();
+    if(!fileToSend){
+      toast.current.show({
+        severity: "error",
+        summary: "Failed",
+        detail:
+          "Nu ai furnizat niciun fisier",
+        life: 3000,
+      });
+      return;
+    }
     fileToSend.forEach((file) => {
       formData.append('files', file);
     });
@@ -125,13 +135,25 @@ function NewSection() {
         navigate(`/mentor-homepage/${idCourse}`);
       })
       .catch((err) => {
-        console.log(err.message);
-        toast.current.show({
-          severity: "error",
-          summary: "Failed",
-          detail: "Eroare la incarcarea sectiunii",
-          life: 3000,
-        });
+        if(err.response.status === 400){
+          toast.current.show({
+            severity: "error",
+            summary: "Failed",
+            detail: err.response.data.message,
+            life: 3000,
+          });
+
+        }
+        else{
+          toast.current.show({
+            severity: "error",
+            summary: "Failed",
+            detail: "Furnizează datele complete!",
+            life: 3000,
+          });
+          console.log(err);
+        }
+     
       });
   };
 

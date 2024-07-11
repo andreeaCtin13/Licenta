@@ -22,7 +22,7 @@ import Button from "../../components/Button";
 function Feedback() {
   const { idCourse } = useParams();
   const [page, setPage] = useState(1);
-  const [totalRec, setTotalRec] = useState(1);
+  const [totalRecords, setTotalRecords] = useState(0);
   const [selectedRow, setSelectedRow] = useState(null);
   const { user, setUser } = useContext(UserContext);
   const [metaKey, setMetaKey] = useState();
@@ -49,34 +49,30 @@ function Feedback() {
   }, [selectedScreen]);
   
   useEffect(() => {
-    setData(idCerinta);
+    setData(idCerinta, page);
   }, [idCerinta, page]);
   
-  const setData = async (id_cerinta) => {
+  const setData = async (id_cerinta, currentPage) => {
     try {
+      const take = 4;  // Schimbă la 4 pentru a afișa 4 înregistrări pe pagină
+      const skip = (currentPage - 1) * take;
       const rez = await axios.get(
-        `http://localhost:8080/istoricCerinte/getAll/${idCourse}/${id_cerinta}/filter?&take=8&skip=${page}&feedback=null`
+        `http://localhost:8080/istoricCerinte/getAll/${idCourse}/${id_cerinta}/filter?take=${take}&skip=${skip}&feedback=null`
       );
       setAssigmentsRows(rez.data.istoric);
-      setTotalRec(Math.ceil(rez.data.count / 8) > 0 ? Math.ceil(rez.data.count / 8) : 1);
+      setTotalRecords(rez.data.count);
     } catch (err) {
       console.error(err);
     }
   };
   
-  
-  
   useEffect(() => {
     setPage(1);
-    setData();
-  }, []);
-
-  useEffect(() => {
-    setData();
-  }, [page]);
+    setData(idCerinta, 1);
+  }, [idCerinta]);
 
   const onPageChange = (e, type_event) => {
-    if (type_event === "next" && page < totalRec / 8) {
+    if (type_event === "next" && page < Math.ceil(totalRecords / 4)) {  // Schimbă la 4
       setPage(page + 1);
     } else if (type_event === "prev" && page > 1) {
       setPage(page - 1);
@@ -86,14 +82,6 @@ function Feedback() {
   const header = (
     <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
       <h4 className="m-0">Rezolvări Încărcate</h4>
-      <span className="p-input-icon-left">
-        <i className="pi pi-search" />
-        <InputText
-          type="search"
-          onInput={(e) => setGlobalFilter(e.target.value)}
-          placeholder="Search..."
-        />
-      </span>
     </div>
   );
 
@@ -137,6 +125,7 @@ function Feedback() {
 
   const sendFeedback = async () => {
     try {
+      console.log("cerinta istoric id trimis: ", selectedRow)
       await axios.put(
         `http://localhost:8080/istoricCerinte/updateIstoricAssigment/${selectedRow?.id_cerinta_istoric}`,
         { feedback }
@@ -148,7 +137,6 @@ function Feedback() {
       );
       setVisible(false);
       clearSelection();
-
     } catch (err) {
       console.error(err);
     }
@@ -202,8 +190,8 @@ function Feedback() {
   }, [selectedScreen]);
 
   useEffect(() => {
-    setData(idCerinta);
-  }, [idCerinta]);
+    setData(idCerinta, page);
+  }, [idCerinta, page]);
 
   const takeIstoricForCurrentAssigment = (event) => {
     if (acordeonArray[event.index]) {
@@ -264,8 +252,8 @@ function Feedback() {
                   className={style.dataTable}
                   value={assigmentsRows}
                   dataKey=""
-                  rows={10}
-                  totalRecords={totalRec}
+                  rows={4}  // Schimbă la 4 pentru a afișa 4 înregistrări pe pagină
+                  totalRecords={totalRecords}
                   onSelectionChange={(e) => {
                     setSelectedRow(e.value);
                     setVisible(true);
@@ -275,9 +263,7 @@ function Feedback() {
                   globalFilter={globalFilter}
                   header={header}
                   onRowClick={(e) => {
-                   
                       setSelectedRow(e.data);
-                    
                   }}
                 >
                   <Column
@@ -310,7 +296,7 @@ function Feedback() {
                     <FontAwesomeIcon icon={faChevronLeft} />
                   </button>
                   <span>
-                    Pagina {page} din {totalRec}
+                    Pagina {page} din {Math.ceil(totalRecords / 4)}  {/* Schimbă la 4 */}
                   </span>
                   <button
                     className={style.btnPagination}

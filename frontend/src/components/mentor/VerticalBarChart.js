@@ -6,80 +6,79 @@ import { UserContext } from '../../context/UserContext';
 function VerticalBarChart() {
     const [chartData, setChartData] = useState({});
     const [chartOptions, setChartOptions] = useState({});
-    const { user, setUser } = useContext(UserContext);
+    const { user } = useContext(UserContext);
 
     const fetchData = async () => {
         try {
-            await axios.get(`http://localhost:8080/cereriCurs/requestsChart/${user.id_utilizator}`).then((rez)=>{
-                const data = rez.data.rez;
-                console.log(data)
-                if (Array.isArray(data) && data.length > 0) {
-                    const labels = data.map(item => item.denumire);
-                    const requestCounts = data.map(item => item.requestCount);
-                    const newChartData = {
-                        labels: labels,
-                        datasets: [
-                            {
-                                label: 'Număr de cereri',
-                                data: requestCounts,
-                                backgroundColor: '#b1a3bb',
-                                borderColor: '#9d3e74',
-                                borderWidth: 1
-                            }
-                        ]
-                    };
-    
-                    const newChartOptions = {
-                        maintainAspectRatio: false,
-                        aspectRatio: 0.6,
-                        plugins: {
-                            legend: {
-                                labels: {
-                                    color: getComputedStyle(document.documentElement).getPropertyValue('--text-color'),
-                                    font:{
-                                        size:20
-    
-                                    }
-                                },
-                                
+            const response = await axios.get(`http://localhost:8080/cereriCurs/requestsChart/${user.id_utilizator}`);
+            const data = response.data.rez;
+            console.log(data);
 
-                            }
-                        },
-                        scales: {
-                            x: {
-                                ticks: {
-                                    color: getComputedStyle(document.documentElement).getPropertyValue('--text-color'),
-                                    font:{
-                                        size:20
-    
-                                    }
-                                },
-                                grid: {
-                                    color: getComputedStyle(document.documentElement).getPropertyValue('--surface-border'),
-                                    font:{
-                                        size:20
-    
-                                    }
-                                }
-                            },
-                            y: {
-                                ticks: {
-                                    color: getComputedStyle(document.documentElement).getPropertyValue('--text-color')
-                                },
-                                grid: {
-                                    color: getComputedStyle(document.documentElement).getPropertyValue('--surface-border')
+            if (Array.isArray(data) && data.length > 0) {
+                const labels = data.map(item => item.denumire);
+                const requestCounts = data.map(item => item.requestCount);
+
+                const newChartData = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Număr de cereri',
+                            data: requestCounts,
+                            backgroundColor: '#b1a3bb',
+                            borderColor: '#9d3e74',
+                            borderWidth: 1
+                        }
+                    ]
+                };
+
+                const truncateLabel = (label) => {
+                    return label.length > 15 ? label.substring(0, 15) + '...' : label;
+                };
+
+                const newChartOptions = {
+                    maintainAspectRatio: false,
+                    aspectRatio: 0.6,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-color'),
+                                font: {
+                                    size: 20
                                 }
                             }
                         }
-                    };
-    
-                    setChartData(newChartData);
-                    setChartOptions(newChartOptions);
-                } else {
-                    console.log("No data found");
-                }
-            });
-            
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return truncateLabel(this.getLabelForValue(value));
+                                },
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-color'),
+                                font: {
+                                    size: 20
+                                }
+                            },
+                            grid: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--surface-border')
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-color')
+                            },
+                            grid: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--surface-border')
+                            }
+                        }
+                    }
+                };
+
+                setChartData(newChartData);
+                setChartOptions(newChartOptions);
+            } else {
+                console.log("No data found");
+            }
         } catch (error) {
             console.error("Error fetching course requests:", error);
         }

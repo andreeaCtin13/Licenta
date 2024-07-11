@@ -11,9 +11,12 @@
 }
 
 .imageCourse {
-  height: 10rem;
-  width: 20rem;
+  max-height: 15rem;
+  width: 30rem;
+  object-fit: cover;
+  object-position: center;
 }
+
 
 .nonUnderline {
   text-decoration: none;
@@ -46,6 +49,7 @@
 .btnModala:nth-child(odd) {
   background-color: var(--var--light--purple);
 }
+
 .btnModala:nth-child(odd):hover {
   background-color: var(--var--light--pink);
   cursor: pointer;

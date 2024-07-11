@@ -145,7 +145,7 @@
 /* DockStyles.css */
 
 .dock {
-  background-color: var(--var--light--pink); /* Roz pal */
+  position:fixed;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Umbre subtile */
   padding: 10px; /* Spațiu interior */
 }

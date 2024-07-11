@@ -33,7 +33,7 @@ function FormNewTest() {
       <h2>Create a test for the new section</h2>
       <form>
         <div className={style.formRow}>
-          <label htmlFor="noQuestions">Number of questions</label>
+          <label htmlFor="noQuestions">Numărul de întrebări</label>
           <input
             id="noQuestions"
             type="number"

@@ -111,7 +111,7 @@ function QuestionInput({ index }) {
   return (
     <div className={style.questionSection}>
       <div key={index} className={style.formRow}>
-        <label>Question {index + 1}.</label>
+        <label>Întrebarea {index + 1}.</label>
         <input
           className={style.inputIntrebare}
           type="text"

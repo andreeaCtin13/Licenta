@@ -30,8 +30,7 @@ const controller = {
   },
   getTestById: async (req, res) => {
     const { id_sectiune } = req.params;
-
-    console.log("sectiune", id_sectiune);
+    
     const teste = await testeModel
       .findAll({
         where: {
@@ -109,7 +108,7 @@ const controller = {
   },
   editareTest: async (req, res) => {
     const { id_test } = req.params;
-    const { punctaj_minim_promovare, numar_intrebari, intrebari } = req.body;
+    const { punctaj_minim_promovare, numar_intrebari, intrebari, deletedQuestions, deletedAnswers } = req.body;
   
     let transaction;
   
@@ -123,6 +122,20 @@ const controller = {
   
       test.punctaj_minim_promovare = punctaj_minim_promovare;
       await test.save({ transaction });
+  
+      if (deletedQuestions && deletedQuestions.length > 0) {
+        await intrebariModel.destroy({
+          where: { id_intrebare: deletedQuestions },
+          transaction
+        });
+      }
+  
+      if (deletedAnswers && deletedAnswers.length > 0) {
+        await varianteRaspunsModel.destroy({
+          where: { id_varianta: deletedAnswers },
+          transaction
+        });
+      }
   
       for (const intrebareData of intrebari) {
         let intrebare;

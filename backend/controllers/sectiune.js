@@ -117,8 +117,16 @@ const controller = {
       punctaj_minim_promovare,
     } = JSON.parse(req.body.sectionData);
   
+    if(denumire.length>100 || denumire.length<3){
+      return res.status(400).json("Denumire sectiune prea lungă")
+    }
+
+    if(descriere.length>100 || descriere.length<3){
+      return res.status(400).json("Descriere sectiune prea lungă")
+    }
+
     const transaction = await sequelize.transaction();
-  
+    console.log("denumire len",denumire.length)
     try {
       let curs = await cursuriModel.findByPk(id_curs, { transaction });
       if (!curs) {
@@ -132,44 +140,42 @@ const controller = {
         }, { transaction });
   
         let id_sectiune = newSectiune.id_sectiune;
-  
-        for (let i = 0; i < cerinte?.length; i++) {
-          await cerinteModel.create({
-            titlu: cerinte[i].titlu_cerinta,
-            cerinta: cerinte[i].cerinta,
-            id_sectiune,
-          }, { transaction });
-        }
-  
+        console.log("inainte de cerinte")
         let newTest = await testeModel.create({
           punctaj_minim_promovare,
           numar_intrebari: intrebari.length,
           id_sectiune,
         }, { transaction });
+        console.log("inainte de intrebari")
   
         for (let i = 0; i < intrebari?.length; i++) {
-          let newIntrebare = await intrebariModel.create({
+        let newIntrebare = await intrebariModel.create({
             text_intrebare: intrebari[i].requirement,
             punctaj_intrebare: intrebari[i].punctaj_intrebare,
             id_test: newTest.id_test,
-          }, { transaction });
-  
-          for (let j = 0; j < intrebari[i].variante_de_raspuns?.length; j++) {
+        }, { transaction });
+
+        for (let j = 0; j < intrebari[i].variante_de_raspuns?.length; j++) {
+          console.log("AI", intrebari[i].variante_de_raspuns[j].value)
+
             await varianteModel.create({
-              id_intrebare: newIntrebare.id_intrebare,
-              text_varianta: intrebari[i].variante_de_raspuns[j].text_varianta,
-              este_corecta: intrebari[i].variante_de_raspuns[j].este_corecta,
+                id_intrebare: newIntrebare.id_intrebare,
+                text_varianta: intrebari[i].variante_de_raspuns[j].value, // Ensure correct field name
+                este_corecta: intrebari[i].variante_de_raspuns[j].este_corecta,
             }, { transaction });
-          }
         }
-  
+        }
+      
+        
+        console.log("inainte de video")
         await resurseModel.create({
           tip_resursa: "video_link",
           link_resursa: video_link,
           titlu_resursa: denumire,
           id_sectiune,
         }, { transaction });
-  
+        console.log("inainte de fisiere")
+
         for (let i = 0; i < req.files?.length; i++) {
           const absolutePath = path.resolve(__dirname, '..', req.files[i].path);
           await resurseModel.create({

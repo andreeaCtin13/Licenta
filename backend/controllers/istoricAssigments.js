@@ -12,57 +12,63 @@ const sequelize = require("../config/db");
 
 const controller = {
   getAllIstoricCerinte: async (req, res) => {
-    const { id_curs, id_cerinta } = req.params;
+  const { id_curs, id_cerinta } = req.params;
+    const { take = 4, skip = 0 } = req.query; // Default take to 4 and skip to 0
 
     try {
-      const utilizatoriCuIstoric = await ictoricCerinteModel.findAll({
-        attributes: ['id_utilizator'],
-        where: {
-          id_cerinta: id_cerinta
-        },
-        group: ['id_utilizator']
-      });
-
-      const result = [];
-
-      for (let i = 0; i < utilizatoriCuIstoric.length; i++) {
-        const id_utilizator = utilizatoriCuIstoric[i].id_utilizator;
-
-        const recentIstoric = await ictoricCerinteModel.findOne({
-          where: {
-            id_utilizator: id_utilizator,
-            id_cerinta: id_cerinta,
-            feedback: null 
-          },
-          order: [["data_finalizare", "DESC"]],
+        const utilizatoriCuIstoric = await ictoricCerinteModel.findAll({
+            attributes: ['id_utilizator'],
+            where: {
+                id_cerinta: id_cerinta,
+                feedback: null
+            },
+            group: ['id_utilizator']
         });
 
-        if (recentIstoric) {
-          const user = await utilizatoriModel.findByPk(id_utilizator);
+        const utilizatoriCount = utilizatoriCuIstoric.length;
+        const paginatedUtilizatori = utilizatoriCuIstoric.slice(Number(skip), Number(skip) + Number(take));
 
-          const istoricUtilizator = {
-            id_cerinta_istoric: recentIstoric.id_cerinta_istoric,
-            data_finalizare: recentIstoric.data_finalizare,
-            rezolvare: recentIstoric.rezolvare,
-            feedback: recentIstoric.feedback,
-            id_utilizator: recentIstoric.id_utilizator,
-            id_cerinta: recentIstoric.id_cerinta,
-            mail: user ? user.mail : null,
-            nume: user ? user.nume : null,
-          };
-          result.push(istoricUtilizator);
+        const result = [];
+
+        for (let i = 0; i < paginatedUtilizatori.length; i++) {
+            const id_utilizator = paginatedUtilizatori[i].id_utilizator;
+
+            const recentIstoric = await ictoricCerinteModel.findOne({
+                where: {
+                    id_utilizator: id_utilizator,
+                    id_cerinta: id_cerinta,
+                    feedback: null
+                },
+                order: [["data_finalizare", "DESC"]],
+            });
+
+            if (recentIstoric) {
+                const user = await utilizatoriModel.findByPk(id_utilizator);
+
+                const istoricUtilizator = {
+                    id_cerinta_istoric: recentIstoric.id_cerinta_istoric,
+                    data_finalizare: recentIstoric.data_finalizare,
+                    rezolvare: recentIstoric.rezolvare,
+                    feedback: recentIstoric.feedback,
+                    id_utilizator: recentIstoric.id_utilizator,
+                    id_cerinta: recentIstoric.id_cerinta,
+                    mail: user ? user.mail : null,
+                    nume: user ? user.nume : null,
+                };
+                result.push(istoricUtilizator);
+            }
         }
-      }
 
-      return res.status(200).json({
-        istoric: result,
-        count: result.length,
-      });
+        return res.status(200).json({
+            istoric: result,
+            count: utilizatoriCount, // Total records before pagination
+        });
 
     } catch (err) {
-      console.error("Eroare la preluarea istoricului de cerințe:", err);
-      return res.status(500).json({ message: "Eroare server", err: err });
+        console.error("Eroare la preluarea istoricului de cerințe:", err);
+        return res.status(500).json({ message: "Eroare server", err: err });
     }
+  
   },
   getIstoricRezolvariPerUser: async (req, res) => {
     const { id_utilizator } = req.params;

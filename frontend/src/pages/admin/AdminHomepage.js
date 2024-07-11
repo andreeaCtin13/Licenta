@@ -381,7 +381,7 @@ const downloadExcelPondereFeedback = async () => {
     const students_query = "filter?";
     await axios
       .get(
-        `http://localhost:8080/useri/selectAll/${students_query}&take=10&skip=${page}`
+        `http://localhost:8080/useri/selectAll/${students_query}&take=8&skip=${page}`
       )
       .then((response) => {
         let students = response.data.requests.rows;

@@ -95,13 +95,12 @@ function CourseSummary() {
             });
         }
       } else {
-        await axios
-          .put(`http://localhost:8080/cereriCurs/update/${requestId}`, {
-            status: "declined",
-          })
-          .then(() => {
-            setRequestStatus("declined");
-          });
+        toast.current.show({
+          severity: "info",
+          summary: "Info",
+          detail: "Your request is already in process",
+          life: 3000,
+        });
       }
     } catch (error) {
       console.log(error);
@@ -114,8 +113,7 @@ function CourseSummary() {
     const fileName = path.split('\\').pop();
     return `http://localhost:8080/images/${fileName}`;
   };
-  //==="pending"?("În așteptare"):(requestStatus==="Neînscris"?"Neînscris":"jdjj")
-{console.log("hei: ", requestStatus)}
+
   return (
     <div className={style.mainContainer}>
       <Toast ref={toast} />
@@ -132,25 +130,21 @@ function CourseSummary() {
         <div className={style.rightContainer}>
           <h2>De ce să te înscrii la acest curs?</h2>
           <div className={style.rightContainerDesc}>{course.descriere}</div>
-          {requestStatus === "accepted" ? (
-            <Button
-              content={"Retrage-te din cadrul cursului"} 
-              className={`${style.unEnrollBtn} ${style.btn}`}
-              onClick={handleEnroll}
-            />
-          ) : (
-            <Button
-              className={`${style.btn} ${
-                requestStatus === "enroll"
-                  ? style.enrollBtn
-                  : requestStatus === "pending"
-                  ? style.pendingBtn
-                  : style.unEnrollBtn
-              }`}
-              onClick={handleEnroll}
-              content={requestStatus==="pending"?("În așteptare"):(requestStatus==="Neînscris"?"Neînscris":(requestStatus==="accepted"?"Retrage-te din cadrul cursului":"Înscrie-te"))}
-            />
-          )}
+          <Button
+            className={`${style.btn} ${
+              requestStatus === "pending"
+                ? style.pendingBtn
+                : style.enrollBtn
+            }`}
+            onClick={handleEnroll}
+            content={
+              requestStatus === "pending"
+                ? "În așteptare"
+                : requestStatus === "Neînscris"
+                ? "Înscrie-te"
+                : "Resubmit request"
+            }
+          />
         </div>
       </div>
       <div className={style.accordion}>

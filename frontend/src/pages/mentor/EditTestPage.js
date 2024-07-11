@@ -13,6 +13,9 @@ const EditTestPage = () => {
   const [test, setTest] = useState(null);
   const [loading, setLoading] = useState(true);
   const { idCourse, id_test } = useParams();
+  const [deletedQuestions, setDeletedQuestions] = useState([]);
+const [deletedAnswers, setDeletedAnswers] = useState([]);
+
   const toast = useRef(null);
   const navigate = useNavigate();
 
@@ -82,7 +85,6 @@ const EditTestPage = () => {
       intrebari: updatedQuestions
     });
   };
-  
 
   const handleScoreChange = (event, questionId) => {
     const updatedQuestions = test.intrebari.map(intrebare => {
@@ -138,7 +140,6 @@ const EditTestPage = () => {
       intrebari: [...test.intrebari, newQuestion]
     });
   };
-
   const submitInfo = async () => {
     if (
       !test.id_test ||
@@ -190,7 +191,11 @@ const EditTestPage = () => {
   
     // Trimiterea datelor
     try {
-      const response = await axios.post(`http://localhost:8080/teste/editareTest/${test.id_test}`, test);
+      const response = await axios.post(`http://localhost:8080/teste/editareTest/${test.id_test}`, {
+        ...test,
+        deletedQuestions,
+        deletedAnswers
+      });
       toast.current.show({
         severity: "success",
         summary: "Succes",
@@ -212,11 +217,18 @@ const EditTestPage = () => {
   
   const handleDeleteQuestion = (questionId) => {
     const updatedQuestions = test.intrebari.filter(intrebare => intrebare.id_intrebare !== questionId);
+    const questionToDelete = test.intrebari.find(intrebare => intrebare.id_intrebare === questionId);
+    
+    if (questionToDelete && questionToDelete.id_intrebare) {
+      setDeletedQuestions([...deletedQuestions, questionToDelete.id_intrebare]);
+    }
+  
     setTest({
       ...test,
       intrebari: updatedQuestions
     });
   };
+  
   const handleAddAnswer = (questionTempId) => {
     const updatedQuestions = test.intrebari.map(intrebare => {
       if (intrebare.tempId === questionTempId) {
@@ -244,6 +256,12 @@ const EditTestPage = () => {
   const handleDeleteAnswer = (questionTempId, answerTempVarId) => {
     const updatedQuestions = test.intrebari.map(intrebare => {
       if (intrebare.tempId === questionTempId) {
+        const answerToDelete = intrebare.varianteRaspuns.find(varianta => varianta.tempVarId === answerTempVarId);
+        
+        if (answerToDelete && answerToDelete.id_varianta) {
+          setDeletedAnswers([...deletedAnswers, answerToDelete.id_varianta]);
+        }
+  
         const updatedVarianteRaspuns = intrebare.varianteRaspuns.filter(varianta => varianta.tempVarId !== answerTempVarId);
         return {
           ...intrebare,
@@ -258,6 +276,7 @@ const EditTestPage = () => {
       intrebari: updatedQuestions
     });
   };
+  
 
   const handleMinimPromovareChange = (event) => {
     const value = event.target.value;
@@ -284,9 +303,9 @@ const EditTestPage = () => {
     <div className={style.editTestContainer}>
       <Toast ref={toast} />
       <h1 className={style.editTestHeading}>Editare Test</h1>
+      <h2>Detalii</h2>
+
       <div className={style.editTestDetails}>
-        <h2>Detalii</h2>
-        <p>ID - {test.id_test}</p>
         <p>
           Punctaj minim de promovare - 
           <input

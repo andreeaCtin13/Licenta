@@ -15,6 +15,8 @@ function Test() {
   const [sectiune, setSectiune] = useState();
   const toast = useRef(null);
 
+  console.log("INTREBARI", intrebari)
+
   useEffect(() => {
     const getSectiuneById = async () => {
       try {
@@ -41,6 +43,7 @@ function Test() {
           `http://localhost:8080/intrebare/getAllIntrebariByTestId/${idTest}`
         );
         setIntrebari(intrebariRes.data.intrebari);
+        console.log("SUNT AICI")
       } catch (err) {
         console.log(err);
       }

@@ -28,7 +28,7 @@ function FormNewSection() {
   for (let ind = 0; ind < noOfAssigments; ind++) {
     assignmentDivs.push(
       <div key={ind} className={style.formRow}>
-        <h3>Assignment {ind + 1}</h3>
+        <h3>Cerința {ind + 1}</h3>
         <label htmlFor={ind + "_titlu_cerinta"}>Titlul cerintei</label>
         <input
           id={ind + "_titlu_cerinta"}

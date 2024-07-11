@@ -28,6 +28,7 @@ function CoursePage() {
   const [refreshPlease, setRefreshPlease] =useState(0)
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
+  const [videoLink, setVideoLink] = useState("")
 
   const playVideo = (index) => {
     setCurrentSectionIndex(index);
@@ -129,6 +130,8 @@ function CoursePage() {
   
       const resurseRes = await axios.get(`http://localhost:8080/resurse/getResurseCursSection/${sectiuni[0].id_sectiune}`);
       setResurse(resurseRes.data.resurse);
+
+      setVideoLink(resurseRes.data.resurse.filter((x) => x.tip_resursa === "video_link")[0]?.link_resursa || "");
   
       const scoresRes = await axios.get(`http://localhost:8080/istoricuriPunctaje/getChartUserPunctajeObtinute/${user.id_utilizator}`);
       const scoresData = scoresRes.data;
@@ -155,6 +158,7 @@ function CoursePage() {
     setCerinte([])
     setResurse([])
     setCourseChosen(0)
+    setVideoLink("")
     setData()
   }, [idCourse]);
 
@@ -186,6 +190,8 @@ function CoursePage() {
 
       const resurseRes = await axios.get(`http://localhost:8080/resurse/getResurseCursSection/${index}`);
       setResurse(resurseRes.data.resurse);
+      setVideoLink(resurseRes.data.resurse.filter((x) => x.tip_resursa === "video_link")[0]?.link_resursa || "");
+
     } catch (err) {
       console.log(err);
     }
@@ -231,7 +237,6 @@ function CoursePage() {
     height: 'auto',
     width: '100%',
     playerVars: {
-      // https://developers.google.com/youtube/player_parameters
       controls: 0,
       enablejsapi: 1,
       modestbranding: 1,
@@ -259,28 +264,27 @@ function CoursePage() {
           <div>
             <div>
           <h2>Resurse Video</h2>
+          {console.log("ba", videoLink)}
 
           <div className={`${style.containerVideo}`}>
             <div className={style.video}>
             <ReactPlayer
             className={style.reactPlayerVideo}
   url={
-    resurse.length > 0 && resurse.some((x) => x.tip_resursa === "video_link")
-      ? getSecureYouTubeLink(resurse.find((x) => x.tip_resursa === "video_link").link_resursa)
-      : getSecureYouTubeLink("https://youtu.be/MTOiveIjRc0?si=jnIFMgnewLh8iose")
+    videoLink
   }
   width={450}
   controls={true}
   config={{
     youtube: {
       playerVars: {
-        rel: 0,  // Nu arată videoclipuri similare la sfârșit
-        modestbranding: 1,  // Ascunde logo-ul YouTube
+        rel: 0,  
+        modestbranding: 1,  
         reload:false
       }
     }
   }}
-  onContextMenu={e => e.preventDefault()}  // Dezactivează meniul contextual
+  onContextMenu={e => e.preventDefault()}  
 />
 <div className={style.letmecheck}></div>
 
@@ -304,8 +308,6 @@ function CoursePage() {
           </div>
           </div>
           <div>
-          {/* <h2>Evoluția Punctajelor</h2>
-          <Chart type="line" data={chartData} options={chartOptions} /> */}
 
             </div>
             </div>
